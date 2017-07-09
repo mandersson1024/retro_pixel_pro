@@ -33,5 +33,3 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
-# Mac stuff
-*.DS_Store
