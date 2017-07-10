@@ -190,7 +190,7 @@ public class Sequencer : MonoBehaviour
 		
 		laughterPixel.resolution.x = 160;
 		laughterPixel.resolution.y = 100;
-		laughterPixel.alpha = 0;
+		laughterPixel.opacity = 0;
 		
 		float startTime = Time.time;
 
@@ -203,7 +203,7 @@ public class Sequencer : MonoBehaviour
 			yield return null;
 		}
 
-		laughterPixel.alpha = 1;
+		laughterPixel.opacity = 1;
 
 		while(Time.time < startTime + duration1 + duration2)
 		{
@@ -212,7 +212,7 @@ public class Sequencer : MonoBehaviour
 		
 		laughterPixel.resolution.x = 1920;
 		laughterPixel.resolution.y = 1080;
-		laughterPixel.alpha = 0.56f;
+		laughterPixel.opacity = 0.56f;
 
 		while(Time.time < startTime + duration1 + duration2 + duration3)
 		{

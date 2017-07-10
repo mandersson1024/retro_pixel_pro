@@ -12,7 +12,7 @@ namespace AlpacaSound.RetroPixelPro
         SerializedProperty resolutionMode;
         SerializedProperty resolution;
         SerializedProperty pixelSize;
-        SerializedProperty alpha;
+        SerializedProperty opacity;
         SerializedProperty colormap;
 
 
@@ -23,7 +23,7 @@ namespace AlpacaSound.RetroPixelPro
             resolutionMode = serObj.FindProperty("resolutionMode");
             resolution = serObj.FindProperty("resolution");
             pixelSize = serObj.FindProperty("pixelSize");
-            alpha = serObj.FindProperty("alpha");
+            opacity = serObj.FindProperty("opacity");
             colormap = serObj.FindProperty("colormap");
         }
 
@@ -33,17 +33,17 @@ namespace AlpacaSound.RetroPixelPro
 
             resolutionMode.enumValueIndex = (int)(ResolutionMode)EditorGUILayout.EnumPopup("Mode", (ResolutionMode)resolutionMode.enumValueIndex);
 
-            if (resolutionMode.enumValueIndex == (int)ResolutionMode.SelectResolution)
+            if (resolutionMode.enumValueIndex == (int)ResolutionMode.ConstantResolution)
             {
                 resolution.vector2Value = EditorGUILayout.Vector2Field("Resolution", resolution.vector2Value);
             }
 
-            if (resolutionMode.enumValueIndex == (int)ResolutionMode.SelectPixelSize)
+            if (resolutionMode.enumValueIndex == (int)ResolutionMode.ConstantPixelSize)
             {
                 pixelSize.intValue = EditorGUILayout.IntField("Pixel Size", pixelSize.intValue);
             }
 
-            alpha.floatValue = EditorGUILayout.Slider("Alpha", alpha.floatValue, 0, 1);
+            opacity.floatValue = EditorGUILayout.Slider("Opacity", opacity.floatValue, 0, 1);
             colormap.objectReferenceValue = EditorGUILayout.ObjectField("Colormap", colormap.objectReferenceValue, typeof(Colormap), false);
 
             serObj.ApplyModifiedProperties();

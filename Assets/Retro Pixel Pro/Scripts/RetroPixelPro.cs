@@ -10,30 +10,33 @@ namespace AlpacaSound.RetroPixelPro
     [AddComponentMenu("Image Effects/Custom/Retro Pixel Pro")]
     public class RetroPixelPro : MonoBehaviour
     {
-        public ResolutionMode resolutionMode = ResolutionMode.SelectResolution;
+
+        /// TODO: FIX THIS
+        /// <summary>
+        /// The horizontal resolution.
+        /// Clamped in the range [1, 16384]
+        /// </summary>
+        public ResolutionMode resolutionMode = ResolutionMode.ConstantResolution;
+
+        /// TODO: FIX THIS
+        /// <summary>
+        /// The horizontal resolution.
+        /// Clamped in the range [1, 16384]
+        /// </summary>
         public Vector2 resolution = new Vector2(Screen.width, Screen.height);
+
+        /// TODO: FIX THIS
+        /// <summary>
+        /// The horizontal resolution.
+        /// Clamped in the range [1, 16384]
+        /// </summary>
         public int pixelSize = 1;
-
-        /*
-		/// <summary>
-		/// The horizontal resolution.
-		/// Clamped in the range [1, 16384]
-		/// </summary>
-		public int horizontalResolution = 320;
-
-		/// <summary>
-		/// The vertical resolution.
-		/// Clamped in the range [1, 16384]
-		/// </summary>
-		public int verticalResolution = 200;
-        */
 
         /// <summary>
         /// Alpha of the colorization.
         /// Clamped in the range [0, 1]
         /// </summary>
-        [Range(0, 1)]
-        public float alpha = 1;
+        public float opacity = 1;
 
         /// <summary>
         /// Contains palette and pre-computed color data.
@@ -96,7 +99,7 @@ namespace AlpacaSound.RetroPixelPro
             resolution.x = Screen.width;
             resolution.y = Screen.height;
             pixelSize = 1;
-            alpha = 1;
+            opacity = 1;
         }
 
 
@@ -120,7 +123,7 @@ namespace AlpacaSound.RetroPixelPro
         {
             pixelSize = (int)Mathf.Clamp(pixelSize, 1, float.MaxValue);
 
-            if (resolutionMode == ResolutionMode.SelectPixelSize)
+            if (resolutionMode == ResolutionMode.ConstantPixelSize)
             {
                 resolution.x = Screen.width / pixelSize;
                 resolution.y = Screen.height / pixelSize;
@@ -129,13 +132,13 @@ namespace AlpacaSound.RetroPixelPro
             resolution.x = (int)Mathf.Clamp(resolution.x, 1, 16384);
             resolution.y = (int)Mathf.Clamp(resolution.y, 1, 16384);
 
-            alpha = Mathf.Clamp01(alpha);
+            opacity = Mathf.Clamp01(opacity);
 
             if (colormap != null)
             {
                 //Debug.Log(colormap.map + ", " + colormap.palette);
 
-                material.SetFloat("_Strength", alpha);
+                material.SetFloat("_Strength", opacity);
                 RenderTexture scaled = RenderTexture.GetTemporary((int)resolution.x, (int)resolution.y);
                 scaled.filterMode = FilterMode.Point;
                 Graphics.Blit(src, scaled, material);
@@ -194,8 +197,8 @@ namespace AlpacaSound.RetroPixelPro
 
     public enum ResolutionMode
     {
-        SelectResolution,
-        SelectPixelSize,
+        ConstantResolution,
+        ConstantPixelSize,
     }
 }
 

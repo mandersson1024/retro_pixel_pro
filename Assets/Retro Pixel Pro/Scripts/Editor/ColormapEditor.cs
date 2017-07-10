@@ -105,7 +105,8 @@ namespace AlpacaSound.RetroPixelPro
                         "PNG Image", "png",
                         "JPG Image", "jpg"
                     });
-                Debug.Log("path: " + paletteImagePath);
+
+                //Debug.Log("path: " + paletteImagePath);
 
                 if (imagePath.Length > 0)
                 {

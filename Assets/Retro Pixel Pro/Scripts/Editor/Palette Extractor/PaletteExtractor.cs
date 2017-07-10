@@ -36,13 +36,11 @@ namespace AlpacaSound.RetroPixelPro
             {
                 if (UseMainColor(mainLevel, numColors, i))
                 {
-                    Debug.Log("using main color for: " + i);
                     result.Add(mainColors[i]);
                 }
                 else
                 {
                     int backupIndex = backupColors.Count - (numColors - i);
-                    Debug.Log("needed backup color for: " + i + ", backup index: " + backupIndex);
                     result.Add(backupColors[backupIndex]);
                 }
             }
