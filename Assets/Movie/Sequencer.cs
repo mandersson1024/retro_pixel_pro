@@ -73,8 +73,8 @@ public class Sequencer : MonoBehaviour
 		SetRendererEnabled(flower, true);
 		SetCameraEnabled(camera_blueRed, true);
 
-		blueRedPixel.horizontalResolution = 192;
-		blueRedPixel.verticalResolution = 108;
+		blueRedPixel.resolution.x = 192;
+		blueRedPixel.resolution.y = 108;
 
 		float startTime = Time.time;
 
@@ -97,14 +97,14 @@ public class Sequencer : MonoBehaviour
 			flower.transform.localScale = new Vector3(2048, 1580, 1) * 0.01f * duration / 2;
 			flower.transform.Rotate(Vector3.forward, -3 * Time.deltaTime);
 			
-			blueRedPixel.horizontalResolution = (int) Mathf.Lerp(192, 1920, currentDuration / pixelFadeDuration);
-			blueRedPixel.verticalResolution = (int) Mathf.Lerp(108, 1080, currentDuration / pixelFadeDuration);
+			blueRedPixel.resolution.x = (int) Mathf.Lerp(192, 1920, currentDuration / pixelFadeDuration);
+			blueRedPixel.resolution.y = (int) Mathf.Lerp(108, 1080, currentDuration / pixelFadeDuration);
 			
 			yield return null;
 		}
 
-		blueRedPixel.horizontalResolution = 1920;
-		blueRedPixel.verticalResolution = 1080;
+		blueRedPixel.resolution.x = 1920;
+		blueRedPixel.resolution.y = 1080;
 
 		while(Time.time < startTime + 14)
 		{
@@ -188,9 +188,9 @@ public class Sequencer : MonoBehaviour
 		SetRendererEnabled(laughter, true);
 		SetCameraEnabled(camera_laughter, true);
 		
-		laughterPixel.horizontalResolution = 160;
-		laughterPixel.verticalResolution = 100;
-		laughterPixel.strength = 0;
+		laughterPixel.resolution.x = 160;
+		laughterPixel.resolution.y = 100;
+		laughterPixel.alpha = 0;
 		
 		float startTime = Time.time;
 
@@ -203,16 +203,16 @@ public class Sequencer : MonoBehaviour
 			yield return null;
 		}
 
-		laughterPixel.strength = 1;
+		laughterPixel.alpha = 1;
 
 		while(Time.time < startTime + duration1 + duration2)
 		{
 			yield return null;
 		}
 		
-		laughterPixel.horizontalResolution = 1920;
-		laughterPixel.verticalResolution = 1080;
-		laughterPixel.strength = 0.56f;
+		laughterPixel.resolution.x = 1920;
+		laughterPixel.resolution.y = 1080;
+		laughterPixel.alpha = 0.56f;
 
 		while(Time.time < startTime + duration1 + duration2 + duration3)
 		{

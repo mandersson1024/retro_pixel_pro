@@ -5,11 +5,16 @@ using System.Collections.Generic;
 
 namespace AlpacaSound.RetroPixelPro
 {
-	[ExecuteInEditMode]
-	[RequireComponent (typeof(Camera))]
-	[AddComponentMenu("Image Effects/Custom/Retro Pixel Pro")]
-	public class RetroPixelPro : MonoBehaviour
-	{
+    [ExecuteInEditMode]
+    [RequireComponent(typeof(Camera))]
+    [AddComponentMenu("Image Effects/Custom/Retro Pixel Pro")]
+    public class RetroPixelPro : MonoBehaviour
+    {
+        public ResolutionMode resolutionMode = ResolutionMode.SelectResolution;
+        public Vector2 resolution = new Vector2(Screen.width, Screen.height);
+        public int pixelSize = 1;
+
+        /*
 		/// <summary>
 		/// The horizontal resolution.
 		/// Clamped in the range [1, 16384]
@@ -21,160 +26,177 @@ namespace AlpacaSound.RetroPixelPro
 		/// Clamped in the range [1, 16384]
 		/// </summary>
 		public int verticalResolution = 200;
+        */
 
-		/// <summary>
-		/// Alpha of the colorization.
-		/// Clamped in the range [0, 1]
-		/// </summary>
-        [Range(0,1)]
-		public float strength = 1;
+        /// <summary>
+        /// Alpha of the colorization.
+        /// Clamped in the range [0, 1]
+        /// </summary>
+        [Range(0, 1)]
+        public float alpha = 1;
 
         /// <summary>
         /// Contains palette and pre-computed color data.
         /// </summary>
         public Colormap colormap;
 
-		Texture3D colormapTexture;
-		Texture2D colormapPalette;
-		Material m_material = null;
+        Texture3D colormapTexture;
+        Texture2D colormapPalette;
+        Material m_material = null;
 
-		public Material material
-		{
-			get
-			{
-				if (m_material == null)
-				{
-					string shaderName = "AlpacaSound/RetroPixelPro";
-					Shader shader = Shader.Find(shaderName);
+        public Material material
+        {
+            get
+            {
+                if (m_material == null)
+                {
+                    string shaderName = "AlpacaSound/RetroPixelPro";
+                    Shader shader = Shader.Find(shaderName);
 
-					if (shader == null)
-					{
-						Debug.LogWarning ("Shader '" + shaderName + "' not found. Was it deleted?");
-						enabled = false;
-					}
+                    if (shader == null)
+                    {
+                        Debug.LogWarning("Shader '" + shaderName + "' not found. Was it deleted?");
+                        enabled = false;
+                    }
 
-					m_material = new Material (shader);
-					m_material.hideFlags = HideFlags.DontSave;
-				}
+                    m_material = new Material(shader);
+                    m_material.hideFlags = HideFlags.DontSave;
+                }
 
-				return m_material;
-			} 
-		}
-
-
-		void Start ()
-		{
-			if (!SystemInfo.supportsImageEffects)
-			{
-				Debug.LogWarning("This system does not support image effects.");
-				enabled = false;
-			}
-		}
-
-		Colormap oldColormap = null;
-
-		void Update()
-		{
-			if (colormap != null && (colormap.changedInternally || oldColormap != colormap))
-			{
-				colormap.changedInternally = false;
-				ApplyToMaterial();
-			}
-
-			oldColormap = colormap;
-		}
+                return m_material;
+            }
+        }
 
 
-		void Reset()
-		{
-			horizontalResolution = 320;
-			verticalResolution = 200;
-			strength = 1;
-		}
+        void Start()
+        {
+            if (!SystemInfo.supportsImageEffects)
+            {
+                Debug.LogWarning("This system does not support image effects.");
+                enabled = false;
+            }
+        }
+
+        Colormap oldColormap = null;
+
+        void Update()
+        {
+            if (colormap != null && (colormap.changedInternally || oldColormap != colormap))
+            {
+                colormap.changedInternally = false;
+                ApplyToMaterial();
+            }
+
+            oldColormap = colormap;
+        }
 
 
-		void OnEnable()
-		{
-			ApplyToMaterial();
-		}
+        void Reset()
+        {
+            resolution.x = Screen.width;
+            resolution.y = Screen.height;
+            pixelSize = 1;
+            alpha = 1;
+        }
 
 
-		void OnDisable ()
-		{
-			if (m_material != null)
-			{
-				Material.DestroyImmediate (m_material);
-				m_material = null;
-			}
-		}
+        void OnEnable()
+        {
+            ApplyToMaterial();
+        }
 
 
-		public void OnRenderImage (RenderTexture src, RenderTexture dest)
-		{
-			horizontalResolution = Mathf.Clamp(horizontalResolution, 1, 16384);
-			verticalResolution = Mathf.Clamp(verticalResolution, 1, 16384);
-			strength = Mathf.Clamp01(strength);
-
-			if (colormap != null)
-			{
-				//Debug.Log(colormap.map + ", " + colormap.palette);
-
-				material.SetFloat("_Strength", strength);
-				RenderTexture scaled = RenderTexture.GetTemporary (horizontalResolution, (int) verticalResolution);
-				scaled.filterMode = FilterMode.Point;
-				Graphics.Blit (src, scaled, material);
-				//Graphics.Blit (src, scaled);
-				Graphics.Blit (scaled, dest);
-				RenderTexture.ReleaseTemporary (scaled);
-			}
-			else
-			{
-				Graphics.Blit(src, dest);
-			}
-		}
+        void OnDisable()
+        {
+            if (m_material != null)
+            {
+                Material.DestroyImmediate(m_material);
+                m_material = null;
+            }
+        }
 
 
-		public void ApplyToMaterial()
-		{
-			if (colormap != null)
-			{
-				ApplyPalette();
-				ApplyMap();
-			}
-		}
+        public void OnRenderImage(RenderTexture src, RenderTexture dest)
+        {
+            pixelSize = (int)Mathf.Clamp(pixelSize, 1, float.MaxValue);
+
+            if (resolutionMode == ResolutionMode.SelectPixelSize)
+            {
+                resolution.x = Screen.width / pixelSize;
+                resolution.y = Screen.height / pixelSize;
+            }
+
+            resolution.x = (int)Mathf.Clamp(resolution.x, 1, 16384);
+            resolution.y = (int)Mathf.Clamp(resolution.y, 1, 16384);
+
+            alpha = Mathf.Clamp01(alpha);
+
+            if (colormap != null)
+            {
+                //Debug.Log(colormap.map + ", " + colormap.palette);
+
+                material.SetFloat("_Strength", alpha);
+                RenderTexture scaled = RenderTexture.GetTemporary((int)resolution.x, (int)resolution.y);
+                scaled.filterMode = FilterMode.Point;
+                Graphics.Blit(src, scaled, material);
+                //Graphics.Blit (src, scaled);
+                Graphics.Blit(scaled, dest);
+                RenderTexture.ReleaseTemporary(scaled);
+            }
+            else
+            {
+                Graphics.Blit(src, dest);
+            }
+        }
 
 
-		void ApplyPalette()
-		{
-			colormapPalette = new Texture2D(256, 1, TextureFormat.RGB24, false);
-			colormapPalette.filterMode = FilterMode.Point;
-			colormapPalette.wrapMode = TextureWrapMode.Clamp;
-
-			for (int i = 0; i < colormap.numberOfColors; ++i)
-			{
-				colormapPalette.SetPixel(i, 0, colormap.palette[i]);
-			}
-
-			colormapPalette.Apply();
-
-			material.SetTexture("_Palette", colormapPalette);
-		}
+        public void ApplyToMaterial()
+        {
+            if (colormap != null)
+            {
+                ApplyPalette();
+                ApplyMap();
+            }
+        }
 
 
-		public void ApplyMap()
-		{
-			int colorsteps = ColormapUtils.GetPrecisionColorsteps(colormap.colormapPrecision);
-			colormapTexture = new Texture3D(colorsteps, colorsteps, colorsteps, TextureFormat.Alpha8, false);
-			colormapTexture.filterMode = FilterMode.Point;
-			colormapTexture.wrapMode = TextureWrapMode.Clamp;
-			colormapTexture.SetPixels32(colormap.buffer);
-			colormapTexture.Apply();
+        void ApplyPalette()
+        {
+            colormapPalette = new Texture2D(256, 1, TextureFormat.RGB24, false);
+            colormapPalette.filterMode = FilterMode.Point;
+            colormapPalette.wrapMode = TextureWrapMode.Clamp;
 
-			material.SetTexture("_ColorMap", colormapTexture);
-		}
+            for (int i = 0; i < colormap.numberOfColors; ++i)
+            {
+                colormapPalette.SetPixel(i, 0, colormap.palette[i]);
+            }
+
+            colormapPalette.Apply();
+
+            material.SetTexture("_Palette", colormapPalette);
+        }
 
 
-	}
+        public void ApplyMap()
+        {
+            int colorsteps = ColormapUtils.GetPrecisionColorsteps(colormap.colormapPrecision);
+            colormapTexture = new Texture3D(colorsteps, colorsteps, colorsteps, TextureFormat.Alpha8, false);
+            colormapTexture.filterMode = FilterMode.Point;
+            colormapTexture.wrapMode = TextureWrapMode.Clamp;
+            colormapTexture.SetPixels32(colormap.buffer);
+            colormapTexture.Apply();
+
+            material.SetTexture("_ColorMap", colormapTexture);
+        }
+
+
+    }
+
+    public enum ResolutionMode
+    {
+        SelectResolution,
+        SelectPixelSize,
+    }
 }
 
 
