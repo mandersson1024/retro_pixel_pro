@@ -93,7 +93,38 @@ namespace AlpacaSound.RetroPixelPro
         {
             EditorGUILayout.Space();
 
-            if (GUILayout.Button("Extract Palette From Image"))
+            autoApplyChanges = EditorGUILayout.ToggleLeft(" Apply Changes Automatically", autoApplyChanges);
+
+            EditorGUI.BeginDisabledGroup(!dirty.IsDirty() || autoApplyChanges);
+            if (!isUpdatingColormap)
+            {
+                if (GUILayout.Button("Apply Changes", GUILayout.Width(130), GUILayout.Height(22)))
+                {
+                    UpdateColormap();
+                }
+            }
+            EditorGUI.EndDisabledGroup();
+
+            if (isUpdatingColormap)
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                if (GUILayout.Button("Cancel", GUILayout.Width(130), GUILayout.Height(22)))
+                {
+                    CancelColormapUpdate();
+                }
+
+                Rect progressRect = GUILayoutUtility.GetRect(0, 26, GUILayout.ExpandWidth(true));
+                EditorGUI.ProgressBar(progressRect, calculator.progress, "Updating Colormap");
+                EditorUtility.SetDirty(target);
+
+                EditorGUILayout.EndHorizontal();
+            }
+
+            EditorGUILayout.Space();
+
+            // todo: Move all this to PaletteExtractor
+            if (GUILayout.Button("Extract Palette From Image", GUILayout.Width(200), GUILayout.Height(44)))
             {
                 if (paletteImagePath == null)
                 {
@@ -144,34 +175,6 @@ namespace AlpacaSound.RetroPixelPro
             }
 
             EditorGUILayout.Space();
-
-            autoApplyChanges = EditorGUILayout.ToggleLeft(" Apply Changes Automatically", autoApplyChanges);
-
-            EditorGUI.BeginDisabledGroup(!dirty.IsDirty() || autoApplyChanges);
-            if (!isUpdatingColormap)
-            {
-                if (GUILayout.Button("Apply Changes", GUILayout.Width(130), GUILayout.Height(22)))
-                {
-                    UpdateColormap();
-                }
-            }
-            EditorGUI.EndDisabledGroup();
-
-            if (isUpdatingColormap)
-            {
-                EditorGUILayout.BeginHorizontal();
-
-                if (GUILayout.Button("Cancel", GUILayout.Width(130), GUILayout.Height(22)))
-                {
-                    CancelColormapUpdate();
-                }
-
-                Rect progressRect = GUILayoutUtility.GetRect(0, 26, GUILayout.ExpandWidth(true));
-                EditorGUI.ProgressBar(progressRect, calculator.progress, "Updating Colormap");
-                EditorUtility.SetDirty(target);
-
-                EditorGUILayout.EndHorizontal();
-            }
 
             DrawColors();
         }

@@ -22,11 +22,10 @@ namespace AlpacaSound.RetroPixelPro
 		static void GeneratePreset(PalettePresets.PresetName preset)
 		{
 			Colormap colormap = CreateInstance<Colormap>();
-			colormap.preset = preset; // behövs inte om ApplyPreset sätter detta
 			PalettePresets.SetPalette(preset, colormap);
 
 			string name = preset.ToString();
-			string path = "Assets/Retro Pixel Pro/Colormaps/Presets/" + name + ".asset"; // är sökvägen rätt?
+			string path = "Assets/Retro Pixel Pro/Colormaps/Presets/" + name + ".asset";
 
 			AssetDatabase.CreateAsset(colormap, path);
 

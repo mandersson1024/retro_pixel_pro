@@ -9,7 +9,6 @@ namespace AlpacaSound.RetroPixelPro
 	public class PalettePresets
 	{
 
-		[System.Serializable]
 		public enum PresetName
 		{
 			Classic1,

@@ -1,0 +1,16 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Retro Pixel Pro/Scripts/Editor/ColormapEditor.cs">
+    <Files>
+      <File FileName="Assets/Retro Pixel Pro/Scripts/Colormap.cs" Line="38" Column="1" />
+      <File FileName="Assets/Utils/Editor/PresetFactory.cs" Line="14" Column="70" />
+      <File FileName="Assets/Retro Pixel Pro/Scripts/Editor/ColormapEditor.cs" Line="179" Column="13" />
+      <File FileName="Assets/Retro Pixel Pro/Scripts/Editor/ColormapDirtyCheck.cs" Line="41" Column="5" />
+      <File FileName="Assets/Utils/Editor/PalettePresets.cs" Line="12" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
