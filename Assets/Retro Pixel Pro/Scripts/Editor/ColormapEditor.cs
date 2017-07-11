@@ -123,7 +123,6 @@ namespace AlpacaSound.RetroPixelPro
 
             EditorGUILayout.Space();
 
-            // todo: Move all this to PaletteExtractor
             if (GUILayout.Button("Extract Palette From Image", GUILayout.Width(200), GUILayout.Height(44)))
             {
                 if (paletteImagePath == null)
@@ -137,39 +136,11 @@ namespace AlpacaSound.RetroPixelPro
                         "JPG Image", "jpg"
                     });
 
-                //Debug.Log("path: " + paletteImagePath);
-
                 if (imagePath.Length > 0)
                 {
                     paletteImagePath = imagePath;
-                    byte[] fileData = File.ReadAllBytes(paletteImagePath);
-                    Texture2D tex = new Texture2D(2, 2);
-                    tex.LoadImage(fileData);
-
-                    int scaledSize = 128;
-
-                    RenderTexture scaled = RenderTexture.GetTemporary(scaledSize, scaledSize);
-                    Graphics.Blit(tex, scaled);
-                    Texture2D smalltex = new Texture2D(scaledSize, scaledSize);
-                    smalltex.ReadPixels(new Rect(0, 0, scaledSize, scaledSize), 0, 0);
-                    RenderTexture.ReleaseTemporary(scaled);
-
-                    PaletteExtractor extractor = new PaletteExtractor(smalltex);
-                    List<Color32> extractedPalette = extractor.GetColors(_target.numberOfColors);
-
-                    for (int i = 0; i < 256; ++i)
-                    {
-                        if (i < extractedPalette.Count)
-                        {
-                            _target.palette[i] = extractedPalette[i];
-                            _target.usedColors[i] = true;
-                        }
-                        else
-                        {
-                            _target.palette[i] = new Color32(0, 0, 0, 1);
-                        }
-                    }
-
+                    List<Color32> extractedPalette = PaletteExtractor.ExtractPalette(paletteImagePath, _target.numberOfColors);
+                    _target.SetColors(extractedPalette);
                     dirty.forceDirty = true;
                 }
             }

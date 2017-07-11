@@ -127,6 +127,7 @@
     <Compile Include="Assets\Retro Pixel Pro\Scripts\Editor\Palette Extractor\PaletteExtractor.cs" />
     <Compile Include="Assets\Retro Pixel Pro\Scripts\Editor\Palette Extractor\PaletteTree.cs" />
     <Compile Include="Assets\Retro Pixel Pro\Scripts\Editor\RetroPixelProEditor.cs" />
+    <Compile Include="Assets\Utils\Editor\PalettePresets.cs" />
     <Compile Include="Assets\Utils\Editor\PresetFactory.cs" />
   </ItemGroup>
   <ItemGroup>

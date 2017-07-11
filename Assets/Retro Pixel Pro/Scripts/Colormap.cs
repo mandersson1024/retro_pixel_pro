@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace AlpacaSound.RetroPixelPro
 {
@@ -48,6 +48,18 @@ namespace AlpacaSound.RetroPixelPro
 			}
 		}
 
+
+        public void SetColors(List<Color32> colors)
+        {
+            for (int i = 0; i < 256; ++i)
+            {
+                if (i < colors.Count)
+                {
+                    palette[i] = colors[i];
+                    usedColors[i] = true;
+                }
+            }
+        }
 
 
     }

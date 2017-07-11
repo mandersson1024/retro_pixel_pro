@@ -56,7 +56,27 @@ namespace AlpacaSound.RetroPixelPro
 
             return colorIndex < (numColors - backupsNeeded);
         }
-    
+
+        public static List<Color32> ExtractPalette(string validImagePath, int numberOfColors)
+        {
+            byte[] fileData = System.IO.File.ReadAllBytes(validImagePath);
+            Texture2D tex = new Texture2D(2, 2);
+            tex.LoadImage(fileData);
+
+            int scaledSize = 128;
+
+            RenderTexture scaled = RenderTexture.GetTemporary(scaledSize, scaledSize);
+            Graphics.Blit(tex, scaled);
+            Texture2D smalltex = new Texture2D(scaledSize, scaledSize);
+            smalltex.ReadPixels(new Rect(0, 0, scaledSize, scaledSize), 0, 0);
+            RenderTexture.ReleaseTemporary(scaled);
+
+            PaletteExtractor extractor = new PaletteExtractor(smalltex);
+            List<Color32> extractedPalette = extractor.GetColors(numberOfColors);
+
+            return extractedPalette;
+        }
+
     }
         
 }

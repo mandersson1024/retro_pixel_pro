@@ -83,7 +83,6 @@
     <Compile Include="Assets\Retro Pixel Pro\Scripts\Colormap.cs" />
     <Compile Include="Assets\Retro Pixel Pro\Scripts\ColormapPrecision.cs" />
     <Compile Include="Assets\Retro Pixel Pro\Scripts\ColormapUtils.cs" />
-    <Compile Include="Assets\Retro Pixel Pro\Scripts\PalettePresets.cs" />
     <Compile Include="Assets\Retro Pixel Pro\Scripts\RetroPixelPro.cs" />
     <Compile Include="Assets\Testing\Automated\AutomatedTests.cs" />
   </ItemGroup>
