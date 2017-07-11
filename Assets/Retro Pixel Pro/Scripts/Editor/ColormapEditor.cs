@@ -66,8 +66,11 @@ namespace AlpacaSound.RetroPixelPro
 
         void PresetMenuCallback(object obj)
         {
-            FileInfo fileInfo = obj as FileInfo;
-            Debug.Log("Preset selected: " + fileInfo.Name);
+            string filename = obj as string;
+            string filepath = "Assets/Retro Pixel Pro/Colormaps/Presets/" + filename;
+            Colormap preset = (Colormap)AssetDatabase.LoadAssetAtPath(filepath, typeof(Colormap));
+            _target.UseAsPreset(preset);
+            dirty.forceDirty = true;
         }
 
 

@@ -19,8 +19,9 @@ namespace AlpacaSound.RetroPixelPro
 
             foreach (FileInfo fileInfo in dirInfo.GetFiles("*.asset"))
             {
-                string filename = basePath + fileInfo.Name.Split('.')[0];
-                menu.AddItem(new GUIContent(filename), false, callback, fileInfo);
+                string filename = basePath + fileInfo.Name;
+                string displayname = filename.Split('.')[0];
+                menu.AddItem(new GUIContent(displayname), false, callback, filename);
             }
         }
 

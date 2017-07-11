@@ -62,6 +62,13 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
+        public void UseAsPreset(Colormap preset)
+        {
+            numberOfColors = preset.numberOfColors;
+            usedColors = preset.usedColors;
+            System.Array.Copy(preset.palette, palette, 256);
+        }
+
     }
 
 }
