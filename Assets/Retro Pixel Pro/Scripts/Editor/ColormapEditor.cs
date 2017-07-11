@@ -17,6 +17,7 @@ namespace AlpacaSound.RetroPixelPro
         ColormapDirtyCheck dirty;
         bool autoApplyChanges;
         string paletteImagePath;
+        GenericMenu presetMenu;
 
 
         const string MENU_ITEM_NAME = "Create New Colormap";
@@ -56,6 +57,17 @@ namespace AlpacaSound.RetroPixelPro
                 _target.initialized = true;
                 UpdateColormap();
             }
+
+            presetMenu = new GenericMenu();
+            DirectoryInfo dirInfo = new DirectoryInfo(Application.dataPath + "/Retro Pixel Pro/Colormaps/Presets");
+            FileUtils.AddFilesInDirectory(dirInfo, presetMenu, "", PresetMenuCallback);
+        }
+
+
+        void PresetMenuCallback(object obj)
+        {
+            FileInfo fileInfo = obj as FileInfo;
+            Debug.Log("Preset selected: " + fileInfo.Name);
         }
 
 
@@ -121,6 +133,13 @@ namespace AlpacaSound.RetroPixelPro
                 EditorGUILayout.EndHorizontal();
             }
 
+            EditorGUILayout.Space();
+
+            if (GUILayout.Button("Select Preset", GUILayout.Width(200), GUILayout.Height(44)))
+            {
+                presetMenu.ShowAsContext();
+            }
+            
             EditorGUILayout.Space();
 
             if (GUILayout.Button("Extract Palette From Image", GUILayout.Width(200), GUILayout.Height(44)))
