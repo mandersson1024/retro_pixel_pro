@@ -103,48 +103,31 @@ namespace AlpacaSound.RetroPixelPro
             serializedObject.ApplyModifiedProperties();
         }
 
+
         void DrawStaticProperties()
         {
             EditorGUILayout.Space();
 
-            autoApplyChanges = EditorGUILayout.ToggleLeft(" Apply Changes Automatically", autoApplyChanges);
-
-            EditorGUI.BeginDisabledGroup(!dirty.IsDirty() || autoApplyChanges);
-            if (!isUpdatingColormap)
-            {
-                if (GUILayout.Button("Apply Changes", GUILayout.Width(130), GUILayout.Height(22)))
-                {
-                    UpdateColormap();
-                }
-            }
-            EditorGUI.EndDisabledGroup();
-
-            if (isUpdatingColormap)
-            {
-                EditorGUILayout.BeginHorizontal();
-
-                if (GUILayout.Button("Cancel", GUILayout.Width(130), GUILayout.Height(22)))
-                {
-                    CancelColormapUpdate();
-                }
-
-                Rect progressRect = GUILayoutUtility.GetRect(0, 26, GUILayout.ExpandWidth(true));
-                EditorGUI.ProgressBar(progressRect, calculator.progress, "Updating Colormap");
-                EditorUtility.SetDirty(target);
-
-                EditorGUILayout.EndHorizontal();
-            }
-
-            EditorGUILayout.Space();
-
-            if (GUILayout.Button("Select Preset", GUILayout.Width(200), GUILayout.Height(44)))
+            if (GUILayout.Button("Select Preset", GUILayout.Width(200), GUILayout.Height(28)))
             {
                 presetMenu.ShowAsContext();
             }
-            
+
+            DrawExtractPalette();
+
             EditorGUILayout.Space();
 
-            if (GUILayout.Button("Extract Palette From Image", GUILayout.Width(200), GUILayout.Height(44)))
+            DrawApplyChanges();
+
+            EditorGUILayout.Space();
+
+            DrawColors();
+        }
+
+
+        void DrawExtractPalette()
+        {
+            if (GUILayout.Button("Extract Palette From Image", GUILayout.Width(200), GUILayout.Height(28)))
             {
                 if (paletteImagePath == null)
                 {
@@ -165,10 +148,38 @@ namespace AlpacaSound.RetroPixelPro
                     dirty.forceDirty = true;
                 }
             }
+        }
 
-            EditorGUILayout.Space();
 
-            DrawColors();
+        void DrawApplyChanges()
+        {
+            autoApplyChanges = EditorGUILayout.ToggleLeft(" Apply Changes Automatically", autoApplyChanges);
+
+            EditorGUI.BeginDisabledGroup(!dirty.IsDirty() || autoApplyChanges);
+            if (!isUpdatingColormap)
+            {
+                if (GUILayout.Button("Apply Changes", GUILayout.Width(200), GUILayout.Height(28)))
+                {
+                    UpdateColormap();
+                }
+            }
+            EditorGUI.EndDisabledGroup();
+
+            if (isUpdatingColormap)
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                if (GUILayout.Button("Cancel", GUILayout.Width(130), GUILayout.Height(28)))
+                {
+                    CancelColormapUpdate();
+                }
+
+                Rect progressRect = GUILayoutUtility.GetRect(0, 32, GUILayout.ExpandWidth(true));
+                EditorGUI.ProgressBar(progressRect, calculator.progress, "Updating Colormap");
+                EditorUtility.SetDirty(target);
+
+                EditorGUILayout.EndHorizontal();
+            }
         }
 
 
