@@ -1,78 +1,168 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.UI;
+using System.Collections.Generic;
 
 
 namespace AlpacaSound.RetroPixelPro
 {
-	public class AutomatedTests : MonoBehaviour
-	{
+    public class AutomatedTests : MonoBehaviour
+    {
 
-		public Colormap colormap1;
-		public Colormap colormap2;
+        public Colormap colormapGreen;
+        public Colormap colormapRed;
 
-		int index = 0;
-		RetroPixelPro retroPixel;
+        RetroPixelPro retroPixel;
 
-		void Start()
-		{
-			Debug.Log("Click mouse to step through the tests.");
-		}
+        
+        Stepper stepper;
+        Text logText;
 
-		void Update()
-		{
-			if (Input.GetMouseButtonDown(0))
-			{
-				Step(index++);
-			}
-		}
+        void Start()
+        {
+            stepper = new Stepper(Log);
+            logText = GameObject.Find("LogText").GetComponent<Text>();
 
-		void Step(int a)
-		{
-			Debug.Log("step " + a);
+            Log("Click mouse to step through the tests");
 
-			if (a == 0)
-			{
-				Debug.Log(a + ". Adding Retro Pixel Pro component");
-				retroPixel = GameObject.Find("Main Camera").AddComponent<RetroPixelPro>();
-			}
-			else if (a == 1)
-			{
-				Debug.Log(a + ". Setting colormap1 (" + colormap1 + ")");
-				retroPixel.colormap = colormap1;
-			}
-			else if (a == 2)
-			{
-				Debug.Log(a + ". Setting colormap to null");
-				retroPixel.colormap = null;
-			}
-			else if (a == 3)
-			{
-				Debug.Log(a + ". Setting colormap1 (" + colormap1 + ")");
-				retroPixel.colormap = colormap1;
-			}
-			else if (a == 4)
-			{
-				Debug.Log(a + ". Setting colormap2 (" + colormap2 + ")");
-				retroPixel.colormap = colormap2;
-			}
-			else if (a == 5)
-			{
-				Debug.Log(a + ". Loading colormap resource");
-				Colormap loaded = Resources.Load("AutomatedTestColormap") as Colormap;
+            stepper.AddStep(AddComponentToCamera);
+            stepper.AddStep(SetColormap(colormapGreen));
+            stepper.AddStep(SetResolutionMode(ResolutionMode.ConstantResolution));
+            stepper.AddStep(SetResolution(160, 100));
+            stepper.AddStep(SetResolution(Screen.width, Screen.height));
+            stepper.AddStep(SetResolutionMode(ResolutionMode.ConstantPixelSize));
+            stepper.AddStep(SetPixelSize(10));
+            stepper.AddStep(SetPixelSize(1));
+            stepper.AddStep(SetOpacity(0));
+            stepper.AddStep(SetOpacity(0.5f));
+            stepper.AddStep(SetOpacity(1));
+            stepper.AddStep(SetComponentEnabled(false));
+            stepper.AddStep(SetComponentEnabled(true));
+            stepper.AddStep(SetColormap(null));
+            stepper.AddStep(SetColormap(colormapGreen));
+            stepper.AddStep(SetColormap(colormapRed));
+            stepper.AddStep(LoadAndSetColormapResource);
+            stepper.AddStep(InstantiateCameraPrefab);
+        }
 
-				Debug.Log(a + ". Setting colormap resource (" + loaded + ")");
-				retroPixel.colormap = loaded;
-			}
-			else if (a == 6)
-			{
-				Debug.Log(a + ". Instantiating Camera prefab.");
-				Instantiate (Resources.Load ("AutomatedTestCamera") as GameObject);
-			}
-			else
-			{
-				Debug.Log("No more steps");
-			}
-		}
-	}
+
+        void Log(string text)
+        {
+            logText.text = text;
+        }
+
+        void AddComponentToCamera()
+        {
+            Log("Adding Retro Pixel Pro component to Main Camera");
+            retroPixel = GameObject.Find("Main Camera").AddComponent<RetroPixelPro>();
+        }
+
+
+        System.Action SetResolutionMode(ResolutionMode mode)
+        {
+            return () =>
+            {
+                Log("retroPixel resolutionMode = " + mode);
+                retroPixel.resolutionMode = mode;
+            };
+        }
+
+        System.Action SetResolution(int width, int height)
+        {
+            return () =>
+            {
+                Log("retroPixel resolution = (" + width + "," + height + ")");
+                retroPixel.resolution.Set(width, height);
+            };
+        }
+
+        System.Action SetPixelSize(int size)
+        {
+            return () =>
+            {
+                Log("retroPixel.pixelSize = " + size);
+                retroPixel.pixelSize = size;
+            };
+        }
+
+        System.Action SetOpacity(float opacity)
+        {
+            return () =>
+            {
+                Log("retroPixel.opacity = " + opacity);
+                retroPixel.opacity = opacity;
+            };
+        }
+
+        System.Action SetColormap(Colormap colormap)
+        {
+            return () =>
+            {
+                Log("retroPixel.colormap = " + colormap.name);
+                retroPixel.colormap = colormap;
+            };
+        }
+
+        System.Action SetComponentEnabled(bool enabled)
+        {
+            return () =>
+            {
+                Log("retroPixel.enabled = " + enabled);
+                retroPixel.enabled = enabled;
+            };
+        }
+
+        void LoadAndSetColormapResource()
+        {
+            Log("Loading and setting colormap resource");
+            Colormap loaded = Resources.Load("AutomatedTestColormap") as Colormap;
+            retroPixel.colormap = loaded;
+        }
+
+        void InstantiateCameraPrefab()
+        {
+            Log("Instantiating Camera prefab.");
+            Instantiate(Resources.Load("AutomatedTestCamera") as GameObject);
+        }
+
+        void Update()
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+                stepper.Step();
+            }
+        }
+
+    }
+
+
+    class Stepper
+    {
+        List<System.Action> actions = new List<System.Action>();
+        System.Action<string> logger;
+
+        public Stepper(System.Action<string> logger)
+        {
+            this.logger = logger;
+        }
+
+        public void AddStep(System.Action action)
+        {
+            actions.Add(action);
+        }
+
+        public void Step()
+        {
+            if (actions.Count == 0)
+            {
+                logger.Invoke("No more steps");
+            }
+            else
+            {
+                System.Action action = actions[0];
+                action.Invoke();
+                actions.RemoveAt(0);
+            }
+        }
+    }
 }
 
