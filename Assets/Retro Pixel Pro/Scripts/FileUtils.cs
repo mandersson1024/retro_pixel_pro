@@ -25,6 +25,12 @@ namespace AlpacaSound.RetroPixelPro
             }
         }
 
+        public static Colormap LoadColormap(string presetName)
+        {
+            string filepath = "Assets/Retro Pixel Pro/Colormaps/Presets/" + presetName;
+            Colormap preset = (Colormap)AssetDatabase.LoadAssetAtPath(filepath, typeof(Colormap));
+            return preset;
+        }
     }
 }
 

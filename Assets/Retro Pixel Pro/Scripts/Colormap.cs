@@ -44,7 +44,7 @@ namespace AlpacaSound.RetroPixelPro
 
 			if (!initialized)
 			{
-				Debug.LogWarning("The colormap '" + this.name + "' has not been initialized. Please click on it in the editor and it will set itself up.");
+				Debug.LogWarning("The colormap has not yet been initialized. Please click on it in the editor and it will set itself up.");
 			}
 		}
 

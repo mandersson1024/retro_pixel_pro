@@ -96,10 +96,12 @@ namespace AlpacaSound.RetroPixelPro
 
         void Reset()
         {
-            resolution.x = Screen.width;
-            resolution.y = Screen.height;
-            pixelSize = 1;
+            resolutionMode = ResolutionMode.ConstantPixelSize;
+            //resolution.x = Screen.width;
+            //resolution.y = Screen.height;
+            pixelSize = 2;
             opacity = 1;
+            colormap = FileUtils.LoadColormap("Default.asset");
         }
 
 
