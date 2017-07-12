@@ -8,8 +8,8 @@ namespace AlpacaSound.RetroPixelPro
     public class AutomatedTests : MonoBehaviour
     {
 
-        public Colormap colormapGreen;
-        public Colormap colormapRed;
+        Colormap colormap1;
+        Colormap colormap2;
 
         RetroPixelPro retroPixel;
 
@@ -19,13 +19,16 @@ namespace AlpacaSound.RetroPixelPro
 
         void Start()
         {
+            colormap1 = FileUtils.LoadColormap("Default.asset");
+            colormap2 = FileUtils.LoadColormap("Monochrome/BlackAndWhite.asset");
+
             stepper = new Stepper(Log);
             logText = GameObject.Find("LogText").GetComponent<Text>();
 
             Log("Click mouse to step through the tests");
 
             stepper.AddStep(AddComponentToCamera);
-            stepper.AddStep(SetColormap(colormapGreen));
+            stepper.AddStep(SetColormap(colormap1));
             stepper.AddStep(SetResolutionMode(ResolutionMode.ConstantResolution));
             stepper.AddStep(SetResolution(160, 100));
             stepper.AddStep(SetResolution(Screen.width, Screen.height));
@@ -38,8 +41,8 @@ namespace AlpacaSound.RetroPixelPro
             stepper.AddStep(SetComponentEnabled(false));
             stepper.AddStep(SetComponentEnabled(true));
             stepper.AddStep(SetColormap(null));
-            stepper.AddStep(SetColormap(colormapGreen));
-            stepper.AddStep(SetColormap(colormapRed));
+            stepper.AddStep(SetColormap(colormap1));
+            stepper.AddStep(SetColormap(colormap2));
             stepper.AddStep(LoadAndSetColormapResource);
             stepper.AddStep(InstantiateCameraPrefab);
         }
@@ -97,7 +100,7 @@ namespace AlpacaSound.RetroPixelPro
         {
             return () =>
             {
-                Log("retroPixel.colormap = " + colormap.name);
+                Log("retroPixel.colormap = " + (colormap == null ? "null" : colormap.name));
                 retroPixel.colormap = colormap;
             };
         }
@@ -113,7 +116,7 @@ namespace AlpacaSound.RetroPixelPro
 
         void LoadAndSetColormapResource()
         {
-            Log("Loading and setting colormap resource");
+            Log("Loading and setting colormap from resources");
             Colormap loaded = Resources.Load("AutomatedTestColormap") as Colormap;
             retroPixel.colormap = loaded;
         }
