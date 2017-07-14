@@ -167,12 +167,15 @@ namespace AlpacaSound.RetroPixelPro
 
         void ApplyPalette()
         {
+            Debug.Log("RetroPixelPro.ApplyPalette, palette=" + colormap.palette + ", length=" + colormap.palette.Length);
+
             colormapPalette = new Texture2D(256, 1, TextureFormat.RGB24, false);
             colormapPalette.filterMode = FilterMode.Point;
             colormapPalette.wrapMode = TextureWrapMode.Clamp;
 
             for (int i = 0; i < colormap.numberOfColors; ++i)
             {
+                Debug.Log("SetPixel(" + i + ")=" + colormap.palette[i]);
                 colormapPalette.SetPixel(i, 0, colormap.palette[i]);
             }
 

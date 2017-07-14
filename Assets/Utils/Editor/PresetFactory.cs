@@ -24,8 +24,18 @@ namespace AlpacaSound.RetroPixelPro
             ColormapPreset preset = CreateInstance<ColormapPreset>();
             preset.palette = PalettePresets.GetPresetPalette(presetName);
 
-            string path = "Assets/Retro Pixel Pro/Colormap Presets/Temp/" + presetName + ".asset";
+            string path = FileUtils.PRESETS_DIRECTORY_PATH;
 
+            if (preset.palette.Length == 2)
+            {
+                path += "Monochrome/";
+            }
+            else
+            {
+                path += "Classic Computers/";
+            }
+
+            path += presetName + ".asset";
             AssetDatabase.CreateAsset(preset, path);
 
             Debug.Log("Created preset: " + presetName);
@@ -92,7 +102,7 @@ namespace AlpacaSound.RetroPixelPro
             //preset.SetColors(colors);
 
             name += " " + numColors;
-            string path = "Assets/Retro Pixel Pro/Colormap Presets/Temp/" + name + ".asset";
+            string path = FileUtils.PRESETS_DIRECTORY_PATH + "Gradients/" + name + ".asset";
 
             AssetDatabase.CreateAsset(preset, path);
 

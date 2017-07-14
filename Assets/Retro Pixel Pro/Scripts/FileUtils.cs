@@ -9,6 +9,8 @@ namespace AlpacaSound.RetroPixelPro
 {
     public class FileUtils
     {
+        public const string PRESETS_DIRECTORY_PATH = "Assets/Retro Pixel Pro/Colormap Presets/";
+
         public static void AddFilesInDirectory(DirectoryInfo dirInfo, GenericMenu menu, string basePath, GenericMenu.MenuFunction2 callback)
         {
             foreach (DirectoryInfo subDirInfo in dirInfo.GetDirectories())
@@ -27,7 +29,7 @@ namespace AlpacaSound.RetroPixelPro
 
         public static ColormapPreset LoadColormapPreset(string presetName)
         {
-            string filepath = "Assets/Retro Pixel Pro/Colormaps/Presets/" + presetName;
+            string filepath = PRESETS_DIRECTORY_PATH + presetName;
             ColormapPreset preset = (ColormapPreset)AssetDatabase.LoadAssetAtPath(filepath, typeof(ColormapPreset));
             return preset;
         }
