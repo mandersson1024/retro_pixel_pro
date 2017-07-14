@@ -69,9 +69,12 @@ namespace AlpacaSound.RetroPixelPro
             for (int i = 0; i < 256; ++i)
             {
                 usedColors[i] = i < numberOfColors;
+
+                if (i < numberOfColors)
+                    palette[i] = preset.palette[i];
             }
 
-            System.Array.Copy(preset.palette, palette, preset.palette.Length);
+            //System.Array.Copy(preset.palette, palette, preset.palette.Length);
         }
 
     }

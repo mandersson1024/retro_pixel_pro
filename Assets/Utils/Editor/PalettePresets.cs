@@ -21,11 +21,10 @@ namespace AlpacaSound.RetroPixelPro
             MonochromeBrown,
             MonochromeBlue,
             BlackAndWhite,
-            //Custom,
         }
 
 
-        static public Color[] GetPresetPalette(PresetName presetName)
+        static public Color32[] GetPresetPalette(PresetName presetName)
         {
             switch (presetName)
             {
@@ -61,9 +60,9 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
-        static Color[] _AppleII()
+        static Color32[] _AppleII()
         {
-            return new Color[]
+            return new Color32[]
             {
                 rgb(0,0,0),
                 rgb(107, 39, 65),
@@ -85,9 +84,9 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
-        static Color[] _VIC20()
+        static Color32[] _VIC20()
         {
-            return new Color[]
+            return new Color32[]
             {
                 rgb(0,0,0),
                 rgb(255, 255, 255),
@@ -109,9 +108,9 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
-        static Color[] _ZXSpectrum ()
+        static Color32[] _ZXSpectrum ()
 		{
-            return new Color[]
+            return new Color32[]
             {
                 rgb(0,0,0),
                 rgb(0,0,189),
@@ -132,9 +131,9 @@ namespace AlpacaSound.RetroPixelPro
 		}
 
 
-        static Color[] _Amstrad ()
+        static Color32[] _Amstrad ()
 		{
-            return new Color[]
+            return new Color32[]
             {
                 rgb(0,0,0),
                 rgb(0,0,126),
@@ -169,9 +168,9 @@ namespace AlpacaSound.RetroPixelPro
 		}
 
 
-        static Color[] _CGA ()
+        static Color32[] _CGA ()
 		{
-            return new Color[]
+            return new Color32[]
             {
                 rgb(0,0,0),
                 rgb(0,0,168),
@@ -193,9 +192,9 @@ namespace AlpacaSound.RetroPixelPro
 		}
 
 
-        static Color[] _C64()
+        static Color32[] _C64()
         {
-            return new Color[]
+            return new Color32[]
             {
                 Color.black,
                 Color.white,
@@ -217,9 +216,9 @@ namespace AlpacaSound.RetroPixelPro
 		}
 
 
-        static Color[] _MonochromeGreen ()
+        static Color32[] _MonochromeGreen ()
 		{
-            return new Color[]
+            return new Color32[]
             {
                 rgb(16,36,13),
                 rgb(66,216,41),
@@ -227,9 +226,9 @@ namespace AlpacaSound.RetroPixelPro
 		}
 
 
-        static Color[] _MonochromeBrown()
+        static Color32[] _MonochromeBrown()
         {
-            return new Color[]
+            return new Color32[]
             {
                 rgb(47, 32, 16),
                 rgb(231, 146, 64),
@@ -237,9 +236,9 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
-        static Color[] _MonochromeBlue()
+        static Color32[] _MonochromeBlue()
         {
-            return new Color[]
+            return new Color32[]
             {
                 rgb(0, 0, 170),
                 rgb(0, 136, 255),
@@ -247,29 +246,15 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
-        static Color[] _BlackAndWhite()
+        static Color32[] _BlackAndWhite()
 		{
-            return new Color[]
+            return new Color32[]
             {
                 rgb(33,33,33),
                 rgb(242,242,242),
             };
 		}		
 
-
-        static Color[] _Grayscale(int numColors)
-		{
-            Color[] preset = new Color[numColors];
-
-			for (int i = 0; i < numColors; ++i)
-			{
-				float v = (float) i / (numColors-1);
-				preset[i] = new Color(v, v, v);
-			}
-
-            return preset;
-		}
-		
 	}
 
 }
