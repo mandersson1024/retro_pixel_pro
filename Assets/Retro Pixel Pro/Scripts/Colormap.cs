@@ -13,13 +13,13 @@ namespace AlpacaSound.RetroPixelPro
         public int numberOfColors;
 
         [HideInInspector]
-        public Color32[] palette;
+        public Color[] palette;
 
         [HideInInspector]
         public bool[] usedColors;
 
         [HideInInspector]
-        public Color32[] buffer;
+        public Color32[] texture3Dpixels;
 
 		[HideInInspector]
 		public bool initialized;
@@ -30,7 +30,7 @@ namespace AlpacaSound.RetroPixelPro
 
         public Colormap()
         {
-            palette = new Color32[256];
+            palette = new Color[256];
             numberOfColors = 16;
             usedColors = new bool[256];
             colormapPrecision = ColormapPrecision.Medium;

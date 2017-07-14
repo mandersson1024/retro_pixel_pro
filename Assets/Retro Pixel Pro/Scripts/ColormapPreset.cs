@@ -7,11 +7,11 @@ namespace AlpacaSound.RetroPixelPro
     [System.Serializable]
     public class ColormapPreset : ScriptableObject
     {
-        public Color32[] palette;
+        public Color[] palette;
 
         public void SetNumColors(int numColors)
         {
-            palette = new Color32[numColors];
+            palette = new Color[numColors];
         }
     }
 

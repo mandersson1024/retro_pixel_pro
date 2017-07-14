@@ -12,7 +12,7 @@ namespace AlpacaSound.RetroPixelPro
         public Color32[] pixelBuffer;
 
 		ColormapPrecision precision;
-		Color32[] palette;
+		Color[] palette;
 		bool[] usedColors;
 		int numColors;
 		System.Action doneCallback;
@@ -22,7 +22,7 @@ namespace AlpacaSound.RetroPixelPro
 
 
 
-		public ColormapCalculator(ColormapPrecision precision, Color32[] palette, bool[] usedColors, int numColors, System.Action doneCallback)
+		public ColormapCalculator(ColormapPrecision precision, Color[] palette, bool[] usedColors, int numColors, System.Action doneCallback)
 		{
 			this.precision = precision;
 			this.palette = palette;

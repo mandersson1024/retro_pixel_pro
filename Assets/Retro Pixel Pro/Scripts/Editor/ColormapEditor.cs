@@ -267,7 +267,7 @@ namespace AlpacaSound.RetroPixelPro
         void DoneUpdatingColormap()
         {
             isUpdatingColormap = false;
-            _target.buffer = calculator.pixelBuffer;
+            _target.texture3Dpixels = calculator.pixelBuffer;
             //_target.ApplyToMaterial();
             AssetDatabase.SaveAssets();
 
