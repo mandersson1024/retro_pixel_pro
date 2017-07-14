@@ -35,6 +35,11 @@ namespace AlpacaSound.RetroPixelPro
             path = FileUtil.GetProjectRelativePath(path);
 
             Colormap colormap = CreateInstance<Colormap>();
+
+            ColormapPreset preset = FileUtils.LoadColormapPreset("Default Colormap Preset.asset");
+            Debug.Log("preset: " + preset);
+            colormap.ApplyPreset(preset);
+
             AssetDatabase.CreateAsset(colormap, path);
             AssetDatabase.SaveAssets();
         }
@@ -59,7 +64,7 @@ namespace AlpacaSound.RetroPixelPro
             }
 
             presetMenu = new GenericMenu();
-            DirectoryInfo dirInfo = new DirectoryInfo(Application.dataPath + "/Retro Pixel Pro/Colormaps/Presets");
+            DirectoryInfo dirInfo = new DirectoryInfo(Application.dataPath + "/Retro Pixel Pro/Colormap Presets");
             FileUtils.AddFilesInDirectory(dirInfo, presetMenu, "", PresetMenuCallback);
         }
 
