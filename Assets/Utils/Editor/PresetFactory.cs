@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 
 namespace AlpacaSound.RetroPixelPro
@@ -8,33 +8,104 @@ namespace AlpacaSound.RetroPixelPro
 	public class PresetFactory : Editor
 	{
 
-		[MenuItem("Retro Pixel Pro Utilities/Generate Presets")]
-		static void GeneratePresets()
+        [MenuItem("Retro Pixel Pro Utilities/Generate Fixed Presets")]
+		static void GenerateFixedPresets()
 		{
 			foreach (PalettePresets.PresetName preset in PalettePresets.PresetName.GetValues(typeof(PalettePresets.PresetName)))
 			{
-				GeneratePreset(preset);
+				GenerateFixedPreset(preset);
 			}
 
 			AssetDatabase.SaveAssets();
 		}
 
-		static void GeneratePreset(PalettePresets.PresetName preset)
-		{
-			Colormap colormap = CreateInstance<Colormap>();
-			PalettePresets.SetPalette(preset, colormap);
+        static void GenerateFixedPreset(PalettePresets.PresetName preset)
+        {
+            Colormap colormap = CreateInstance<Colormap>();
+            PalettePresets.SetPalette(preset, colormap);
 
-			string name = preset.ToString();
-			string path = "Assets/Retro Pixel Pro/Colormaps/Presets/" + name + ".asset";
+            string name = preset.ToString();
+            string path = "Assets/Retro Pixel Pro/Colormaps/Presets/Temp/" + name + ".asset";
 
-			AssetDatabase.CreateAsset(colormap, path);
+            AssetDatabase.CreateAsset(colormap, path);
 
-			Debug.Log("Created preset: " + name);
-		}
+            Debug.Log("Created preset: " + name);
+        }
+
+        [MenuItem("Retro Pixel Pro Utilities/Generate Gradient Presets")]
+        static void GenerateGradientPresets()
+        {
+            GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0xffffff), "BlackToWhite", 16);
+
+            GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0xff0000), "BlackToRed", 16);
+            GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0x00ff00), "BlackToGreen", 16);
+            GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0x0000ff), "BlackToBlue", 16);
+            GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0xffff00), "BlackToYellow", 16);
+            GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0xff00ff), "BlackToMagenta", 16);
+            GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0x00ffff), "BlackToCyan", 16);
+
+            GenerateGradientPreset(ColorModel.RGB, Hex(0xff0000), Hex(0xffffff), "RedToWhtie", 16);
+            GenerateGradientPreset(ColorModel.RGB, Hex(0x00ff00), Hex(0xffffff), "GreenToWhtie", 16);
+            GenerateGradientPreset(ColorModel.RGB, Hex(0x0000ff), Hex(0xffffff), "BlueToWhtie", 16);
+            GenerateGradientPreset(ColorModel.RGB, Hex(0xffff00), Hex(0xffffff), "YellowToWhtie", 16);
+            GenerateGradientPreset(ColorModel.RGB, Hex(0xff00ff), Hex(0xffffff), "MagentaToWhtie", 16);
+            GenerateGradientPreset(ColorModel.RGB, Hex(0x00ffff), Hex(0xffffff), "CyanToWhtie", 16);
+
+            GenerateGradientPreset(ColorModel.RGB, Hex(0xff0000), Hex(0xffff00), "RedToYellow", 16);
+
+            GenerateGradientPreset(ColorModel.HSV, new Color(0, 1, 1), new Color(0.75f, 1, 1), "Rainbow", 16);
+            GenerateGradientPreset(ColorModel.HSV, new Color(0, 0.6f, 1), new Color(0.75f, 0.6f, 1), "Rainbow Pale", 16);
+
+            AssetDatabase.SaveAssets();
+        }
 
 
+        static Color Hex(int hex)
+        {
+            int r = (hex & 0xff0000) / 0xffff;
+            int g = (hex & 0x00ff00) / 0xff;
+            int b = hex & 0x0000ff;
 
-	}
+            return new Color(r / 256f, g / 256f, b / 256f);
+        }
 
+
+        static void GenerateGradientPreset(ColorModel colorModel, Color start, Color end, string name, int numColors)
+        {
+            Colormap colormap = CreateInstance<Colormap>();
+            colormap.numberOfColors = numColors;
+
+            List<Color32> colors = new List<Color32>();
+
+            for (int i = 0; i < numColors; ++i)
+            {
+                float t = (float) i / ((float) numColors - 1.0f);
+                Color color = Color.Lerp(start, end, t);
+
+                if (colorModel == ColorModel.HSV)
+                {
+                    color = Color.HSVToRGB(color.r, color.g, color.b);
+                }
+
+                colors.Add(color);
+            }
+
+            colormap.SetColors(colors);
+
+            name += " " + numColors;
+            string path = "Assets/Retro Pixel Pro/Colormaps/Presets/Temp/" + name + ".asset";
+
+            AssetDatabase.CreateAsset(colormap, path);
+
+            Debug.Log("Created preset: " + name);
+        }
+
+    }
+
+    enum ColorModel
+    {
+        RGB,
+        HSV,
+    }
 }
 
