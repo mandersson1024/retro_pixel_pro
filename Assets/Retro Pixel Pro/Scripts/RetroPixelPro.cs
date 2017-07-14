@@ -175,7 +175,7 @@ namespace AlpacaSound.RetroPixelPro
 
             for (int i = 0; i < colormap.numberOfColors; ++i)
             {
-                Debug.Log("SetPixel(" + i + ")=" + colormap.palette[i]);
+                //Debug.Log("SetPixel(" + i + ")=" + colormap.palette[i]);
                 colormapPalette.SetPixel(i, 0, colormap.palette[i]);
             }
 

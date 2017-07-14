@@ -12,7 +12,7 @@ namespace AlpacaSound.RetroPixelPro
         public Color32[] pixelBuffer;
 
 		ColormapPrecision precision;
-		Color[] palette;
+		Color32[] palette;
 		bool[] usedColors;
 		int numColors;
 		System.Action doneCallback;
@@ -22,7 +22,7 @@ namespace AlpacaSound.RetroPixelPro
 
 
 
-		public ColormapCalculator(ColormapPrecision precision, Color[] palette, bool[] usedColors, int numColors, System.Action doneCallback)
+		public ColormapCalculator(ColormapPrecision precision, Color32[] palette, bool[] usedColors, int numColors, System.Action doneCallback)
 		{
 			this.precision = precision;
 			this.palette = palette;
@@ -92,7 +92,7 @@ namespace AlpacaSound.RetroPixelPro
 			float closestDistance = float.MaxValue;
 			int closestIndex = 0;
 			Vector3 rgb = new Vector3(r, g, b);
-			rgb = rgb / (colorsteps-1);
+			rgb = 256 * rgb / (colorsteps-1);
 			
 			for (int i = 0; i < numColors; ++i)
 			{
