@@ -101,7 +101,7 @@ namespace AlpacaSound.RetroPixelPro
             //resolution.y = Screen.height;
             pixelSize = 2;
             opacity = 1;
-            colormap = FileUtils.LoadColormap("Default.asset");
+            colormap = null;
         }
 
 

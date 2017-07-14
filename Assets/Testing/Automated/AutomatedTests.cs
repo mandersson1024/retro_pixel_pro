@@ -8,8 +8,8 @@ namespace AlpacaSound.RetroPixelPro
     public class AutomatedTests : MonoBehaviour
     {
 
-        Colormap colormap1;
-        Colormap colormap2;
+        public Colormap colormap1;
+        public Colormap colormap2;
 
         RetroPixelPro retroPixel;
 
@@ -19,9 +19,6 @@ namespace AlpacaSound.RetroPixelPro
 
         void Start()
         {
-            colormap1 = FileUtils.LoadColormap("Default.asset");
-            colormap2 = FileUtils.LoadColormap("Monochrome/BlackAndWhite.asset");
-
             stepper = new Stepper(Log);
             logText = GameObject.Find("LogText").GetComponent<Text>();
 

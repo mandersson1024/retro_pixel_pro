@@ -82,6 +82,7 @@
     <Compile Include="Assets\Movie\Sequencer.cs" />
     <Compile Include="Assets\Retro Pixel Pro\Scripts\Colormap.cs" />
     <Compile Include="Assets\Retro Pixel Pro\Scripts\ColormapPrecision.cs" />
+    <Compile Include="Assets\Retro Pixel Pro\Scripts\ColormapPreset.cs" />
     <Compile Include="Assets\Retro Pixel Pro\Scripts\ColormapUtils.cs" />
     <Compile Include="Assets\Retro Pixel Pro\Scripts\FileUtils.cs" />
     <Compile Include="Assets\Retro Pixel Pro\Scripts\RetroPixelPro.cs" />
