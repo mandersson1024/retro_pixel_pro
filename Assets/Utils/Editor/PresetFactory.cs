@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor;
+using System.IO;
 
 namespace AlpacaSound.RetroPixelPro
 {
@@ -8,16 +9,36 @@ namespace AlpacaSound.RetroPixelPro
 	public class PresetFactory : Editor
 	{
 
-        [MenuItem("Retro Pixel Pro Utils/Generate Fixed Presets")]
+        [MenuItem("Retro Pixel Pro Utils/Generate Presets")]
+        static void GenerateAllPresets()
+        {
+            GenerateFixedPresets();
+            GenerateGradientPresets();
+        }
+
+
+        //[MenuItem("Retro Pixel Pro Utils/Generate Fixed Presets")]
 		static void GenerateFixedPresets()
 		{
-			foreach (PalettePresets.PresetName preset in PalettePresets.PresetName.GetValues(typeof(PalettePresets.PresetName)))
+            RecreateDirectories();
+
+            foreach (PalettePresets.PresetName preset in PalettePresets.PresetName.GetValues(typeof(PalettePresets.PresetName)))
 			{
 				GenerateFixedPreset(preset);
 			}
 
 			AssetDatabase.SaveAssets();
 		}
+
+
+        static void RecreateDirectories()
+        {
+            Directory.Delete(FileUtils.PRESETS_DIRECTORY_PATH, true);
+            Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH + "Classic Computers");
+            Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH + "Monochrome");
+            Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH + "Gradients");
+        }
+
 
         static void GenerateFixedPreset(PalettePresets.PresetName presetName)
         {
@@ -41,7 +62,7 @@ namespace AlpacaSound.RetroPixelPro
             Debug.Log("Created preset: " + presetName);
         }
 
-        [MenuItem("Retro Pixel Pro Utils/Generate Gradient Presets")]
+        //[MenuItem("Retro Pixel Pro Utils/Generate Gradient Presets")]
         static void GenerateGradientPresets()
         {
             GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0xffffff), "BlackToWhite", 16);
