@@ -123,6 +123,7 @@
     <Compile Include="Assets\Retro Pixel Pro\Scripts\Editor\ColormapCalculator.cs" />
     <Compile Include="Assets\Retro Pixel Pro\Scripts\Editor\ColormapDirtyCheck.cs" />
     <Compile Include="Assets\Retro Pixel Pro\Scripts\Editor\ColormapEditor.cs" />
+    <Compile Include="Assets\Retro Pixel Pro\Scripts\Editor\ColormapPresetEditor.cs" />
     <Compile Include="Assets\Retro Pixel Pro\Scripts\Editor\Palette Extractor\ColorBucket.cs" />
     <Compile Include="Assets\Retro Pixel Pro\Scripts\Editor\Palette Extractor\PaletteExtractor.cs" />
     <Compile Include="Assets\Retro Pixel Pro\Scripts\Editor\Palette Extractor\PaletteTree.cs" />
