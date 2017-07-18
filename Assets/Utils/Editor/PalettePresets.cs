@@ -20,7 +20,7 @@ namespace AlpacaSound.RetroPixelPro
             MonochromeGreen,
             MonochromeBrown,
             MonochromeBlue,
-            BlackAndWhite,
+            MonochromeBlackWhite,
         }
 
 
@@ -37,7 +37,7 @@ namespace AlpacaSound.RetroPixelPro
                 case PresetName.MonochromeGreen: return _MonochromeGreen();
                 case PresetName.MonochromeBrown: return _MonochromeBrown();
                 case PresetName.MonochromeBlue: return _MonochromeBlue();
-                case PresetName.BlackAndWhite: return _BlackAndWhite();
+                case PresetName.MonochromeBlackWhite: return _BlackAndWhite();
                 default: return null;
             }
         }

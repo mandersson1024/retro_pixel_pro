@@ -34,9 +34,10 @@ namespace AlpacaSound.RetroPixelPro
         static void RecreateDirectories()
         {
             Directory.Delete(FileUtils.PRESETS_DIRECTORY_PATH, true);
-            Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH + "Classic Computers");
-            Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH + "Monochrome");
-            Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH + "Gradients");
+            Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH);
+            //Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH + "Classic Computers");
+            //Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH + "Monochrome");
+            //Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH + "Gradients");
         }
 
 
@@ -47,15 +48,6 @@ namespace AlpacaSound.RetroPixelPro
 
             string path = FileUtils.PRESETS_DIRECTORY_PATH;
 
-            if (preset.palette.Length == 2)
-            {
-                path += "Monochrome/";
-            }
-            else
-            {
-                path += "Classic Computers/";
-            }
-
             path += presetName + ".asset";
             AssetDatabase.CreateAsset(preset, path);
 
@@ -65,23 +57,26 @@ namespace AlpacaSound.RetroPixelPro
         //[MenuItem("Retro Pixel Pro Utils/Generate Gradient Presets")]
         static void GenerateGradientPresets()
         {
-            GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0xffffff), "Gradient Grayscale", 16);
+            foreach (int numColors in new int[2] {16, 256})
+            {
+                GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0xffffff), "GradientGrayscale", numColors);
 
-            GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0xff0000), "Gradient Red", 16);
-            GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0x00ff00), "Gradient Green", 16);
-            GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0x0000ff), "Gradient Blue", 16);
-            GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0xffff00), "Gradient Yellow", 16);
-            GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0xff00ff), "Gradient Magenta", 16);
-            GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0x00ffff), "Gradient Cyan", 16);
+                GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0xff0000), "GradientRed", numColors);
+                GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0x00ff00), "GradientGreen", numColors);
+                GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0x0000ff), "GradientBlue", numColors);
+                GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0xffff00), "GradientYellow", numColors);
+                GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0xff00ff), "GradientMagenta", numColors);
+                GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0x00ffff), "GradientCyan", numColors);
 
-            //GenerateGradientPreset(ColorModel.RGB, Hex(0xff0000), Hex(0xffffff), "RedToWhtie", 16);
-            //GenerateGradientPreset(ColorModel.RGB, Hex(0x00ff00), Hex(0xffffff), "GreenToWhtie", 16);
-            //GenerateGradientPreset(ColorModel.RGB, Hex(0x0000ff), Hex(0xffffff), "BlueToWhtie", 16);
-            //GenerateGradientPreset(ColorModel.RGB, Hex(0xffff00), Hex(0xffffff), "YellowToWhtie", 16);
-            //GenerateGradientPreset(ColorModel.RGB, Hex(0xff00ff), Hex(0xffffff), "MagentaToWhtie", 16);
-            //GenerateGradientPreset(ColorModel.RGB, Hex(0x00ffff), Hex(0xffffff), "CyanToWhtie", 16);
+                //GenerateGradientPreset(ColorModel.RGB, Hex(0xff0000), Hex(0xffffff), "RedToWhtie", numColors);
+                //GenerateGradientPreset(ColorModel.RGB, Hex(0x00ff00), Hex(0xffffff), "GreenToWhtie", numColors);
+                //GenerateGradientPreset(ColorModel.RGB, Hex(0x0000ff), Hex(0xffffff), "BlueToWhtie", numColors);
+                //GenerateGradientPreset(ColorModel.RGB, Hex(0xffff00), Hex(0xffffff), "YellowToWhtie", numColors);
+                //GenerateGradientPreset(ColorModel.RGB, Hex(0xff00ff), Hex(0xffffff), "MagentaToWhtie", numColors);
+                //GenerateGradientPreset(ColorModel.RGB, Hex(0x00ffff), Hex(0xffffff), "CyanToWhtie", numColors);
 
-            GenerateGradientPreset(ColorModel.HSV, new Color(0, 1, 1), new Color(0.75f, 1, 1), "Rainbow", 16);
+                GenerateGradientPreset(ColorModel.HSV, new Color(0, 1, 1), new Color(0.75f, 1, 1), "GradientRainbow", numColors);
+            }
 
             AssetDatabase.SaveAssets();
         }
@@ -99,8 +94,6 @@ namespace AlpacaSound.RetroPixelPro
 
         static void GenerateGradientPreset(ColorModel colorModel, Color start, Color end, string name, int numColors)
         {
-            Debug.Log("end" + end);
-
             ColormapPreset preset = CreateInstance<ColormapPreset>();
             preset.SetNumColors(numColors);
             //preset.numberOfColors = numColors;
@@ -110,7 +103,6 @@ namespace AlpacaSound.RetroPixelPro
             for (int i = 0; i < numColors; ++i)
             {
                 float t = (float) i / ((float) numColors - 1.0f);
-                //Debug.Log("t=" + t);
                 Color color = Color.Lerp(start, end, t);
 
                 if (colorModel == ColorModel.HSV)
@@ -123,8 +115,8 @@ namespace AlpacaSound.RetroPixelPro
 
             //preset.SetColors(colors);
 
-            name += " " + numColors;
-            string path = FileUtils.PRESETS_DIRECTORY_PATH + "Gradients/" + name + ".asset";
+            name += "_" + numColors;
+            string path = FileUtils.PRESETS_DIRECTORY_PATH + name + ".asset";
 
             AssetDatabase.CreateAsset(preset, path);
 
