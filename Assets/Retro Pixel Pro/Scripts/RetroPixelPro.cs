@@ -167,7 +167,7 @@ namespace AlpacaSound.RetroPixelPro
 
         void ApplyPalette()
         {
-            Debug.Log("RetroPixelPro.ApplyPalette, palette=" + colormap.palette + ", length=" + colormap.palette.Length);
+            //Debug.Log("RetroPixelPro.ApplyPalette, palette=" + colormap.palette + ", length=" + colormap.palette.Length);
 
             colormapPalette = new Texture2D(256, 1, TextureFormat.RGB24, false);
             colormapPalette.filterMode = FilterMode.Point;

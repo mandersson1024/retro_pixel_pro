@@ -36,8 +36,8 @@ namespace AlpacaSound.RetroPixelPro
 
             Colormap colormap = CreateInstance<Colormap>();
 
-            ColormapPreset preset = FileUtils.LoadColormapPreset("Gradients/Rainbow 16.asset");
-            Debug.Log("preset: " + preset);
+            ColormapPreset preset = FileUtils.LoadColormapPreset("GradientRainbow_16.asset");
+            //Debug.Log("preset: " + preset);
             colormap.ApplyPreset(preset);
 
             AssetDatabase.CreateAsset(colormap, path);
@@ -73,8 +73,7 @@ namespace AlpacaSound.RetroPixelPro
         {
             string presetName = obj as string;
             ColormapPreset preset = FileUtils.LoadColormapPreset(presetName);
-            Debug.Log("preset: " + preset);
-            Debug.Log("preset.palette: " + preset.palette);
+            //Debug.Log("preset: " + preset);
             _target.ApplyPreset(preset);
             dirty.forceDirty = true;
         }
@@ -178,6 +177,7 @@ namespace AlpacaSound.RetroPixelPro
 
                 if (GUILayout.Button("Cancel", GUILayout.Width(130), GUILayout.Height(28)))
                 {
+                    autoApplyChanges = false;
                     CancelColormapUpdate();
                 }
 
