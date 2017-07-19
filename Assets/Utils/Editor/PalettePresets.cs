@@ -5,7 +5,6 @@ using System.Collections;
 namespace AlpacaSound.RetroPixelPro
 {
 
-
     public class PalettePresets
     {
 
