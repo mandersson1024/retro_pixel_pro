@@ -142,8 +142,8 @@ namespace AlpacaSound.RetroPixelPro
 
                 string imagePath = EditorUtility.OpenFilePanelWithFilters("Select Image File", paletteImagePath, new string[]
                     {
+                        "JPG Image", "jpg",
                         "PNG Image", "png",
-                        "JPG Image", "jpg"
                     });
 
                 if (imagePath.Length > 0)

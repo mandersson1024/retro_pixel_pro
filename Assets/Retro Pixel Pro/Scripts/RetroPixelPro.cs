@@ -136,22 +136,21 @@ namespace AlpacaSound.RetroPixelPro
 
             opacity = Mathf.Clamp01(opacity);
 
-            if (colormap != null)
-            {
-                //Debug.Log(colormap.map + ", " + colormap.palette);
+            RenderTexture scaled = RenderTexture.GetTemporary((int)resolution.x, (int)resolution.y);
+            scaled.filterMode = FilterMode.Point;
 
-                material.SetFloat("_Strength", opacity);
-                RenderTexture scaled = RenderTexture.GetTemporary((int)resolution.x, (int)resolution.y);
-                scaled.filterMode = FilterMode.Point;
-                Graphics.Blit(src, scaled, material);
-                //Graphics.Blit (src, scaled);
-                Graphics.Blit(scaled, dest);
-                RenderTexture.ReleaseTemporary(scaled);
+            if (colormap == null)
+            {
+                Graphics.Blit(src, scaled);
             }
             else
             {
-                Graphics.Blit(src, dest);
+                material.SetFloat("_Strength", opacity);
+                Graphics.Blit(src, scaled, material);
             }
+
+            Graphics.Blit(scaled, dest);
+            RenderTexture.ReleaseTemporary(scaled);
         }
 
 

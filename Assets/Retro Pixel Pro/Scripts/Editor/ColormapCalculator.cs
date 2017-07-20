@@ -45,8 +45,6 @@ namespace AlpacaSound.RetroPixelPro
 
 		public void CalculateChunk()
 		{
-            Debug.Log("calc chunk");
-
 			double frameStartTime = EditorApplication.timeSinceStartup;
 
 			while (EditorApplication.timeSinceStartup < frameStartTime + (1.0 / 30.0))

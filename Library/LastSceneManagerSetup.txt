@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Testing/Manual/ManualTesting.unity
+- path: Assets/Testing/Automated/AutomatedTests.unity
   isLoaded: 1
   isActive: 1
