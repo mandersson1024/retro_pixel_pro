@@ -36,7 +36,7 @@ namespace AlpacaSound.RetroPixelPro
 
             Colormap colormap = CreateInstance<Colormap>();
 
-            ColormapPreset preset = FileUtils.LoadColormapPreset("GradientRainbow_16.asset");
+            ColormapPreset preset = FileUtils.LoadColormapPreset("Classic6.asset");
             //Debug.Log("preset: " + preset);
             colormap.ApplyPreset(preset);
 

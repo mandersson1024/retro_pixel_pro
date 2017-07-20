@@ -99,7 +99,7 @@ namespace AlpacaSound.RetroPixelPro
             resolutionMode = ResolutionMode.ConstantPixelSize;
             //resolution.x = Screen.width;
             //resolution.y = Screen.height;
-            pixelSize = 2;
+            pixelSize = 3;
             opacity = 1;
             colormap = null;
         }
