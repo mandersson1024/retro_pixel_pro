@@ -11,24 +11,23 @@ namespace AlpacaSound.RetroPixelPro
     public class RetroPixelPro : MonoBehaviour
     {
 
-        /// TODO: FIX THIS
         /// <summary>
-        /// The horizontal resolution.
-        /// Clamped in the range [1, 16384]
+        /// There are two ways to set the resolution of the pixelated image.
+        /// Either by setting absolute values (ConstantResolution)
+        /// or by setting the pixel size (ConstantPixelSize).
         /// </summary>
-        public ResolutionMode resolutionMode = ResolutionMode.ConstantResolution;
+        public ResolutionMode resolutionMode = ResolutionMode.ConstantPixelSize;
 
-        /// TODO: FIX THIS
         /// <summary>
-        /// The horizontal resolution.
-        /// Clamped in the range [1, 16384]
+        /// The resolution of the pixelated image.
+        /// X = width, Y = height.
+        /// Only used if resolution mode is ResolutionMode.ConstantResolution.
         /// </summary>
         public Vector2 resolution = new Vector2(Screen.width, Screen.height);
 
-        /// TODO: FIX THIS
         /// <summary>
-        /// The horizontal resolution.
-        /// Clamped in the range [1, 16384]
+        /// Size of the pixels in the pixelated image.
+        /// Only used if resolution mode is ResolutionMode.ConstantPixelSize.
         /// </summary>
         public int pixelSize = 1;
 
