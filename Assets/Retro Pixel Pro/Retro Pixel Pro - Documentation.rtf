@@ -1,6 +1,7 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1404\cocoasubrtf470
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
 {\fonttbl\f0\fnil\fcharset0 HelveticaNeue;\f1\fmodern\fcharset0 Courier;}
-{\colortbl;\red255\green255\blue255;\red52\green52\blue52;}
+{\colortbl;\red255\green255\blue255;\red52\green52\blue52;\red52\green52\blue52;}
+{\*\expandedcolortbl;;\csgenericrgb\c20392\c20392\c20392;\csgenericrgb\c20392\c20392\c20392;}
 \paperw11900\paperh16840\margl1440\margr1440\vieww18560\viewh24400\viewkind0
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 
@@ -13,7 +14,7 @@
 
 \i\fs24 For more details, please visit
 \i0 \
-{\field{\*\fldinst{HYPERLINK "http://www.alpacasound.se/retro-pixel-pro-v2-0"}}{\fldrslt http://www.alpacasound.se/retro-pixel-pro-v2-0}}\
+{\field{\*\fldinst{HYPERLINK "http://www.alpacasound.se/retro-pixel-pro-v3-0"}}{\fldrslt http://www.alpacasound.se/retro-pixel-pro-v3-0}}\
 
 \fs32 \
 \
@@ -22,33 +23,33 @@
 \b0 \ulnone \
 
 \fs24 \
-Add the Retro Pixel Pro component to a Camera. Assign a colormap asset to the Colormap property of the component. Either use one of the colormap presets located in /Assets/RetroPixelPro/Colormaps/Presets/ or create new one using the 
+Add the Retro Pixel Pro component to a Camera. Assign a colormap asset to the Colormap property of the component. Create new Colormap using the 
 \i Retro Pixel Pro/Create Colormap
 \i0  menu.\
-\
-There are two types of properties in the inspector \'96 Runtime Properties and Static Properties. All properties can be changed in the editor while the applications is not running, while only the runtime properties can be changed at runtime.\
 \
 
 \b RetroPixelPro component properties
 \b0 \
-	\'95	Horizontal Resolution \'96 The width in pixels of the reduced image.\
-	\'95	Vertical Resolution \'96 The height in pixels of the reduced image.\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-\cf2 	\'95	Strength \'96 The alpha of the colorization effect.\
+\cf3 	\'95	Resolution Mode \'96 The way to sel the resolution, either by defining the size of the pixels or by setting an absolute resolution.\
+	\'95	Resolution \'96 The absolute resolution (only used if the resolution mode is ConstantResolution)\
+	\'95	Pixel Size \'96 The size of the pixels (only used if the resolution mode is ConstantPixelSize)\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 	\'95	Opacity \'96 The alpha of the colorization effect.\
 	\'95	Colormap \'96 The colormap, defining the palette and contains pre-computed coloring data.\
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-\cf2 \
 \
 
 \b Colormap asset properties
 \b0 \
-	\'95	Palette Preset \'96 A number of predefined palettes.\
-	\'95	Number Of Colors \'96 The number of colors, between 2 and 256.\
-	\'95	Colormap Precision \'96 Mathematical precision of the colorization. The higher settings will use much more GPU memory than the lower ones. (See below.)\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf3 	\'95	Colormap Precision \'96 Mathematical precision of the colorization. The higher settings will use much more GPU memory than the lower ones. (See below.)\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 	\'95	Number Of Colors \'96 The number of colors, between 1 and 256.\
 	\'95	Auto Update Colormap \'96 Updates the colormap on the fly when changes are made. You may not want this for some colormap precision settings.\
 	\'95	Update Colormap / Cancel \'96 Triggers a manual update of the colormap. Only available if Auto Update Colormap is unchecked.\
 	\'95	Colors and Checkboxes \'96 Every individual color can be changed and the checkboxes next to them specifies if they are included in the colormap.\
 \
+Colormap palettes can be set by selecting a preset or extracting a palette from an image.\
 \
 
 \b\fs32 \ul API
@@ -70,15 +71,26 @@ There are two types of properties in the inspector \'96 Runtime Properties and S
 \pard\pardeftab720\partightenfactor0
 
 \f1\fs20 \cf2 \
-/// The horizontal resolution.\uc0\u8232 /// Clamped in the range [1, 16384]\u8232 public int horizontalResolution;
-\f0\fs24 \
-
-\f1\fs20 \
-/// The vertical resolution.\uc0\u8232 /// Clamped in the range [1, 16384]\u8232 public int verticalResolution;\
+/// The resolution of the pixelated image can be set in two ways.\
+/// Either by setting absolute values (ConstantResolution)\
+/// or by setting the pixel size (ConstantPixelSize).\
+public ResolutionMode resolutionMode;\
 \
-/// Alpha of the colorization.\uc0\u8232 /// Clamped in the range [0, 1]\u8232 public float strength;\
+/// The resolution of the pixelated image.\
+/// X = width, Y = height.\
+/// Only used if resolution mode is ResolutionMode.ConstantResolution.\
+public Vector2 resolution;\
+\
+/// <summary>\
+/// Size of the pixels in the pixelated image.\
+/// Only used if resolution mode is ResolutionMode.ConstantPixelSize.\
+/// </summary>\
+public int pixelSize;\
+\
+/// Alpha of the colorization.\
+/// Clamped in the range [0, 1]\
+public float opacity;\
 \
 /// The colormap.\
-/// Defines the palette and contains pre-computed coloring data.\
-public Colormap colormap;\
-}
+/// Contains palette and pre-computed color data.\
+public Colormap colormap;}

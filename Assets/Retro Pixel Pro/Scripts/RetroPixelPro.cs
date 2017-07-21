@@ -12,7 +12,7 @@ namespace AlpacaSound.RetroPixelPro
     {
 
         /// <summary>
-        /// There are two ways to set the resolution of the pixelated image.
+        /// The resolution of the pixelated image can be set in two ways.
         /// Either by setting absolute values (ConstantResolution)
         /// or by setting the pixel size (ConstantPixelSize).
         /// </summary>

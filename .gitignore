@@ -1,3 +1,4 @@
+
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -35,3 +36,4 @@ sysinfo.txt
 
 # Mac
 .DS_Store
+UnityAssetStore_RetroPixelPro.sln

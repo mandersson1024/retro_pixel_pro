@@ -31,7 +31,7 @@ namespace AlpacaSound.RetroPixelPro
         {
             serObj.Update();
 
-            resolutionMode.enumValueIndex = (int)(ResolutionMode)EditorGUILayout.EnumPopup("Mode", (ResolutionMode)resolutionMode.enumValueIndex);
+            resolutionMode.enumValueIndex = (int)(ResolutionMode)EditorGUILayout.EnumPopup("Resolution Mode", (ResolutionMode)resolutionMode.enumValueIndex);
 
             if (resolutionMode.enumValueIndex == (int)ResolutionMode.ConstantResolution)
             {
