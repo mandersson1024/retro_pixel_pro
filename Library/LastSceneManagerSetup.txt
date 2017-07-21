@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Retro Pixel Pro/Examples/Example Scene.unity
+- path: Assets/Retro Pixel Pro/Demos/Demo Scene.unity
   isLoaded: 1
   isActive: 1

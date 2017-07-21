@@ -1,4 +1,4 @@
-WindowsStandalone
+OSXStandalone
 d4825cdcad94918b59a9d1891c3651a9 Assembly-CSharp.dll:AlpacaSound.RetroPixelPro.ColormapPreset
 af14b7000f72ec525dd83723d468034b Assembly-CSharp.dll:.Sequencer
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.MoviePlayer
