@@ -7,12 +7,14 @@ Shader "AlpacaSound/RetroPixelPro"
 		_MainTex ("Texture", 2D) = "" {}
 		_ColorMap ("ColorMap", 3D) = "" {}
 		_Palette ("Palette", 2D) = "" {}
-		_Strength ("Strength", Range(0.0, 1.0)) = 1.0
+		_Opacity ("Opacity", Range(0.0, 1.0)) = 1.0
 	}
 	
 	SubShader
 	{
-		Cull Off ZWrite Off ZTest Always
+		Cull Off 
+		ZWrite Off 
+		ZTest Always
 
 		Pass
 		{
@@ -47,17 +49,20 @@ Shader "AlpacaSound/RetroPixelPro"
 	  		sampler3D _ColorMap;
 	  		sampler2D _Palette;
 	  		int _PaletteSize;
-	  		float _Strength;
+	  		half _Opacity;
 
-			fixed4 frag (v2f i) : SV_Target
+			half4 frag (v2f i) : SV_Target
 			{
-				float4 col = tex2D(_MainTex, i.uv);
-				fixed4 colorInColorMap = tex3D(_ColorMap, col.rgb);
-				float paletteIndex1D = colorInColorMap.a;
-				float2 paletteIndex2D = float2(paletteIndex1D, 0);
-				fixed4 result = tex2D(_Palette, paletteIndex2D);
-				fixed4 blended = lerp(col, result, _Strength);
-				return blended;
+				half4 col = tex2D(_MainTex, i.uv);
+				half4 valueInColorMap = tex3D(_ColorMap, col.rgb);
+				half paletteIndex1D = valueInColorMap.a;
+				half2 paletteIndex2D = half2(paletteIndex1D, 0);
+				half4 result = tex2D(_Palette, paletteIndex2D);
+
+				result = lerp(col, result, ceil(col.a)); // ignore colormap if alpha = 0
+				result = lerp(col, result, _Opacity);
+
+				return result;
 			}
 
 

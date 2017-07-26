@@ -137,6 +137,7 @@ namespace AlpacaSound.RetroPixelPro
 
             RenderTexture scaled = RenderTexture.GetTemporary((int)resolution.x, (int)resolution.y);
             scaled.filterMode = FilterMode.Point;
+            src.filterMode = FilterMode.Point;
 
             if (colormap == null)
             {
@@ -144,7 +145,7 @@ namespace AlpacaSound.RetroPixelPro
             }
             else
             {
-                material.SetFloat("_Strength", opacity);
+                material.SetFloat("_Opacity", opacity);
                 Graphics.Blit(src, scaled, material);
             }
 
