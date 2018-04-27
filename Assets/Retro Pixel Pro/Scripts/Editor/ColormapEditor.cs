@@ -6,7 +6,7 @@ using System.IO;
 
 namespace AlpacaSound.RetroPixelPro
 {
-    
+
     [CustomEditor(typeof(Colormap))]
     public class ColormapEditor : Editor
     {
@@ -97,7 +97,7 @@ namespace AlpacaSound.RetroPixelPro
             EditorGUI.BeginDisabledGroup(Application.isPlaying);
 
             EditorGUI.BeginDisabledGroup(isUpdatingColormap);
-            
+
             DrawDefaultInspector();
 
             EditorGUI.EndDisabledGroup();
@@ -254,7 +254,7 @@ namespace AlpacaSound.RetroPixelPro
         public void UpdateColormap()
         {
             isUpdatingColormap = true;
-            calculator = new ColormapCalculator(_target.colormapPrecision, _target.palette, _target.usedColors, _target.numberOfColors, DoneUpdatingColormap);
+            calculator = new ColormapCalculator(_target.palette, _target.usedColors, _target.numberOfColors, DoneUpdatingColormap);
         }
 
 
@@ -267,7 +267,7 @@ namespace AlpacaSound.RetroPixelPro
         void DoneUpdatingColormap()
         {
             isUpdatingColormap = false;
-            _target.texture3Dpixels = calculator.pixelBuffer;
+            _target.texturePixels = calculator.pixelBuffer;
             //_target.ApplyToMaterial();
             AssetDatabase.SaveAssets();
 

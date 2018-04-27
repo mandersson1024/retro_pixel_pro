@@ -3,12 +3,10 @@ using System.Collections.Generic;
 
 namespace AlpacaSound.RetroPixelPro
 {
-	[ExecuteInEditMode]
+    [ExecuteInEditMode]
     [System.Serializable]
     public class Colormap : ScriptableObject
     {
-        public ColormapPrecision colormapPrecision;
-
         [Range(1, 256)]
         public int numberOfColors;
 
@@ -19,13 +17,13 @@ namespace AlpacaSound.RetroPixelPro
         public bool[] usedColors;
 
         [HideInInspector]
-        public Color32[] texture3Dpixels;
+        public Color32[] texturePixels;
 
-		[HideInInspector]
-		public bool initialized;
+        [HideInInspector]
+        public bool initialized;
 
         [System.NonSerialized]
-		public bool changedInternally;
+        public bool changedInternally;
 
 
         public Colormap()
@@ -33,20 +31,19 @@ namespace AlpacaSound.RetroPixelPro
             palette = new Color32[256];
             numberOfColors = 16;
             usedColors = new bool[256];
-            colormapPrecision = ColormapPrecision.Medium;
-			initialized = false;
+            initialized = false;
         }
 
 
-		void OnEnable()
-		{
-			changedInternally = true;
+        void OnEnable()
+        {
+            changedInternally = true;
 
-			if (!initialized)
-			{
-				Debug.LogWarning("The colormap has not yet been initialized. Please click on it in the editor and it will set itself up.");
-			}
-		}
+            if (!initialized)
+            {
+                Debug.LogWarning("The colormap has not yet been initialized. Please click on it in the editor and it will set itself up.");
+            }
+        }
 
 
         public void SetColors(List<Color32> colors)

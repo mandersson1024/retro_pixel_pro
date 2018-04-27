@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2017
+# Visual Studio for Mac
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityAssetStore_RetroPixelPro", "UnityAssetStore_RetroPixelPro.csproj", "{2E1417F0-1B88-D0AE-CFB1-9D65A272EE22}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityAssetStore_RetroPixelPro.Editor", "UnityAssetStore_RetroPixelPro.Editor.csproj", "{B72C9949-49BB-7B4B-0D0F-37D895A1E8AD}"

@@ -42,7 +42,7 @@ namespace AlpacaSound.RetroPixelPro
         /// </summary>
         public Colormap colormap;
 
-        Texture3D colormapTexture;
+        Texture2D colormapTexture;
         Texture2D colormapPalette;
         Material m_material = null;
 
@@ -114,7 +114,7 @@ namespace AlpacaSound.RetroPixelPro
         {
             if (m_material != null)
             {
-                Material.DestroyImmediate(m_material);
+                Object.DestroyImmediate(m_material);
                 m_material = null;
             }
         }
@@ -186,11 +186,10 @@ namespace AlpacaSound.RetroPixelPro
 
         public void ApplyMap()
         {
-            int colorsteps = ColormapUtils.GetPrecisionColorsteps(colormap.colormapPrecision);
-            colormapTexture = new Texture3D(colorsteps, colorsteps, colorsteps, TextureFormat.Alpha8, false);
+            colormapTexture = new Texture2D(512, 512, TextureFormat.Alpha8, false);
             colormapTexture.filterMode = FilterMode.Point;
             colormapTexture.wrapMode = TextureWrapMode.Clamp;
-            colormapTexture.SetPixels32(colormap.texture3Dpixels);
+            colormapTexture.SetPixels32(colormap.texturePixels);
             colormapTexture.Apply();
 
             material.SetTexture("_ColorMap", colormapTexture);
