@@ -63,6 +63,16 @@ namespace AlpacaSound.RetroPixelPro
 
                     m_material = new Material(shader);
                     m_material.hideFlags = HideFlags.DontSave;
+
+                    Texture2D texture = Resources.Load("RetroPixelProResources/Textures/blue_noise") as Texture2D;
+
+                    if (texture == null)
+                    {
+                        Debug.LogWarning("RetroPixelProResources/Textures/blue_noise.png not found. Was it moved or deleted?");
+                    }
+
+                    m_material.SetTexture("_BlueNoise", texture);
+
                 }
 
                 return m_material;
@@ -164,7 +174,7 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
-        void ApplyPalette()
+        private void ApplyPalette()
         {
             //Debug.Log("RetroPixelPro.ApplyPalette, palette=" + colormap.palette + ", length=" + colormap.palette.Length);
 
@@ -184,7 +194,7 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
-        public void ApplyMap()
+        private void ApplyMap()
         {
             colormapTexture = new Texture2D(512, 512, TextureFormat.Alpha8, false);
             colormapTexture.filterMode = FilterMode.Point;

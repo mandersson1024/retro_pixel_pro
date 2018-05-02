@@ -5,6 +5,7 @@
      _MainTex ("Texture", 2D) = "" {}
      _ColorMap ("ColorMap", 2D) = "" {}
      _Palette ("Palette", 2D) = "" {}
+     _BlueNoise ("BlueNoise", 2D) = "" {}
      _Opacity ("Opacity", Range(0.0, 1.0)) = 1.0
  }
  
@@ -35,7 +36,7 @@
              float4 vertex : SV_POSITION;
          };
 
-         v2f vert (appdata v)
+         v2f vert(appdata v)
          {
              v2f o;
              o.vertex = UnityObjectToClipPos(v.vertex);
@@ -46,6 +47,7 @@
          sampler2D _MainTex;
          sampler2D _ColorMap;
          sampler2D _Palette;
+         sampler2D _BlueNoise;
          int _PaletteSize;
          half _Opacity;
 
@@ -69,16 +71,33 @@
             return uv;
         }
 
+        half4 getPaletteColor(half index)
+        {
+            half2 index2D = half2(index, 0);
+            return tex2D(_Palette, index2D);
+        }
+
         half4 frag(v2f i) : SV_Target
         {
             half4 col = tex2D(_MainTex, i.uv);
-
             float2 colorMapUV = getColorMapUV(col);
-            half4 valueInColorMap = tex2D(_ColorMap, colorMapUV);
+            half4 colormapValue = tex2D(_ColorMap, colorMapUV);
+            float blueNoiseSample = tex2D(_BlueNoise, i.vertex.xy / 64).r;
+            float blend = 0.95;
+            //float blend = getPaletteColor(colormapValue.b);
 
-            half paletteIndex1D = valueInColorMap.a;
-            half2 paletteIndex2D = half2(paletteIndex1D, 0);
-            half4 result = tex2D(_Palette, paletteIndex2D);
+            float4 result; 
+
+            if (blueNoiseSample < blend)
+            {
+                result = getPaletteColor(colormapValue.a);
+                //result = getPaletteColor(colormapValue.r);
+            }
+            else
+            {
+                result = half4(1,1,1,1);
+                //result = getPaletteColor(colormapValue.g);
+            }
 
             result = lerp(col, result, _Opacity);
 
