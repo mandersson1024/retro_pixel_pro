@@ -12,6 +12,7 @@ namespace AlpacaSound.RetroPixelPro
         SerializedProperty resolutionMode;
         SerializedProperty resolution;
         SerializedProperty pixelSize;
+        SerializedProperty dither;
         SerializedProperty opacity;
         SerializedProperty colormap;
 
@@ -23,6 +24,7 @@ namespace AlpacaSound.RetroPixelPro
             resolutionMode = serObj.FindProperty("resolutionMode");
             resolution = serObj.FindProperty("resolution");
             pixelSize = serObj.FindProperty("pixelSize");
+            dither = serObj.FindProperty("dither");
             opacity = serObj.FindProperty("opacity");
             colormap = serObj.FindProperty("colormap");
         }
@@ -43,6 +45,7 @@ namespace AlpacaSound.RetroPixelPro
                 pixelSize.intValue = EditorGUILayout.IntField("Pixel Size", pixelSize.intValue);
             }
 
+            dither.floatValue = EditorGUILayout.Slider("Dither", dither.floatValue, 0, 1);
             opacity.floatValue = EditorGUILayout.Slider("Opacity", opacity.floatValue, 0, 1);
             colormap.objectReferenceValue = EditorGUILayout.ObjectField("Colormap", colormap.objectReferenceValue, typeof(Colormap), false);
 

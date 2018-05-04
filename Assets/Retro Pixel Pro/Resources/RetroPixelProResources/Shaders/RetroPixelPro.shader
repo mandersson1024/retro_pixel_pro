@@ -7,6 +7,7 @@
      _Palette ("Palette", 2D) = "" {}
      _BlueNoise ("BlueNoise", 2D) = "" {}
      _Opacity ("Opacity", Range(0.0, 1.0)) = 1.0
+     _Dither ("Dither", Range(0.0, 1.0)) = 1.0
  }
  
  SubShader
@@ -49,6 +50,7 @@
          sampler2D _Palette;
          sampler2D _BlueNoise;
          int _PaletteSize;
+         half _Dither;
          half _Opacity;
 
         float2 getColorMapUV(half4 col)
@@ -88,7 +90,7 @@
 
             float4 result; 
 
-            if (blueNoiseSample < blend)
+            if (blueNoiseSample >= (blend * _Dither))
             {
                 //result = getPaletteColor(colormapValue.a);
                 result = getPaletteColor(colormapValue.r);
