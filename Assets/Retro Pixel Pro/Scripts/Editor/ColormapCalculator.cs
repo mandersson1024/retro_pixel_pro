@@ -81,7 +81,7 @@ namespace AlpacaSound.RetroPixelPro
         void CalculatePixel(int r, int g, int b)
         {
             byte paletteIndex = GetClosestPaletteIndex(r, g, b);
-            pixelBuffer[pixelProgress] = new Color32(0, 0, 0, paletteIndex);
+            pixelBuffer[pixelProgress] = new Color32(paletteIndex, 0, 128, 1);
         }
 
 

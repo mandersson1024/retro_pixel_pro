@@ -83,20 +83,20 @@
             float2 colorMapUV = getColorMapUV(col);
             half4 colormapValue = tex2D(_ColorMap, colorMapUV);
             float blueNoiseSample = tex2D(_BlueNoise, i.vertex.xy / 64).r;
-            float blend = 0.95;
-            //float blend = getPaletteColor(colormapValue.b);
+            //float blend = 0.95;
+            float blend = getPaletteColor(colormapValue.b);
 
             float4 result; 
 
             if (blueNoiseSample < blend)
             {
-                result = getPaletteColor(colormapValue.a);
-                //result = getPaletteColor(colormapValue.r);
+                //result = getPaletteColor(colormapValue.a);
+                result = getPaletteColor(colormapValue.r);
             }
             else
             {
-                result = half4(1,1,1,1);
-                //result = getPaletteColor(colormapValue.g);
+                //result = half4(1,1,1,1);
+                result = getPaletteColor(colormapValue.g);
             }
 
             result = lerp(col, result, _Opacity);
