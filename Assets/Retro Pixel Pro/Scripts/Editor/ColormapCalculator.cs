@@ -78,12 +78,64 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
-        void CalculatePixel(int r, int g, int b)
+        struct ColormapValue
         {
-            byte paletteIndex = GetClosestPaletteIndex(r, g, b);
-            pixelBuffer[pixelProgress] = new Color32(paletteIndex, 0, 128, 1);
+            public byte mainPaletteIndex;
+            public byte secondaryPaletteIndex;
+            public byte blend;
         }
 
+        void CalculatePixel(int r, int g, int b)
+        {
+            //byte paletteIndex = GetClosestPaletteIndex(r, g, b);
+            ColormapValue value = GetTwoClosestPaletteIndices(r, g, b);
+
+            //Debug.Log("Blend is: " + value.blend);
+
+
+            pixelBuffer[pixelProgress] = new Color32(value.mainPaletteIndex, value.secondaryPaletteIndex, (byte)(value.blend / 2), 1);
+        }
+
+        ColormapValue GetTwoClosestPaletteIndices(int r, int g, int b)
+        {
+            float closestDistance = float.MaxValue;
+            float nextClosestDistance = float.MaxValue;
+
+            int closestIndex = 0;
+            int nextClosestIndex = 0;
+
+            Vector3 rgb = new Vector3(r, g, b);
+            rgb = 256 * rgb / (colorsteps - 1);
+
+            for (int i = 0; i < numColors; ++i)
+            {
+                if (usedColors[i])
+                {
+                    Vector3 paletteRGB = new Vector3(palette[i].r, palette[i].g, palette[i].b);
+                    float distance = Vector3.Distance(rgb, paletteRGB);
+                    if (distance < closestDistance)
+                    {
+                        nextClosestDistance = closestDistance;
+                        closestDistance = distance;
+
+                        nextClosestIndex = closestIndex;
+                        closestIndex = i;
+                    }
+                    else if (distance < nextClosestDistance)
+                    {
+                        nextClosestDistance = distance;
+                        nextClosestIndex = i;
+                    }
+                }
+            }
+
+            return new ColormapValue()
+            {
+                mainPaletteIndex = (byte)closestIndex,
+                secondaryPaletteIndex = (byte)nextClosestIndex,
+                blend = Mathf.Approximately(nextClosestDistance, 0) ? (byte)127 : ((byte)(255 * (closestDistance / nextClosestDistance)))
+            };
+        }
 
         byte GetClosestPaletteIndex(int r, int g, int b)
         {

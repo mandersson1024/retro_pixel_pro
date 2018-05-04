@@ -7,7 +7,7 @@ namespace AlpacaSound.RetroPixelPro
     [System.Serializable]
     public class Colormap : ScriptableObject
     {
-        [Range(1, 256)]
+        [Range(2, 256)]
         public int numberOfColors;
 
         [HideInInspector]

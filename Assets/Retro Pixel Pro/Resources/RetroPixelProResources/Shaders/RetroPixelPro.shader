@@ -90,7 +90,7 @@
 
             float4 result; 
 
-            if (blueNoiseSample >= (blend * _Dither))
+            if (Luminance(col) * blueNoiseSample < (1-blend * _Dither))
             {
                 //result = getPaletteColor(colormapValue.a);
                 result = getPaletteColor(colormapValue.r);
