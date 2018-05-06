@@ -191,6 +191,7 @@ namespace AlpacaSound.RetroPixelPro
             colormapPalette.filterMode = FilterMode.Point;
             colormapPalette.wrapMode = TextureWrapMode.Clamp;
 
+            // TODO: optimize
             for (int i = 0; i < colormap.numberOfColors; ++i)
             {
                 //Debug.Log("SetPixel(" + i + ")=" + colormap.palette[i]);

@@ -48,22 +48,25 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
+        static Color32 GetSourceColorFromPixelProgress(int progress, int colorsteps)
+        {
+            int r = (progress % colorsteps) * (256 / colorsteps);
+            progress /= colorsteps;
+
+            int g = (progress % colorsteps) * (256 / colorsteps);
+            progress /= colorsteps;
+
+            int b = (progress % colorsteps) * (256 / colorsteps);
+
+            return new Color32((byte)r, (byte)g, (byte)b, 255);
+        }
+
         void CalculateNextPixel()
         {
             if (pixelProgress < totalPixels)
             {
-                int temp = pixelProgress;
-
-                int r = temp % colorsteps;
-                temp /= colorsteps;
-
-                int g = temp % colorsteps;
-                temp /= colorsteps;
-
-                int b = temp % colorsteps;
-
-                CalculatePixel(r, g, b);
-                //CalculatePixel(new Color(r, g, b));
+                Color32 sourceColor = GetSourceColorFromPixelProgress(pixelProgress, 64);
+                CalculatePixel(sourceColor);
 
                 ++pixelProgress;
                 progress = (float)pixelProgress / (float)totalPixels;
@@ -74,64 +77,12 @@ namespace AlpacaSound.RetroPixelPro
             }
         }
 
-
-        struct ColormapValueDeprecated
+        void CalculatePixel(Color32 color)
         {
-            public byte mainPaletteIndex;
-            public byte secondaryPaletteIndex;
-            public byte blend;
+            ColormapValue value = CalculateColormapValue(color, palette);
+            pixelBuffer[pixelProgress] = value.ToColor32();
         }
 
-        void CalculatePixel(int r, int g, int b)
-        //void CalculatePixel(Color32 color)
-        {
-            //byte paletteIndex = GetClosestPaletteIndex(r, g, b);
-            ColormapValueDeprecated value = GetTwoClosestPaletteIndices(r, g, b);
-            pixelBuffer[pixelProgress] = new Color32(value.mainPaletteIndex, value.secondaryPaletteIndex, (byte)(value.blend / 2), 1);
-
-            //ColormapValue value = CalculateColormapValue(color, palette);
-            //pixelBuffer[pixelProgress] = value.ToColor32();
-        }
-
-        //*
-        ColormapValueDeprecated GetTwoClosestPaletteIndices(int r, int g, int b)
-        {
-            float closestDistance = float.MaxValue;
-            float nextClosestDistance = float.MaxValue;
-
-            int closestIndex = 0;
-            int nextClosestIndex = 0;
-
-            Vector3 rgb = new Vector3(r, g, b);
-            rgb = 256 * rgb / (colorsteps - 1);
-
-            for (int i = 0; i < palette.Length; ++i)
-            {
-                Vector3 paletteRGB = new Vector3(palette[i].r, palette[i].g, palette[i].b);
-                float distance = Vector3.Distance(rgb, paletteRGB);
-                if (distance < closestDistance)
-                {
-                    nextClosestDistance = closestDistance;
-                    closestDistance = distance;
-
-                    nextClosestIndex = closestIndex;
-                    closestIndex = i;
-                }
-                else if (distance < nextClosestDistance)
-                {
-                    nextClosestDistance = distance;
-                    nextClosestIndex = i;
-                }
-            }
-
-            return new ColormapValueDeprecated()
-            {
-                mainPaletteIndex = (byte)closestIndex,
-                secondaryPaletteIndex = (byte)nextClosestIndex,
-                blend = Mathf.Approximately(nextClosestDistance, 0) ? (byte)127 : ((byte)(255 * (closestDistance / nextClosestDistance)))
-            };
-        }
-        //*/
 
         static float ColorDistance(Color32 c1, Color32 c2)
         {
@@ -191,7 +142,7 @@ namespace AlpacaSound.RetroPixelPro
             //float closestDistance = ColorDistance(color, palette[closest]);
             //float nextClosestDistance = ColorDistance(color, palette[nextClosest]);
 
-            float blend = 0;//closestDistance / nextClosestDistance;
+            float blend = 1;//closestDistance / nextClosestDistance;
 
             ColormapValue result = new ColormapValue(closest, nextClosest, blend);
 
