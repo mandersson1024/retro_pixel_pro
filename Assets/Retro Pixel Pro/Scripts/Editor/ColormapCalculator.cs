@@ -12,8 +12,6 @@ namespace AlpacaSound.RetroPixelPro
         public Color32[] pixelBuffer;
 
         Color32[] palette;
-        bool[] usedColors;
-        int numColors;
         System.Action doneCallback;
         int colorsteps;
         int totalPixels;
@@ -21,12 +19,10 @@ namespace AlpacaSound.RetroPixelPro
 
 
 
-        public ColormapCalculator(Color32[] palette, bool[] usedColors, int numColors, System.Action doneCallback)
+        public ColormapCalculator(Color32[] palette, System.Action doneCallback)
         {
             this.palette = palette;
-            this.usedColors = usedColors;
             this.doneCallback = doneCallback;
-            this.numColors = numColors;
             progress = 0;
             pixelProgress = 0;
             SetupPixelBuffer();
@@ -109,25 +105,22 @@ namespace AlpacaSound.RetroPixelPro
             Vector3 rgb = new Vector3(r, g, b);
             rgb = 256 * rgb / (colorsteps - 1);
 
-            for (int i = 0; i < numColors; ++i)
+            for (int i = 0; i < palette.Length; ++i)
             {
-                if (usedColors[i])
+                Vector3 paletteRGB = new Vector3(palette[i].r, palette[i].g, palette[i].b);
+                float distance = Vector3.Distance(rgb, paletteRGB);
+                if (distance < closestDistance)
                 {
-                    Vector3 paletteRGB = new Vector3(palette[i].r, palette[i].g, palette[i].b);
-                    float distance = Vector3.Distance(rgb, paletteRGB);
-                    if (distance < closestDistance)
-                    {
-                        nextClosestDistance = closestDistance;
-                        closestDistance = distance;
+                    nextClosestDistance = closestDistance;
+                    closestDistance = distance;
 
-                        nextClosestIndex = closestIndex;
-                        closestIndex = i;
-                    }
-                    else if (distance < nextClosestDistance)
-                    {
-                        nextClosestDistance = distance;
-                        nextClosestIndex = i;
-                    }
+                    nextClosestIndex = closestIndex;
+                    closestIndex = i;
+                }
+                else if (distance < nextClosestDistance)
+                {
+                    nextClosestDistance = distance;
+                    nextClosestIndex = i;
                 }
             }
 

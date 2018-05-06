@@ -14,9 +14,6 @@ namespace AlpacaSound.RetroPixelPro
         public Color32[] palette;
 
         [HideInInspector]
-        public bool[] usedColors;
-
-        [HideInInspector]
         public Color32[] texturePixels;
 
         [HideInInspector]
@@ -30,7 +27,6 @@ namespace AlpacaSound.RetroPixelPro
         {
             palette = new Color32[256];
             numberOfColors = 16;
-            usedColors = new bool[256];
             initialized = false;
         }
 
@@ -53,7 +49,6 @@ namespace AlpacaSound.RetroPixelPro
                 if (i < colors.Count)
                 {
                     palette[i] = colors[i];
-                    usedColors[i] = true;
                 }
             }
         }
@@ -64,14 +59,15 @@ namespace AlpacaSound.RetroPixelPro
             if (preset != null)
             {
                 numberOfColors = preset.palette.Length;
-
-                for (int i = 0; i < 256; ++i)
-                {
-                    usedColors[i] = i < numberOfColors;
-                }
-
                 System.Array.Copy(preset.palette, palette, preset.palette.Length);
             }
+        }
+
+        public Color32[] GetUsedPalette()
+        {
+            Color32[] usedPalette = new Color32[numberOfColors];
+            System.Array.Copy(palette, usedPalette, numberOfColors);
+            return usedPalette;
         }
 
     }
