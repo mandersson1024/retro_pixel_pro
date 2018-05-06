@@ -78,7 +78,7 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
-        struct ColormapValue
+        struct ColormapValueDeprecated
         {
             public byte mainPaletteIndex;
             public byte secondaryPaletteIndex;
@@ -88,7 +88,7 @@ namespace AlpacaSound.RetroPixelPro
         void CalculatePixel(int r, int g, int b)
         {
             //byte paletteIndex = GetClosestPaletteIndex(r, g, b);
-            ColormapValue value = GetTwoClosestPaletteIndices(r, g, b);
+            ColormapValueDeprecated value = GetTwoClosestPaletteIndices(r, g, b);
 
             //Debug.Log("Blend is: " + value.blend);
 
@@ -96,7 +96,7 @@ namespace AlpacaSound.RetroPixelPro
             pixelBuffer[pixelProgress] = new Color32(value.mainPaletteIndex, value.secondaryPaletteIndex, (byte)(value.blend / 2), 1);
         }
 
-        ColormapValue GetTwoClosestPaletteIndices(int r, int g, int b)
+        ColormapValueDeprecated GetTwoClosestPaletteIndices(int r, int g, int b)
         {
             float closestDistance = float.MaxValue;
             float nextClosestDistance = float.MaxValue;
@@ -129,7 +129,7 @@ namespace AlpacaSound.RetroPixelPro
                 }
             }
 
-            return new ColormapValue()
+            return new ColormapValueDeprecated()
             {
                 mainPaletteIndex = (byte)closestIndex,
                 secondaryPaletteIndex = (byte)nextClosestIndex,
@@ -137,30 +137,43 @@ namespace AlpacaSound.RetroPixelPro
             };
         }
 
-        byte GetClosestPaletteIndex(int r, int g, int b)
+        static float ColorDistance(Color32 c1, Color32 c2)
+        {
+            Vector3 rgb1 = new Vector3(c1.r, c1.b, c1.b);
+            Vector3 rgb2 = new Vector3(c2.r, c2.b, c2.b);
+
+            return Vector3.Distance(rgb1, rgb2);
+        }
+
+
+        public static int GetClosestPaletteIndex(Color32 color, Color32[] palette)
         {
             float closestDistance = float.MaxValue;
-            int closestIndex = 0;
-            Vector3 rgb = new Vector3(r, g, b);
-            rgb = 256 * rgb / (colorsteps - 1);
+            int closestIndex = -1;
 
-            for (int i = 0; i < numColors; ++i)
+            for (int i = 0; i < palette.Length; ++i)
             {
-                if (usedColors[i])
+                float distance = ColorDistance(color, palette[i]);
+                if (distance < closestDistance)
                 {
-                    Vector3 paletteRGB = new Vector3(palette[i].r, palette[i].g, palette[i].b);
-                    float distance = Vector3.Distance(rgb, paletteRGB);
-                    if (distance < closestDistance)
-                    {
-                        closestDistance = distance;
-                        closestIndex = i;
-                    }
+                    closestDistance = distance;
+                    closestIndex = i;
                 }
             }
 
-            return (byte)closestIndex;
+            return closestIndex;
         }
 
+        public static ColormapValue CalculateColormapValue(Color32 color, Color32[] palette)
+        {
+            int closest = GetClosestPaletteIndex(color, palette);
+            int nextClosest = GetClosestPaletteIndex(color, palette);
+            float blend = 0f;
+
+            ColormapValue result = new ColormapValue(closest, nextClosest, blend);
+
+            return result;
+        }
     }
 
 }
