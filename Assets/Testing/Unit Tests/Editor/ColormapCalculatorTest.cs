@@ -22,7 +22,6 @@ public class ColormapCalculatorTest
     static Color32 MAGENTA = new Color32(255, 0, 255, 255);
     static Color32 CYAN = new Color32(0, 255, 255, 255);
 
-
     [Test]
     public void Test_GetClosestPaletteIndex()
     {
@@ -45,10 +44,17 @@ public class ColormapCalculatorTest
     [Test]
     public void Test_CalculateColormapValue()
     {
-        ColormapValue result = ColormapCalculator.CalculateColormapValue(BLACK, new Color32[] { BLACK, WHITE });
+        ColormapValue result;
+
+        result = ColormapCalculator.CalculateColormapValue(BLACK, new Color32[] { BLACK, WHITE });
         Assert.AreEqual(0, result.primaryPaletteIndex);
-        Assert.AreEqual(0, result.secondaryPaletteIndex);
-        Assert.AreEqual(0, result.blend);
+        Assert.AreEqual(1, result.secondaryPaletteIndex);
+        //Assert.AreEqual(0, result.blend);
+
+        result = ColormapCalculator.CalculateColormapValue(GRAY, new Color32[] { BLACK, WHITE });
+        Assert.AreEqual(0, result.primaryPaletteIndex);
+        Assert.AreEqual(1, result.secondaryPaletteIndex);
+        //Assert.AreEqual(0.5f, result.blend);
     }
 
 }
