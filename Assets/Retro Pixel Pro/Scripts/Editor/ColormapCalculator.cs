@@ -9,7 +9,7 @@ namespace AlpacaSound.RetroPixelPro
 	public class ColormapCalculator
 	{
 		public float progress;
-        public Color32[] pixelBuffer;
+		public Color32[] pixelBuffer;
 
 		ColormapPrecision precision;
 		Color32[] palette;
@@ -18,7 +18,7 @@ namespace AlpacaSound.RetroPixelPro
 		System.Action doneCallback;
 		int colorsteps;
 		int totalPixels;
-		int pixelProgress;
+		Color32 colorProgress;
 
 
 
@@ -30,7 +30,7 @@ namespace AlpacaSound.RetroPixelPro
 			this.doneCallback = doneCallback;
 			this.numColors = numColors;
 			progress = 0;
-			pixelProgress = 0;
+			colorProgress = new Color32(0, 0, 0, 0);
 			SetupPixelBuffer();
 		}
 
@@ -53,25 +53,39 @@ namespace AlpacaSound.RetroPixelPro
 			}
 		}
 
+		private void gotoNextPixel()
+		{
+			++colorProgress.r;
+
+			if (colorProgress.r == colorsteps)
+			{
+				colorProgress.r = 0;
+				++colorProgress.g;
+
+				if (colorProgress.g == colorsteps)
+				{
+					colorProgress.g = 0;
+					++colorProgress.b;
+				}
+			}
+		}
+
+		private int getPixelProgress()
+		{
+			return colorProgress.r + colorProgress.g * colorsteps + colorProgress.b * colorsteps * colorsteps;
+		}
+
 
 		void CalculateNextPixel()
 		{
+			int pixelProgress = getPixelProgress();
+
 			if (pixelProgress < totalPixels)
 			{
-				int temp = pixelProgress;
-
-				int r = temp % colorsteps;
-				temp /= colorsteps;
-				
-				int g = temp % colorsteps;
-				temp /= colorsteps;
-				
-				int b = temp % colorsteps;
-
-				CalculatePixel(r, g, b);
-
-				++pixelProgress;
-				progress = (float) pixelProgress / (float) totalPixels;
+				byte paletteIndex = GetClosestPaletteIndex();
+				pixelBuffer[pixelProgress] = new Color32(0, 0, 0, paletteIndex);
+				gotoNextPixel();
+				progress = (float)pixelProgress / (float)totalPixels;
 			}
 			else
 			{
@@ -80,20 +94,13 @@ namespace AlpacaSound.RetroPixelPro
 		}
 
 
-		void CalculatePixel(int r, int g, int b)
-		{
-			byte paletteIndex = GetClosestPaletteIndex(r, g, b);
-			pixelBuffer[pixelProgress] = new Color32(0, 0, 0, paletteIndex);
-		}
-
-
-		byte GetClosestPaletteIndex(int r, int g, int b)
+		byte GetClosestPaletteIndex()
 		{
 			float closestDistance = float.MaxValue;
 			int closestIndex = 0;
-			Vector3 rgb = new Vector3(r, g, b);
-			rgb = 256 * rgb / (colorsteps-1);
-			
+			Vector3 rgb = new Vector3(colorProgress.r, colorProgress.g, colorProgress.b);
+			rgb = 256 * rgb / (colorsteps - 1);
+
 			for (int i = 0; i < numColors; ++i)
 			{
 				if (usedColors[i])
@@ -107,8 +114,8 @@ namespace AlpacaSound.RetroPixelPro
 					}
 				}
 			}
-			
-			return (byte) closestIndex;
+
+			return (byte)closestIndex;
 		}
 
 	}
