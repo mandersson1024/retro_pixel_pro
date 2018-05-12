@@ -37,7 +37,7 @@ namespace AlpacaSound.RetroPixelPro
                     if (i + j < _target.palette.Length)
                     {
                         Color color = _target.palette[i + j];
-                        EditorGUILayout.ColorField(GUIContent.none, color, false, false, false, null, GUILayout.Width(40), GUILayout.Height(25));
+                        EditorGUILayout.ColorField(GUIContent.none, color, false, false, false, GUILayout.Width(40), GUILayout.Height(25));
                     }
                     else
                     {

@@ -202,15 +202,33 @@ namespace AlpacaSound.RetroPixelPro
                 {
                     if (i + j < _target.numberOfColors)
                     {
-                        Color color = _target.palette[i + j];
+                        bool oldUsed = _target.usedColors[i + j];
+                        bool newUsed = EditorGUILayout.Toggle(oldUsed, GUILayout.Width(15));
+                        _target.usedColors[i + j] = newUsed;
 
-                        Color oldColor = _target.palette[i + j];
-                        Color newColor = EditorGUILayout.ColorField(GUIContent.none, color, false, false, false, null, GUILayout.Width(40), GUILayout.Height(25));
-                        _target.palette[i + j] = newColor;
-
-                        if (oldColor != newColor)
+                        if (oldUsed != newUsed)
                         {
                             dirty.forceDirty = true;
+                        }
+
+                        Color color = _target.palette[i + j];
+
+                        if (oldUsed)
+                        {
+                            Color oldColor = _target.palette[i + j];
+                            Color newColor = EditorGUILayout.ColorField(GUIContent.none, color, false, false, false, GUILayout.Width(40), GUILayout.Height(25));
+                            _target.palette[i + j] = newColor;
+
+                            if (oldColor != newColor)
+                            {
+                                dirty.forceDirty = true;
+                            }
+                        }
+                        else
+                        {
+                            EditorGUI.BeginDisabledGroup(true);
+                            EditorGUILayout.ColorField(GUIContent.none, DisabledColor(color), false, false, false, GUILayout.Width(40), GUILayout.Height(25));
+                            EditorGUI.EndDisabledGroup();
                         }
                     }
                     else
@@ -227,10 +245,16 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
+        Color DisabledColor(Color color)
+        {
+            return Color.Lerp(Color.white, color, 0.5f);
+        }
+
+
         public void UpdateColormap()
         {
             isUpdatingColormap = true;
-            calculator = new ColormapCalculator(_target.GetUsedPalette(), DoneUpdatingColormap);
+            calculator = new ColormapCalculator(_target.colormapPrecision, _target.palette, _target.usedColors, _target.numberOfColors, DoneUpdatingColormap);
         }
 
 
@@ -243,7 +267,7 @@ namespace AlpacaSound.RetroPixelPro
         void DoneUpdatingColormap()
         {
             isUpdatingColormap = false;
-            _target.texturePixels = calculator.pixelBuffer;
+            _target.texture3Dpixels = calculator.pixelBuffer;
             //_target.ApplyToMaterial();
             AssetDatabase.SaveAssets();
 

@@ -3,74 +3,81 @@ using System.Collections.Generic;
 
 namespace AlpacaSound.RetroPixelPro
 {
-    [ExecuteInEditMode]
-    [System.Serializable]
-    public class Colormap : ScriptableObject
-    {
-        [Range(2, 256)]
-        public int numberOfColors;
+	[ExecuteInEditMode]
+	[System.Serializable]
+	public class Colormap : ScriptableObject
+	{
+		public ColormapPrecision colormapPrecision;
 
-        [HideInInspector]
-        public Color32[] palette;
+		[Range(1, 256)]
+		public int numberOfColors;
 
-        [HideInInspector]
-        public Color32[] texturePixels;
+		[HideInInspector]
+		public Color32[] palette;
 
-        [HideInInspector]
-        public bool initialized;
+		[HideInInspector]
+		public bool[] usedColors;
 
-        [System.NonSerialized]
-        public bool changedInternally;
+		[HideInInspector]
+		public Color32[] texture3Dpixels;
 
+		[HideInInspector]
+		public bool initialized;
 
-        public Colormap()
-        {
-            palette = new Color32[256];
-            numberOfColors = 16;
-            initialized = false;
-        }
+		[System.NonSerialized]
+		public bool changedInternally;
 
 
-        void OnEnable()
-        {
-            changedInternally = true;
-
-            if (!initialized)
-            {
-                Debug.LogWarning("The colormap has not yet been initialized. Please click on it in the editor and it will set itself up.");
-            }
-        }
-
-
-        public void SetColors(List<Color32> colors)
-        {
-            for (int i = 0; i < 256; ++i)
-            {
-                if (i < colors.Count)
-                {
-                    palette[i] = colors[i];
-                }
-            }
-        }
+		public Colormap()
+		{
+			palette = new Color32[256];
+			numberOfColors = 16;
+			usedColors = new bool[256];
+			colormapPrecision = ColormapPrecision.Normal;
+			initialized = false;
+		}
 
 
-        public void ApplyPreset(ColormapPreset preset)
-        {
-            if (preset != null)
-            {
-                numberOfColors = preset.palette.Length;
-                System.Array.Copy(preset.palette, palette, preset.palette.Length);
-            }
-        }
+		void OnEnable()
+		{
+			changedInternally = true;
 
-        public Color32[] GetUsedPalette()
-        {
-            Color32[] usedPalette = new Color32[numberOfColors];
-            System.Array.Copy(palette, usedPalette, numberOfColors);
-            return usedPalette;
-        }
+			if (!initialized)
+			{
+				Debug.LogWarning("The colormap has not yet been initialized. Please click on it in the editor and it will set itself up.");
+			}
+		}
 
-    }
+
+		public void SetColors(List<Color32> colors)
+		{
+			for (int i = 0; i < 256; ++i)
+			{
+				if (i < colors.Count)
+				{
+					palette[i] = colors[i];
+					usedColors[i] = true;
+				}
+			}
+		}
+
+
+		public void ApplyPreset(ColormapPreset preset)
+		{
+			if (preset != null)
+			{
+				numberOfColors = preset.palette.Length;
+
+				for (int i = 0; i < 256; ++i)
+				{
+					usedColors[i] = i < numberOfColors;
+				}
+
+				System.Array.Copy(preset.palette, palette, preset.palette.Length);
+			}
+		}
+
+	}
 
 }
 

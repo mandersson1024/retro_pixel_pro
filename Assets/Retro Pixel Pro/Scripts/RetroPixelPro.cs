@@ -38,17 +38,11 @@ namespace AlpacaSound.RetroPixelPro
         public float opacity = 1;
 
         /// <summary>
-        /// Dithering.
-        /// Clamped in the range [0, 1]
-        /// </summary>
-        public float dither = 1;
-
-        /// <summary>
         /// Contains palette and pre-computed color data.
         /// </summary>
         public Colormap colormap;
 
-        Texture2D colormapTexture;
+        Texture3D colormapTexture;
         Texture2D colormapPalette;
         Material m_material = null;
 
@@ -69,16 +63,6 @@ namespace AlpacaSound.RetroPixelPro
 
                     m_material = new Material(shader);
                     m_material.hideFlags = HideFlags.DontSave;
-
-                    Texture2D texture = Resources.Load("RetroPixelProResources/Textures/blue_noise") as Texture2D;
-
-                    if (texture == null)
-                    {
-                        Debug.LogWarning("RetroPixelProResources/Textures/blue_noise.png not found. Was it moved or deleted?");
-                    }
-
-                    m_material.SetTexture("_BlueNoise", texture);
-
                 }
 
                 return m_material;
@@ -116,7 +100,6 @@ namespace AlpacaSound.RetroPixelPro
             //resolution.y = Screen.height;
             pixelSize = 3;
             opacity = 1;
-            dither = 1;
             colormap = null;
         }
 
@@ -131,7 +114,7 @@ namespace AlpacaSound.RetroPixelPro
         {
             if (m_material != null)
             {
-                Object.DestroyImmediate(m_material);
+                Material.DestroyImmediate(m_material);
                 m_material = null;
             }
         }
@@ -150,12 +133,10 @@ namespace AlpacaSound.RetroPixelPro
             resolution.x = (int)Mathf.Clamp(resolution.x, 1, 16384);
             resolution.y = (int)Mathf.Clamp(resolution.y, 1, 16384);
 
-            dither = Mathf.Clamp01(dither);
             opacity = Mathf.Clamp01(opacity);
 
             RenderTexture scaled = RenderTexture.GetTemporary((int)resolution.x, (int)resolution.y);
             scaled.filterMode = FilterMode.Point;
-            src.filterMode = FilterMode.Point;
 
             if (colormap == null)
             {
@@ -163,8 +144,7 @@ namespace AlpacaSound.RetroPixelPro
             }
             else
             {
-                material.SetFloat("_Dither", dither);
-                material.SetFloat("_Opacity", opacity);
+                material.SetFloat("_Strength", opacity);
                 Graphics.Blit(src, scaled, material);
             }
 
@@ -183,7 +163,7 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
-        private void ApplyPalette()
+        void ApplyPalette()
         {
             //Debug.Log("RetroPixelPro.ApplyPalette, palette=" + colormap.palette + ", length=" + colormap.palette.Length);
 
@@ -191,7 +171,6 @@ namespace AlpacaSound.RetroPixelPro
             colormapPalette.filterMode = FilterMode.Point;
             colormapPalette.wrapMode = TextureWrapMode.Clamp;
 
-            // TODO: optimize
             for (int i = 0; i < colormap.numberOfColors; ++i)
             {
                 //Debug.Log("SetPixel(" + i + ")=" + colormap.palette[i]);
@@ -204,12 +183,13 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
-        private void ApplyMap()
+        public void ApplyMap()
         {
-            colormapTexture = new Texture2D(512, 512, TextureFormat.RGB24, false);
+            int colorsteps = ColormapUtils.GetPrecisionColorsteps(colormap.colormapPrecision);
+            colormapTexture = new Texture3D(colorsteps, colorsteps, colorsteps, TextureFormat.Alpha8, false);
             colormapTexture.filterMode = FilterMode.Point;
             colormapTexture.wrapMode = TextureWrapMode.Clamp;
-            colormapTexture.SetPixels32(colormap.texturePixels);
+            colormapTexture.SetPixels32(colormap.texture3Dpixels);
             colormapTexture.Apply();
 
             material.SetTexture("_ColorMap", colormapTexture);

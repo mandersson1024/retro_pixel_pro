@@ -5,41 +5,44 @@ using System.Collections;
 namespace AlpacaSound.RetroPixelPro
 {
 
-    public class ColormapDirtyCheck
-    {
+	public class ColormapDirtyCheck
+	{
 
-        public int numberOfColors;
+		public ColormapPrecision colormapPrecision;
+		public int numberOfColors;
 
-        // Set to true when fiddling with variables other than the listed.
-        public bool forceDirty;
+		// Set to true when fiddling with variables other than the listed.
+		public bool forceDirty;
 
-        Colormap colormap;
+		Colormap colormap;
 
-        public ColormapDirtyCheck(Colormap colormap)
-        {
-            this.colormap = colormap;
-            Reset();
-        }
-
-
-        // Called after update is done.
-        public void Reset()
-        {
-            forceDirty = false;
-            numberOfColors = colormap.numberOfColors;
-        }
+		public ColormapDirtyCheck(Colormap colormap)
+		{
+			this.colormap = colormap;
+			Reset();
+		}
 
 
-        // Called when deciding whether do display Apply Changes button enabled or not.
-        public bool IsDirty()
-        {
+		// Called after update is done.
+		public void Reset()
+		{
+			forceDirty = false;
+			colormapPrecision = colormap.colormapPrecision;
+			numberOfColors = colormap.numberOfColors;
+		}
+
+
+		// Called when deciding whether do display Apply Changes button enabled or not.
+		public bool IsDirty()
+		{
             return
                 forceDirty ||
-                (numberOfColors != colormap.numberOfColors);
-        }
+				(colormapPrecision != colormap.colormapPrecision) ||
+				(numberOfColors != colormap.numberOfColors);
+		}
 
 
-    }
+	}
 
 }
 

@@ -45,6 +45,11 @@ namespace AlpacaSound.RetroPixelPro
         static void SetColorCount(Colormap target, int count)
         {
             target.numberOfColors = count;
+
+            for (int i = 0; i < 256; ++i)
+            {
+                target.usedColors[i] = i < count;
+            }
         }
 
 
@@ -102,8 +107,8 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
-        static Color32[] _ZXSpectrum()
-        {
+        static Color32[] _ZXSpectrum ()
+		{
             return new Color32[]
             {
                 rgb(0,0,0),
@@ -122,11 +127,11 @@ namespace AlpacaSound.RetroPixelPro
                 rgb(255,255,9),
                 rgb(255,255,255),
             };
-        }
+		}
 
 
-        static Color32[] _Amstrad()
-        {
+        static Color32[] _Amstrad ()
+		{
             return new Color32[]
             {
                 rgb(0,0,0),
@@ -159,11 +164,11 @@ namespace AlpacaSound.RetroPixelPro
                 rgb(255,255,120),
                 rgb(255,255,255),
             };
-        }
+		}
 
 
-        static Color32[] _CGA()
-        {
+        static Color32[] _CGA ()
+		{
             return new Color32[]
             {
                 rgb(0,0,0),
@@ -183,7 +188,7 @@ namespace AlpacaSound.RetroPixelPro
                 rgb(255,255,73),
                 rgb(255,255,255),
             };
-        }
+		}
 
 
         static Color32[] _C64()
@@ -193,31 +198,31 @@ namespace AlpacaSound.RetroPixelPro
                 Color.black,
                 Color.white,
                 rgb(136, 0, 0),
-                rgb(170, 255, 238),
-                rgb(204, 68, 204),
-                rgb(0, 204, 85),
-                rgb(0, 0, 170),
-                rgb(238, 238, 119),
-                rgb(221, 136, 85),
-                rgb(102, 68, 0),
-                rgb(255, 119, 119),
-                rgb(51, 51, 51),
-                rgb(119, 119, 119),
-                rgb(170, 255, 102),
-                rgb(0, 136, 255),
-                rgb(187, 187, 187),
+			    rgb(170, 255, 238),
+			    rgb(204, 68, 204),
+			    rgb(0, 204, 85),
+			    rgb(0, 0, 170),
+			    rgb(238, 238, 119),
+			    rgb(221, 136, 85),
+			    rgb(102, 68, 0),
+			    rgb(255, 119, 119),
+			    rgb(51, 51, 51),
+			    rgb(119, 119, 119),
+			    rgb(170, 255, 102),
+			    rgb(0, 136, 255),
+			    rgb(187, 187, 187),
             };
-        }
+		}
 
 
-        static Color32[] _MonochromeGreen()
-        {
+        static Color32[] _MonochromeGreen ()
+		{
             return new Color32[]
             {
                 rgb(16,36,13),
                 rgb(66,216,41),
             };
-        }
+		}
 
 
         static Color32[] _MonochromeBrown()
@@ -241,14 +246,14 @@ namespace AlpacaSound.RetroPixelPro
 
 
         static Color32[] _BlackAndWhite()
-        {
+		{
             return new Color32[]
             {
                 rgb(33,33,33),
                 rgb(242,242,242),
             };
-        }
+		}		
 
-    }
+	}
 
 }
