@@ -17,7 +17,7 @@ namespace AlpacaSound.RetroPixelPro
 		System.Action doneCallback;
 		int colorsteps;
 		int totalPixels;
-		ColormapCalculatorProgress ccprogress;
+		ColormapCalculatorProgress calculatorProgress;
 
 
 		public ColormapCalculator(ColormapPrecision precision, Color32[] palette, bool[] usedColors, int numColors, System.Action doneCallback)
@@ -28,7 +28,7 @@ namespace AlpacaSound.RetroPixelPro
 			this.numColors = numColors;
 			progress = 0;
 			colorsteps = ColormapUtils.GetPrecisionColorsteps(precision);
-			ccprogress = new ColormapCalculatorProgress(colorsteps);
+			calculatorProgress = new ColormapCalculatorProgress(colorsteps);
 			totalPixels = colorsteps * colorsteps * colorsteps;
 			pixelBuffer = new Color32[totalPixels];
 		}
@@ -47,12 +47,12 @@ namespace AlpacaSound.RetroPixelPro
 
 		void CalculateNextPixel()
 		{
-			if (ccprogress.progress < totalPixels)
+			if (calculatorProgress.progress < totalPixels)
 			{
 				byte paletteIndex = GetClosestPaletteIndex();
-				pixelBuffer[ccprogress.progress] = new Color32(0, 0, 0, paletteIndex);
-				ccprogress.NextPixel();
-				progress = (float)ccprogress.progress / (float)totalPixels;
+				pixelBuffer[calculatorProgress.progress] = new Color32(0, 0, 0, paletteIndex);
+				calculatorProgress.NextPixel();
+				progress = (float)calculatorProgress.progress / (float)totalPixels;
 			}
 			else
 			{
@@ -65,14 +65,14 @@ namespace AlpacaSound.RetroPixelPro
 		{
 			float closestDistance = float.MaxValue;
 			int closestIndex = 0;
-			Vector3 rgb = ccprogress.GetRGBCoordinate();
-			rgb = 256 * rgb / (colorsteps - 1);
+			Vector3 rgb = calculatorProgress.GetRGBCoordinate();
+			rgb = 256 * rgb;
 
 			for (int i = 0; i < numColors; ++i)
 			{
 				if (usedColors[i])
 				{
-					Vector3 paletteRGB = new Vector3(palette[i].r, palette[i].g, palette[i].b);
+					Vector3 paletteRGB = new Vector3(palette[i].r + 0.5f, palette[i].g + 0.5f, palette[i].b + 0.5f);
 					float distance = Vector3.Distance(rgb, paletteRGB);
 					if (distance < closestDistance)
 					{

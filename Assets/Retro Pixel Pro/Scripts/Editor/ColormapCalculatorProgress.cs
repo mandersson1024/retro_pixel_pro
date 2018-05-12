@@ -39,7 +39,7 @@ namespace AlpacaSound.RetroPixelPro
 
 		public Vector3 GetRGBCoordinate()
 		{
-			return new Vector3(color.r, color.g, color.b);
+			return new Vector3(color.r + 0.5f, color.g + 0.5f, color.b + 0.5f) / steps;
 		}
 
 
