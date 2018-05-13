@@ -7,7 +7,7 @@ namespace AlpacaSound.RetroPixelPro
 	[System.Serializable]
 	public class Colormap : ScriptableObject
 	{
-		public ColormapPrecision colormapPrecision;
+		public bool preview;
 
 		[Range(1, 256)]
 		public int numberOfColors;
@@ -33,7 +33,7 @@ namespace AlpacaSound.RetroPixelPro
 			palette = new Color32[256];
 			numberOfColors = 16;
 			usedColors = new bool[256];
-			colormapPrecision = ColormapPrecision.Normal;
+			preview = false;
 			initialized = false;
 		}
 

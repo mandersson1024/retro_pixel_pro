@@ -20,14 +20,14 @@ namespace AlpacaSound.RetroPixelPro
 		ColormapCalculatorProgress calculatorProgress;
 
 
-		public ColormapCalculator(ColormapPrecision precision, Color32[] palette, bool[] usedColors, int numColors, System.Action doneCallback)
+		public ColormapCalculator(bool preview, Color32[] palette, bool[] usedColors, int numColors, System.Action doneCallback)
 		{
 			this.palette = palette;
 			this.usedColors = usedColors;
 			this.doneCallback = doneCallback;
 			this.numColors = numColors;
 			progress = 0;
-			colorsteps = ColormapUtils.GetPrecisionColorsteps(precision);
+			colorsteps = ColormapUtils.GetNumColorsteps(preview);
 			calculatorProgress = new ColormapCalculatorProgress(colorsteps);
 			totalPixels = colorsteps * colorsteps * colorsteps;
 			pixelBuffer = new Color32[totalPixels];

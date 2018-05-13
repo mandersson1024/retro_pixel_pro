@@ -8,7 +8,7 @@ namespace AlpacaSound.RetroPixelPro
 	public class ColormapDirtyCheck
 	{
 
-		public ColormapPrecision colormapPrecision;
+		public bool preview;
 		public int numberOfColors;
 
 		// Set to true when fiddling with variables other than the listed.
@@ -27,7 +27,7 @@ namespace AlpacaSound.RetroPixelPro
 		public void Reset()
 		{
 			forceDirty = false;
-			colormapPrecision = colormap.colormapPrecision;
+			preview = colormap.preview;
 			numberOfColors = colormap.numberOfColors;
 		}
 
@@ -35,9 +35,9 @@ namespace AlpacaSound.RetroPixelPro
 		// Called when deciding whether do display Apply Changes button enabled or not.
 		public bool IsDirty()
 		{
-            return
-                forceDirty ||
-				(colormapPrecision != colormap.colormapPrecision) ||
+			return
+				forceDirty ||
+				(preview != colormap.preview) ||
 				(numberOfColors != colormap.numberOfColors);
 		}
 

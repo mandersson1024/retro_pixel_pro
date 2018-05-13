@@ -8,13 +8,15 @@ namespace AlpacaSound.RetroPixelPro
 	public class ColormapUtils
 	{
 
-		public static int GetPrecisionColorsteps(ColormapPrecision precision)
+		public static int GetNumColorsteps(bool preview)
 		{
-			switch (precision)
+			if (preview)
 			{
-				case ColormapPrecision.Preview: return 16;
-				case ColormapPrecision.Normal: return 64;
-				default: return 64;
+				return 16;
+			}
+			else
+			{
+				return 64;
 			}
 		}
 
