@@ -42,6 +42,11 @@ namespace AlpacaSound.RetroPixelPro
 			return new Vector3(color.r + 0.5f, color.g + 0.5f, color.b + 0.5f) / steps;
 		}
 
+		public bool IsDone()
+		{
+			return progress >= steps * steps * steps;
+		}
+
 
 	}
 
