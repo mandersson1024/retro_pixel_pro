@@ -8,7 +8,7 @@ namespace AlpacaSound.RetroPixelPro
 	public class ColormapUtils
 	{
 
-		public static int GetNumColorsteps(bool preview)
+		public static int GetColormapSize3D(bool preview)
 		{
 			if (preview)
 			{
@@ -17,6 +17,19 @@ namespace AlpacaSound.RetroPixelPro
 			else
 			{
 				return 64;
+			}
+		}
+
+
+		public static int GetColormapSize2D(bool preview)
+		{
+			if (preview)
+			{
+				return 64;
+			}
+			else
+			{
+				return 512;
 			}
 		}
 

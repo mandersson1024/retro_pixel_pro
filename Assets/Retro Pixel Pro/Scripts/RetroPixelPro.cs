@@ -42,7 +42,9 @@ namespace AlpacaSound.RetroPixelPro
 		/// </summary>
 		public Colormap colormap;
 
-		Texture3D colormapTexture;
+		Texture3D colormapTexture3D;
+		Texture2D colormapTexture2D;
+
 		Texture2D colormapPalette;
 		Material m_material = null;
 
@@ -185,14 +187,24 @@ namespace AlpacaSound.RetroPixelPro
 
 		public void ApplyMap()
 		{
-			int colorsteps = ColormapUtils.GetNumColorsteps(colormap.preview);
-			colormapTexture = new Texture3D(colorsteps, colorsteps, colorsteps, TextureFormat.Alpha8, false);
-			colormapTexture.filterMode = FilterMode.Point;
-			colormapTexture.wrapMode = TextureWrapMode.Clamp;
-			colormapTexture.SetPixels32(colormap.texture3Dpixels);
-			colormapTexture.Apply();
+			int colorsteps3D = ColormapUtils.GetColormapSize3D(colormap.preview);
+			int size2D = ColormapUtils.GetColormapSize2D(colormap.preview);
 
-			material.SetTexture("_ColorMap", colormapTexture);
+			colormapTexture3D = new Texture3D(colorsteps3D, colorsteps3D, colorsteps3D, TextureFormat.Alpha8, false);
+			colormapTexture3D.filterMode = FilterMode.Point;
+			colormapTexture3D.wrapMode = TextureWrapMode.Clamp;
+			colormapTexture3D.SetPixels32(colormap.pixels);
+			colormapTexture3D.Apply();
+
+			material.SetTexture("_Colormap3D", colormapTexture3D);
+
+			colormapTexture2D = new Texture2D(size2D, size2D, TextureFormat.Alpha8, false);
+			colormapTexture2D.filterMode = FilterMode.Point;
+			colormapTexture2D.wrapMode = TextureWrapMode.Clamp;
+			colormapTexture2D.SetPixels32(colormap.pixels);
+			colormapTexture2D.Apply();
+
+			material.SetTexture("_Colormap2D", colormapTexture2D);
 		}
 
 

@@ -78,18 +78,6 @@ public class ShaderTest
 	}
 
 
-	/*
-	Color32 IndexToColor(int colorsteps, int index)
-	{
-		int r = index % colorsteps;
-		int g = (index / colorsteps) % colorsteps;
-		int b = index / (colorsteps * colorsteps);
-
-		return new Color32((byte)r, (byte)g, (byte)b, 255);
-	}
-	*/
-
-
 	int ColorToIndex(int colorsteps, Color32 color)
 	{
 		return color.r + (color.g * colorsteps) + (color.b * colorsteps * colorsteps);

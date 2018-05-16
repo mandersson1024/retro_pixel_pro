@@ -27,7 +27,7 @@ namespace AlpacaSound.RetroPixelPro
 			this.doneCallback = doneCallback;
 			this.numColors = numColors;
 			progress = 0;
-			colorsteps = ColormapUtils.GetNumColorsteps(preview);
+			colorsteps = ColormapUtils.GetColormapSize3D(preview);
 			calculatorProgress = new ColormapCalculatorProgress(colorsteps);
 			totalPixels = colorsteps * colorsteps * colorsteps;
 			pixelBuffer = new Color32[totalPixels];

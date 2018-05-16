@@ -271,7 +271,7 @@ namespace AlpacaSound.RetroPixelPro
 			Debug.Log("DoneUpdatingColormap, time: " + (Time.time - debugUpdateStartTime));
 
 			isUpdatingColormap = false;
-			_target.texture3Dpixels = calculator.pixelBuffer;
+			_target.pixels = calculator.pixelBuffer;
 			//_target.ApplyToMaterial();
 			AssetDatabase.SaveAssets();
 

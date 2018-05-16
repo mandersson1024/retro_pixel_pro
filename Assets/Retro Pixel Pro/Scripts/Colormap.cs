@@ -19,7 +19,7 @@ namespace AlpacaSound.RetroPixelPro
 		public bool[] usedColors;
 
 		[HideInInspector]
-		public Color32[] texture3Dpixels;
+		public Color32[] pixels;
 
 		[HideInInspector]
 		public bool initialized;
