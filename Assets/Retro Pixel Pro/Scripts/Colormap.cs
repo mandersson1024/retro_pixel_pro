@@ -12,6 +12,8 @@ namespace AlpacaSound.RetroPixelPro
 		[Range(1, 256)]
 		public int numberOfColors;
 
+		public bool use2D;
+
 		[HideInInspector]
 		public Color32[] palette;
 

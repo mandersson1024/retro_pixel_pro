@@ -146,6 +146,7 @@ namespace AlpacaSound.RetroPixelPro
 			}
 			else
 			{
+				material.SetInt("_Use2D", colormap.use2D ? 1 : 0);
 				material.SetFloat("_Strength", opacity);
 				Graphics.Blit(src, scaled, material);
 			}
