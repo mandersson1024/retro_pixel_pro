@@ -8,43 +8,31 @@ namespace AlpacaSound.RetroPixelPro
 	public class ColormapCalculatorProgress
 	{
 		public Color32 color;
-		public int steps;
+		public int colorsteps;
 		public int progress;
 
 		public ColormapCalculatorProgress(int colorsteps)
 		{
-			steps = colorsteps;
+			this.colorsteps = colorsteps;
 			color = new Color32(0, 0, 0, 0);
 			progress = 0;
 		}
 
 		public void NextPixel()
 		{
-			++color.r;
-
-			if (color.r == steps)
-			{
-				color.r = 0;
-				++color.g;
-
-				if (color.g == steps)
-				{
-					color.g = 0;
-					++color.b;
-				}
-			}
-
 			++progress;
+			color = ColormapUtils.IndexToColor(colorsteps, progress);
 		}
+
 
 		public Vector3 GetRGBCoordinate()
 		{
-			return new Vector3(color.r + 0.5f, color.g + 0.5f, color.b + 0.5f) / steps;
+			return new Vector3(color.r + 0.5f, color.g + 0.5f, color.b + 0.5f) / colorsteps;
 		}
 
 		public bool IsDone()
 		{
-			return progress >= steps * steps * steps;
+			return progress >= colorsteps * colorsteps * colorsteps;
 		}
 
 

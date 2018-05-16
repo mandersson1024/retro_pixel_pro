@@ -19,6 +19,8 @@ namespace AlpacaSound.RetroPixelPro
 		string paletteImagePath;
 		GenericMenu presetMenu;
 
+		float debugUpdateStartTime;
+
 
 		const string MENU_ITEM_NAME = "Create New Colormap";
 
@@ -60,7 +62,7 @@ namespace AlpacaSound.RetroPixelPro
 				Debug.Log("Initializing colormap '" + _target.name + "'");
 
 				_target.initialized = true;
-				UpdateColormap();
+				StartUpdatingColormap();
 			}
 
 			presetMenu = new GenericMenu();
@@ -89,7 +91,7 @@ namespace AlpacaSound.RetroPixelPro
 		{
 			if (!isUpdatingColormap && autoApplyChanges && dirty.IsDirty())
 			{
-				UpdateColormap();
+				StartUpdatingColormap();
 			}
 
 			serializedObject.Update();
@@ -166,7 +168,7 @@ namespace AlpacaSound.RetroPixelPro
 			{
 				if (GUILayout.Button("Apply Changes", GUILayout.Width(200), GUILayout.Height(28)))
 				{
-					UpdateColormap();
+					StartUpdatingColormap();
 				}
 			}
 			EditorGUI.EndDisabledGroup();
@@ -251,10 +253,11 @@ namespace AlpacaSound.RetroPixelPro
 		}
 
 
-		public void UpdateColormap()
+		public void StartUpdatingColormap()
 		{
 			isUpdatingColormap = true;
 			calculator = new ColormapCalculator(_target.preview, _target.palette, _target.usedColors, _target.numberOfColors, DoneUpdatingColormap);
+			debugUpdateStartTime = Time.time;
 		}
 
 
@@ -263,9 +266,10 @@ namespace AlpacaSound.RetroPixelPro
 			isUpdatingColormap = false;
 		}
 
-
 		void DoneUpdatingColormap()
 		{
+			Debug.Log("DoneUpdatingColormap, time: " + (Time.time - debugUpdateStartTime));
+
 			isUpdatingColormap = false;
 			_target.texture3Dpixels = calculator.pixelBuffer;
 			//_target.ApplyToMaterial();
@@ -293,13 +297,15 @@ namespace AlpacaSound.RetroPixelPro
 		}
 
 
-		void colormapSynchronousUpdate()
+		/*
+		void ColormapSynchronousUpdate()
 		{
 			while (isUpdatingColormap)
 			{
 				calculator.CalculateChunk();
 			}
 		}
+		*/
 
 
 	}

@@ -50,7 +50,7 @@ public class ShaderTest
 
 		for (int i = 0; i < pixels.Length; ++i)
 		{
-			pixels[i] = IndexToColor(size3D, i);
+			pixels[i] = ColormapUtils.IndexToColor(size3D, i);
 		}
 
 		tex.SetPixels32(pixels);
@@ -78,6 +78,7 @@ public class ShaderTest
 	}
 
 
+	/*
 	Color32 IndexToColor(int colorsteps, int index)
 	{
 		int r = index % colorsteps;
@@ -86,6 +87,7 @@ public class ShaderTest
 
 		return new Color32((byte)r, (byte)g, (byte)b, 255);
 	}
+	*/
 
 
 	int ColorToIndex(int colorsteps, Color32 color)
@@ -162,20 +164,20 @@ public class ShaderTest
 	[Test]
 	public void Test_IndexToColor()
 	{
-		Assert.AreEqual(new Color32(0, 0, 0, 255), IndexToColor(2, 0));
-		Assert.AreEqual(new Color32(1, 0, 0, 255), IndexToColor(2, 1));
-		Assert.AreEqual(new Color32(0, 1, 0, 255), IndexToColor(2, 2));
-		Assert.AreEqual(new Color32(1, 1, 0, 255), IndexToColor(2, 3));
-		Assert.AreEqual(new Color32(0, 0, 1, 255), IndexToColor(2, 4));
-		Assert.AreEqual(new Color32(1, 0, 1, 255), IndexToColor(2, 5));
-		Assert.AreEqual(new Color32(0, 1, 1, 255), IndexToColor(2, 6));
-		Assert.AreEqual(new Color32(1, 1, 1, 255), IndexToColor(2, 7));
+		Assert.AreEqual(new Color32(0, 0, 0, 255), ColormapUtils.IndexToColor(2, 0));
+		Assert.AreEqual(new Color32(1, 0, 0, 255), ColormapUtils.IndexToColor(2, 1));
+		Assert.AreEqual(new Color32(0, 1, 0, 255), ColormapUtils.IndexToColor(2, 2));
+		Assert.AreEqual(new Color32(1, 1, 0, 255), ColormapUtils.IndexToColor(2, 3));
+		Assert.AreEqual(new Color32(0, 0, 1, 255), ColormapUtils.IndexToColor(2, 4));
+		Assert.AreEqual(new Color32(1, 0, 1, 255), ColormapUtils.IndexToColor(2, 5));
+		Assert.AreEqual(new Color32(0, 1, 1, 255), ColormapUtils.IndexToColor(2, 6));
+		Assert.AreEqual(new Color32(1, 1, 1, 255), ColormapUtils.IndexToColor(2, 7));
 
-		Assert.AreEqual(new Color32(0, 0, 0, 255), IndexToColor(4, 0));
-		Assert.AreEqual(new Color32(1, 0, 0, 255), IndexToColor(4, 1));
-		Assert.AreEqual(new Color32(2, 0, 0, 255), IndexToColor(4, 2));
-		Assert.AreEqual(new Color32(3, 0, 0, 255), IndexToColor(4, 3));
-		Assert.AreEqual(new Color32(0, 1, 0, 255), IndexToColor(4, 4));
+		Assert.AreEqual(new Color32(0, 0, 0, 255), ColormapUtils.IndexToColor(4, 0));
+		Assert.AreEqual(new Color32(1, 0, 0, 255), ColormapUtils.IndexToColor(4, 1));
+		Assert.AreEqual(new Color32(2, 0, 0, 255), ColormapUtils.IndexToColor(4, 2));
+		Assert.AreEqual(new Color32(3, 0, 0, 255), ColormapUtils.IndexToColor(4, 3));
+		Assert.AreEqual(new Color32(0, 1, 0, 255), ColormapUtils.IndexToColor(4, 4));
 	}
 
 
@@ -204,19 +206,19 @@ public class ShaderTest
 	[Test]
 	public void Test_IndexToColorToIndex()
 	{
-		Assert.AreEqual(0, ColorToIndex(4, IndexToColor(4, 0)));
-		Assert.AreEqual(1, ColorToIndex(4, IndexToColor(4, 1)));
-		Assert.AreEqual(2, ColorToIndex(4, IndexToColor(4, 2)));
-		Assert.AreEqual(3, ColorToIndex(4, IndexToColor(4, 3)));
-		Assert.AreEqual(4, ColorToIndex(4, IndexToColor(4, 4)));
-		Assert.AreEqual(5, ColorToIndex(4, IndexToColor(4, 5)));
-		Assert.AreEqual(6, ColorToIndex(4, IndexToColor(4, 6)));
-		Assert.AreEqual(7, ColorToIndex(4, IndexToColor(4, 7)));
-		Assert.AreEqual(8, ColorToIndex(4, IndexToColor(4, 8)));
-		Assert.AreEqual(9, ColorToIndex(4, IndexToColor(4, 9)));
-		Assert.AreEqual(10, ColorToIndex(4, IndexToColor(4, 10)));
-		Assert.AreEqual(11, ColorToIndex(4, IndexToColor(4, 11)));
-		Assert.AreEqual(12, ColorToIndex(4, IndexToColor(4, 12)));
+		Assert.AreEqual(0, ColorToIndex(4, ColormapUtils.IndexToColor(4, 0)));
+		Assert.AreEqual(1, ColorToIndex(4, ColormapUtils.IndexToColor(4, 1)));
+		Assert.AreEqual(2, ColorToIndex(4, ColormapUtils.IndexToColor(4, 2)));
+		Assert.AreEqual(3, ColorToIndex(4, ColormapUtils.IndexToColor(4, 3)));
+		Assert.AreEqual(4, ColorToIndex(4, ColormapUtils.IndexToColor(4, 4)));
+		Assert.AreEqual(5, ColorToIndex(4, ColormapUtils.IndexToColor(4, 5)));
+		Assert.AreEqual(6, ColorToIndex(4, ColormapUtils.IndexToColor(4, 6)));
+		Assert.AreEqual(7, ColorToIndex(4, ColormapUtils.IndexToColor(4, 7)));
+		Assert.AreEqual(8, ColorToIndex(4, ColormapUtils.IndexToColor(4, 8)));
+		Assert.AreEqual(9, ColorToIndex(4, ColormapUtils.IndexToColor(4, 9)));
+		Assert.AreEqual(10, ColorToIndex(4, ColormapUtils.IndexToColor(4, 10)));
+		Assert.AreEqual(11, ColorToIndex(4, ColormapUtils.IndexToColor(4, 11)));
+		Assert.AreEqual(12, ColorToIndex(4, ColormapUtils.IndexToColor(4, 12)));
 	}
 
 

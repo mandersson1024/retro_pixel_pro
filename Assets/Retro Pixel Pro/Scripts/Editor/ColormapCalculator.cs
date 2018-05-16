@@ -40,24 +40,25 @@ namespace AlpacaSound.RetroPixelPro
 
 			while (EditorApplication.timeSinceStartup < frameStartTime + (1.0 / 30.0))
 			{
-				CalculateNextPixel();
+				if (calculatorProgress.IsDone())
+				{
+					doneCallback.Invoke();
+					break;
+				}
+				else
+				{
+					CalculateNextPixel();
+				}
 			}
 		}
 
 
 		void CalculateNextPixel()
 		{
-			if (calculatorProgress.progress < totalPixels)
-			{
-				byte paletteIndex = GetClosestPaletteIndex();
-				pixelBuffer[calculatorProgress.progress] = new Color32(0, 0, 0, paletteIndex);
-				calculatorProgress.NextPixel();
-				progress = (float)calculatorProgress.progress / (float)totalPixels;
-			}
-			else
-			{
-				doneCallback.Invoke();
-			}
+			byte paletteIndex = GetClosestPaletteIndex();
+			pixelBuffer[calculatorProgress.progress] = new Color32(0, 0, 0, paletteIndex);
+			calculatorProgress.NextPixel();
+			progress = (float)calculatorProgress.progress / (float)totalPixels;
 		}
 
 
