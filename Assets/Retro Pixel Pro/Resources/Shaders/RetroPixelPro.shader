@@ -9,7 +9,7 @@ Shader "AlpacaSound/RetroPixelPro"
         _Colormap2D ("Colormap2D", 2D) = "" {}
         _Palette ("Palette", 2D) = "" {}
         _Strength ("Strength", Range(0.0, 1.0)) = 1.0
-        _Use2D ("Int", int) = 1
+        _Use3DTexture ("Int", int) = 1
     }
 
     SubShader
@@ -53,15 +53,7 @@ Shader "AlpacaSound/RetroPixelPro"
             sampler2D _Palette;
             int _PaletteSize;
             float _Strength;
-            int _Use2D;
-
-
-            /*
-            float round(float x)
-            {
-                return floor(x + 0.5);
-            }
-            */
+            int _Use3DTexture;
 
 
             fixed4 frag (v2f i) : SV_Target
@@ -73,17 +65,12 @@ Shader "AlpacaSound/RetroPixelPro"
                 int size2D = _Colormap2D_TexelSize.z;
 
                 int3 byteInputColor = floor(inputColor.rgb * (colorsteps - 1));
-
                 int index = byteInputColor.r + (byteInputColor.g * colorsteps) + (byteInputColor.b * colorsteps * colorsteps);
-                //index = round(index);
-
                 int2 xy = int2(round(fmod(index, size2D)), round(index / size2D));
-                //xy = floor(xy);
 
                 fixed4 colorInColormap = tex2D(_Colormap2D, saturate(float2(xy) / size2D));
 
-                if (_Use2D == 0) 
-                    //colorInColormap = tex3D(_Colormap3D, inputColor.rgb);
+                if (_Use3DTexture != 0) 
                     colorInColormap = tex3D(_Colormap3D, inputColor.rgb * ((colorsteps - 1.0) / colorsteps));
 
                 float paletteIndex1D = colorInColormap.a;

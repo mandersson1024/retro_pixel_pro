@@ -116,7 +116,7 @@ namespace AlpacaSound.RetroPixelPro
 		{
 			if (m_material != null)
 			{
-				Material.DestroyImmediate(m_material);
+				DestroyImmediate(m_material);
 				m_material = null;
 			}
 		}
@@ -146,7 +146,7 @@ namespace AlpacaSound.RetroPixelPro
 			}
 			else
 			{
-				material.SetInt("_Use2D", colormap.use2D ? 1 : 0);
+				material.SetInt("_Use3DTexture", colormap.use3DTexture ? 1 : 0);
 				material.SetFloat("_Strength", opacity);
 				Graphics.Blit(src, scaled, material);
 			}
