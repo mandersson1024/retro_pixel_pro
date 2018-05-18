@@ -19,6 +19,7 @@ Shader "AlpacaSound/RetroPixelPro"
         Pass
         {
             CGPROGRAM
+            #pragma target 2.0
             #pragma vertex vert
             #pragma fragment frag
 
@@ -46,14 +47,15 @@ Shader "AlpacaSound/RetroPixelPro"
             }
 
             sampler2D _MainTex;
-            sampler3D _Colormap3D;
             sampler2D _Colormap2D;
-            float4 _Colormap3D_TexelSize;
             float4 _Colormap2D_TexelSize;
             sampler2D _Palette;
             int _PaletteSize;
             float _Strength;
+
             int _Use3DTexture;
+            sampler3D _Colormap3D;
+            float4 _Colormap3D_TexelSize;
 
 
             fixed4 frag (v2f i) : SV_Target
