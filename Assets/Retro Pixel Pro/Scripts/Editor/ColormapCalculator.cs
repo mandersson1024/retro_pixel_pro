@@ -56,7 +56,7 @@ namespace AlpacaSound.RetroPixelPro
 		void CalculateNextPixel()
 		{
 			byte paletteIndex = GetClosestPaletteIndex();
-			pixelBuffer[calculatorProgress.progress] = new Color32(0, 0, 0, paletteIndex);
+			pixelBuffer[calculatorProgress.progress] = new Color32(paletteIndex, 0, 0, 255);
 			calculatorProgress.NextPixel();
 			progress = (float)calculatorProgress.progress / (float)totalPixels;
 		}

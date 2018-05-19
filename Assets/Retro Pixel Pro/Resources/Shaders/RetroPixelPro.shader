@@ -57,7 +57,7 @@ Shader "AlpacaSound/RetroPixelPro"
                 inputColor = saturate(inputColor);
                 int colorsteps = _Colormap_TexelSize.z;
                 fixed4 colorInColormap = tex3D(_Colormap, inputColor.rgb * ((colorsteps - 1.0) / colorsteps));
-                fixed paletteIndex1D = colorInColormap.a;
+                fixed paletteIndex1D = colorInColormap.r;
                 fixed4 result = tex2D(_Palette, fixed2(paletteIndex1D, 0));
                 fixed4 blended = lerp(inputColor, result, _Strength);
                 return blended;

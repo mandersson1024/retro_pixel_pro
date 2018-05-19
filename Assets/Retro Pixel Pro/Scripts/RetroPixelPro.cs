@@ -184,7 +184,7 @@ namespace AlpacaSound.RetroPixelPro
 		public void ApplyMap()
 		{
 			int colorsteps = ColormapUtils.GetColormapSize3D(colormap.preview);
-			colormapTexture = new Texture3D(colorsteps, colorsteps, colorsteps, TextureFormat.Alpha8, false);
+			colormapTexture = new Texture3D(colorsteps, colorsteps, colorsteps, TextureFormat.RGB24, false);
 			colormapTexture.filterMode = FilterMode.Point;
 			colormapTexture.wrapMode = TextureWrapMode.Clamp;
 			colormapTexture.SetPixels32(colormap.pixels);
