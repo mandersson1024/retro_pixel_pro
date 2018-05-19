@@ -11,7 +11,6 @@ namespace AlpacaSound.RetroPixelPro
 		public float progress;
 		public Color32[] pixelBuffer;
 
-		//Color32[] palette;
 		bool[] usedColors;
 		int numColors;
 		System.Action doneCallback;
@@ -23,7 +22,6 @@ namespace AlpacaSound.RetroPixelPro
 
 		public ColormapCalculator(bool preview, Color32[] palette, bool[] usedColors, int numColors, System.Action doneCallback)
 		{
-			//this.palette = palette;
 			this.usedColors = usedColors;
 			this.doneCallback = doneCallback;
 			this.numColors = numColors;
@@ -93,8 +91,6 @@ namespace AlpacaSound.RetroPixelPro
 					}
 				}
 			}
-
-			//Debug.Log("closestIndex=" + closestIndex);
 
 			return (byte)closestIndex;
 		}
