@@ -27,7 +27,7 @@ namespace AlpacaSound.RetroPixelPro
 
 		public Vector3 GetRGBCoordinate()
 		{
-			return new Vector3(color.r + 0.5f, color.g + 0.5f, color.b + 0.5f) / colorsteps;
+			return ColormapUtils.GetColorstepPosition(color, colorsteps);
 		}
 
 		public bool IsDone()
