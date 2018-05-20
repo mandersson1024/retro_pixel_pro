@@ -51,8 +51,9 @@ Shader "AlpacaSound/RetroPixelPro"
             float4 _Colormap_TexelSize;
             sampler2D _Palette;
             sampler2D _BlueNoise;
-            half _Opacity;
-            half _Dither;
+            float4 _BlueNoise_TexelSize;
+            fixed _Opacity;
+            fixed _Dither;
 
             fixed4 frag (v2f i) : SV_Target
             {
@@ -66,15 +67,24 @@ Shader "AlpacaSound/RetroPixelPro"
                 fixed4 colorInColormap = tex3D(_Colormap, inputColor.rgb * ((colorsteps - 1.0) / colorsteps));
 
                 //
-                // palette lookup
-                //
-                fixed paletteIndex1D = colorInColormap.r;
-                fixed4 result = tex2D(_Palette, fixed2(paletteIndex1D, 0));
-
-                //
                 // dither
                 //
-                result = result * _Dither;
+                fixed paletteIndex;
+                fixed blend = colorInColormap.b;
+                fixed blueNoiseSample = tex2D(_BlueNoise, i.vertex.xy / _BlueNoise_TexelSize.z).r;
+                if (blend * _Dither > blueNoiseSample)
+                {
+                    paletteIndex = colorInColormap.g;
+                }
+                else
+                {
+                    paletteIndex = colorInColormap.r;
+                }
+
+                //
+                // palette lookup
+                //
+                fixed4 result = tex2D(_Palette, fixed2(paletteIndex, 0));
 
                 //
                 // opacity

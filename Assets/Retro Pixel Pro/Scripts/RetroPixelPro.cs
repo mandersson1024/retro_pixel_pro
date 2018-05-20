@@ -49,6 +49,7 @@ namespace AlpacaSound.RetroPixelPro
 		Texture2D colormapPalette;
 		Material m_material = null;
 
+		/*
 		public Material material
 		{
 			get
@@ -66,6 +67,40 @@ namespace AlpacaSound.RetroPixelPro
 
 					m_material = new Material(shader);
 					m_material.hideFlags = HideFlags.DontSave;
+				}
+
+				return m_material;
+			}
+		}
+		*/
+
+		public Material material
+		{
+			get
+			{
+				if (m_material == null)
+				{
+					string shaderName = "AlpacaSound/RetroPixelPro";
+					Shader shader = Shader.Find(shaderName);
+
+					if (shader == null)
+					{
+						Debug.LogWarning("Shader '" + shaderName + "' not found. Was it deleted?");
+						enabled = false;
+					}
+
+					m_material = new Material(shader);
+					m_material.hideFlags = HideFlags.DontSave;
+
+					Texture2D texture = Resources.Load("RetroPixelProResources/Textures/blue_noise") as Texture2D;
+
+					if (texture == null)
+					{
+						Debug.LogWarning("RetroPixelProResources/Textures/blue_noise.png not found. Was it moved or deleted?");
+					}
+
+					m_material.SetTexture("_BlueNoise", texture);
+
 				}
 
 				return m_material;
@@ -189,9 +224,11 @@ namespace AlpacaSound.RetroPixelPro
 		public void ApplyMap()
 		{
 			int colorsteps = ColormapUtils.GetColormapSize3D(colormap.preview);
-			colormapTexture = new Texture3D(colorsteps, colorsteps, colorsteps, TextureFormat.RGB24, false);
-			colormapTexture.filterMode = FilterMode.Point;
-			colormapTexture.wrapMode = TextureWrapMode.Clamp;
+			colormapTexture = new Texture3D(colorsteps, colorsteps, colorsteps, TextureFormat.RGB24, false)
+			{
+				filterMode = FilterMode.Point,
+				wrapMode = TextureWrapMode.Clamp
+			};
 			colormapTexture.SetPixels32(colormap.pixels);
 			colormapTexture.Apply();
 			material.SetTexture("_Colormap", colormapTexture);

@@ -15,7 +15,7 @@ namespace AlpacaSound.RetroPixelPro
 		{
 			byte r = (byte)paletteIndex1;
 			byte g = (byte)paletteIndex2;
-			byte b = (byte)127;
+			byte b = (byte)(blend * 255);
 
 			return new Color32(r, g, b, 255);
 		}

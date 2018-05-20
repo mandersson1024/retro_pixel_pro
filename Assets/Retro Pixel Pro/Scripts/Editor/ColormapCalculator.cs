@@ -103,7 +103,8 @@ namespace AlpacaSound.RetroPixelPro
 			ColormapValue value = new ColormapValue
 			{
 				paletteIndex1 = closestIndex,
-				paletteIndex2 = closestIndex
+				paletteIndex2 = 0,
+				blend = 0.5f
 			};
 
 			return value;
