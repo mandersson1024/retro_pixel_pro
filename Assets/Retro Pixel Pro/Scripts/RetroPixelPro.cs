@@ -37,6 +37,8 @@ namespace AlpacaSound.RetroPixelPro
 		/// </summary>
 		public float opacity = 1;
 
+		public float dither = 1;
+
 		/// <summary>
 		/// Contains palette and pre-computed color data.
 		/// </summary>
@@ -101,6 +103,7 @@ namespace AlpacaSound.RetroPixelPro
 			//resolution.y = Screen.height;
 			pixelSize = 3;
 			opacity = 1;
+			dither = 1;
 			colormap = null;
 		}
 
@@ -135,6 +138,7 @@ namespace AlpacaSound.RetroPixelPro
 			resolution.y = (int)Mathf.Clamp(resolution.y, 1, 16384);
 
 			opacity = Mathf.Clamp01(opacity);
+			dither = Mathf.Clamp01(dither);
 
 			RenderTexture scaled = RenderTexture.GetTemporary((int)resolution.x, (int)resolution.y);
 			scaled.filterMode = FilterMode.Point;
@@ -145,7 +149,8 @@ namespace AlpacaSound.RetroPixelPro
 			}
 			else
 			{
-				material.SetFloat("_Strength", opacity);
+				material.SetFloat("_Opacity", opacity);
+				material.SetFloat("_Dither", dither);
 				Graphics.Blit(src, scaled, material);
 			}
 

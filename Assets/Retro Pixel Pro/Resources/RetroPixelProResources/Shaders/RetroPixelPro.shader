@@ -6,7 +6,9 @@ Shader "AlpacaSound/RetroPixelPro"
         _MainTex ("Texture", 2D) = "" {}
         _Colormap ("Colormap", 3D) = "" {}
         _Palette ("Palette", 2D) = "" {}
-        _Strength ("Strength", Range(0.0, 1.0)) = 1.0
+        _BlueNoise ("BlueNoise", 2D) = "" {}
+        _Opacity ("Opacity", Range(0.0, 1.0)) = 1.0
+        _Dither ("Dither", Range(0.0, 1.0)) = 1.0
     }
 
     SubShader
@@ -48,19 +50,38 @@ Shader "AlpacaSound/RetroPixelPro"
             sampler3D _Colormap;
             float4 _Colormap_TexelSize;
             sampler2D _Palette;
-            float _Strength;
-
+            sampler2D _BlueNoise;
+            half _Opacity;
+            half _Dither;
 
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 inputColor = tex2D(_MainTex, i.uv);
                 inputColor = saturate(inputColor);
+
+                //
+                // colormap lookup
+                //
                 int colorsteps = _Colormap_TexelSize.z;
                 fixed4 colorInColormap = tex3D(_Colormap, inputColor.rgb * ((colorsteps - 1.0) / colorsteps));
+
+                //
+                // palette lookup
+                //
                 fixed paletteIndex1D = colorInColormap.r;
                 fixed4 result = tex2D(_Palette, fixed2(paletteIndex1D, 0));
-                fixed4 blended = lerp(inputColor, result, _Strength);
-                return blended;
+
+                //
+                // dither
+                //
+                result = result * _Dither;
+
+                //
+                // opacity
+                //
+                result = lerp(inputColor, result, _Opacity);
+
+                return result;
             }
 
 
