@@ -63,11 +63,23 @@ namespace AlpacaSound.RetroPixelPro
 		}
 
 
-		static public Vector3 FindNearestPointOnLine(Vector3 lineStart, Vector3 lineEnd, Vector3 otherPoint)
+		static public Vector3 ProjectPointOnLine(Vector3 linepoint1, Vector3 linepoint2, Vector3 point)
 		{
-			return Vector3.zero;
+			Vector3 lineDirection = (linepoint2 - linepoint1).normalized;
+			Vector3 v = point - linepoint1;
+			float d = Vector3.Dot(v, lineDirection);
+
+			return linepoint1 + lineDirection * d;
 		}
 
+		static public bool PointIsInsideSegment(Vector3 segmentStart, Vector3 segmentEnd, Vector3 point)
+		{
+			float length = Vector3.Distance(segmentStart, segmentEnd);
+			float distanceToStart = Vector3.Distance(point, segmentStart);
+			float distanceToEnd = Vector3.Distance(point, segmentEnd);
+
+			return (distanceToStart < length) && (distanceToEnd < length);
+		}
 
 	}
 }

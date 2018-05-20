@@ -72,7 +72,7 @@ Shader "AlpacaSound/RetroPixelPro"
                 fixed paletteIndex;
                 fixed blend = colorInColormap.b;
                 fixed blueNoiseSample = tex2D(_BlueNoise, i.vertex.xy / _BlueNoise_TexelSize.z).r;
-                if (blend * _Dither > blueNoiseSample)
+                if (blend /* * _Dither */  >= blueNoiseSample)
                 {
                     paletteIndex = colorInColormap.g;
                 }

@@ -11,6 +11,7 @@ namespace AlpacaSound.RetroPixelPro
 		public float progress;
 		public Color32[] pixelBuffer;
 
+		Color32[] palette;
 		bool[] usedColors;
 		int numColors;
 		System.Action doneCallback;
@@ -22,6 +23,7 @@ namespace AlpacaSound.RetroPixelPro
 
 		public ColormapCalculator(bool preview, Color32[] palette, bool[] usedColors, int numColors, System.Action doneCallback)
 		{
+			this.palette = palette;
 			this.usedColors = usedColors;
 			this.doneCallback = doneCallback;
 			this.numColors = numColors;
@@ -98,14 +100,63 @@ namespace AlpacaSound.RetroPixelPro
 
 		ColormapValue CalculateColormapValue()
 		{
-			byte closestIndex = GetClosestPaletteIndex();
+			Vector3 sourceRGB = calculatorProgress.GetRGBCoordinate();
+			byte mainPaletteIndex = GetClosestPaletteIndex();
+
+			if (palette[mainPaletteIndex].Equals(calculatorProgress.color))
+			{
+				return new ColormapValue
+				{
+					paletteIndex1 = mainPaletteIndex,
+					paletteIndex2 = mainPaletteIndex,
+					blend = 0
+				};
+			}
+
+			Vector3 mainRGB = paletteRGBCoordinates[mainPaletteIndex];
+
+			float closestDistance = float.MaxValue;
+			int closestIndex = -1;
+			float blend = 0;
+
+			for (int i = 0; i < numColors; ++i)
+			{
+				if (usedColors[i] && i != mainPaletteIndex)
+				{
+					Vector3 paletteRGB = paletteRGBCoordinates[i];
+					Vector3 projected = ColormapUtils.ProjectPointOnLine(mainRGB, paletteRGB, sourceRGB);
+
+					if (ColormapUtils.PointIsInsideSegment(mainRGB, paletteRGB, projected))
+					{
+						float distance = Vector3.Distance(mainRGB, projected);
+
+						if (distance < closestDistance)
+						{
+							closestDistance = distance;
+							closestIndex = i;
+							blend = (mainRGB == paletteRGB) ? 0 : closestDistance / Vector3.Distance(mainRGB, paletteRGB);
+						}
+					}
+				}
+			}
+
+			if (closestIndex == -1)
+			{
+				closestIndex = mainPaletteIndex;
+				blend = 0;
+			}
 
 			ColormapValue value = new ColormapValue
 			{
-				paletteIndex1 = closestIndex,
-				paletteIndex2 = 0,
-				blend = 0.5f
+				paletteIndex1 = mainPaletteIndex,
+				paletteIndex2 = closestIndex,
+				blend = Mathf.Clamp01(blend)
 			};
+
+			if (calculatorProgress.color.r == calculatorProgress.color.g && calculatorProgress.color.b == calculatorProgress.color.g)
+			{
+				Debug.Log("color=" + calculatorProgress.color + ", index1=" + value.paletteIndex1 + ", index2=" + value.paletteIndex2 + ", blend=" + value.blend);
+			}
 
 			return value;
 		}
