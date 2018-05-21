@@ -117,6 +117,7 @@ namespace AlpacaSound.RetroPixelPro
 
 			float closestDistance = float.MaxValue;
 			int closestIndex = -1;
+			float closestSegmentLength = float.MaxValue;
 			float blend = 0;
 
 			for (int i = 0; i < numColors; ++i)
@@ -128,13 +129,25 @@ namespace AlpacaSound.RetroPixelPro
 
 					if (ColormapUtils.PointIsInsideSegment(mainRGB, paletteRGB, projected))
 					{
-						float distance = Vector3.Distance(mainRGB, projected);
+						float distance = Vector3.Distance(sourceRGB, projected);
+						float segmentLength = Vector3.Distance(mainRGB, paletteRGB);
 
 						if (distance < closestDistance)
 						{
 							closestDistance = distance;
+							closestSegmentLength = segmentLength;
 							closestIndex = i;
-							blend = (mainRGB == paletteRGB) ? 0 : closestDistance / Vector3.Distance(mainRGB, paletteRGB);
+							blend = Mathf.Approximately(segmentLength, 0) ? 0 : Vector3.Distance(projected, mainRGB) / segmentLength;
+						}
+						else if (Mathf.Approximately(distance, closestDistance))
+						{
+							if (segmentLength < closestSegmentLength)
+							{
+								closestDistance = distance;
+								closestSegmentLength = segmentLength;
+								closestIndex = i;
+								blend = Mathf.Approximately(segmentLength, 0) ? 0 : Vector3.Distance(projected, mainRGB) / segmentLength;
+							}
 						}
 					}
 				}
