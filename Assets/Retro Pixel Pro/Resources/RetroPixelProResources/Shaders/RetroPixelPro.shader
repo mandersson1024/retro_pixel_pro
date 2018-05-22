@@ -69,14 +69,16 @@ Shader "AlpacaSound/RetroPixelPro"
                 //
                 // dither
                 //
-                fixed paletteIndex;
-                fixed blend = colorInColormap.b;
                 fixed blueNoiseSample = tex2D(_BlueNoise, i.vertex.xy / _BlueNoise_TexelSize.z).r;
 
                 if (Luminance(colorInColormap.r) > Luminance(colorInColormap.g))
                 {
+                    // fix luminance banding problem
                     blueNoiseSample = 1 - blueNoiseSample;
                 }
+
+                fixed paletteIndex;
+                fixed blend = colorInColormap.b;
 
                 if (blend + _Dither - 1  >= blueNoiseSample)
                 {
