@@ -132,7 +132,7 @@ namespace AlpacaSound.RetroPixelPro
 						float distance = Vector3.Distance(sourceRGB, projected);
 						float segmentLength = Vector3.Distance(mainRGB, paletteRGB);
 
-						if (distance < closestDistance)
+						if (segmentLength < closestSegmentLength)
 						{
 							closestDistance = distance;
 							closestSegmentLength = segmentLength;
@@ -141,7 +141,7 @@ namespace AlpacaSound.RetroPixelPro
 						}
 						else if (Mathf.Approximately(distance, closestDistance))
 						{
-							if (segmentLength < closestSegmentLength)
+							if (distance < closestDistance)
 							{
 								closestDistance = distance;
 								closestSegmentLength = segmentLength;
