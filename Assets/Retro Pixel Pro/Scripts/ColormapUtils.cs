@@ -34,7 +34,30 @@ namespace AlpacaSound.RetroPixelPro
 		}
 
 
-		static public Color32 IndexToColor(int colorsteps, int index)
+		public static Color32 IndexToColor(int colorsteps, int index)
+		{
+			int stepLength = 256 / colorsteps;
+
+			int r = stepLength * (index % colorsteps);
+			int g = stepLength * ((index / colorsteps) % colorsteps);
+			int b = stepLength * (index / (colorsteps * colorsteps));
+
+			Color32 color32 = new Color32((byte)r, (byte)g, (byte)b, 0);
+
+			float floatstep = 256f / (stepLength * (colorsteps - 1));
+
+			Color color = color32;
+
+			color.r = Mathf.Clamp01(floatstep * color.r);
+			color.g = Mathf.Clamp01(floatstep * color.g);
+			color.b = Mathf.Clamp01(floatstep * color.b);
+
+			return color;
+		}
+
+
+		/*
+		public static Color32 IndexToColor(int colorsteps, int index)
 		{
 			int stepLength = 256 / colorsteps;
 
@@ -44,26 +67,16 @@ namespace AlpacaSound.RetroPixelPro
 
 			return new Color32((byte)r, (byte)g, (byte)b, 255);
 		}
+		*/
 
 
-
-		static public Vector3 GetColorstepPosition(Color32 color, int colorsteps)
+		public static Vector3 ColorToVector(Color color)
 		{
-			int stepLength = 256 / colorsteps;
-			float offset = stepLength / 2f;
-
-			Vector3 v = new Vector3
-			{
-				x = ((color.r / stepLength) * stepLength + offset) / 256f,
-				y = ((color.g / stepLength) * stepLength + offset) / 256f,
-				z = ((color.b / stepLength) * stepLength + offset) / 256f
-			};
-
-			return v;
+			return new Vector3(color.r, color.g, color.b);
 		}
 
 
-		static public Vector3 ProjectPointOnLine(Vector3 linepoint1, Vector3 linepoint2, Vector3 point)
+		public static Vector3 ProjectPointOnLine(Vector3 linepoint1, Vector3 linepoint2, Vector3 point)
 		{
 			Vector3 lineDirection = (linepoint2 - linepoint1).normalized;
 			Vector3 v = point - linepoint1;
@@ -72,7 +85,7 @@ namespace AlpacaSound.RetroPixelPro
 			return linepoint1 + lineDirection * d;
 		}
 
-		static public bool PointIsInsideSegment(Vector3 segmentStart, Vector3 segmentEnd, Vector3 point)
+		public static bool PointIsInsideSegment(Vector3 segmentStart, Vector3 segmentEnd, Vector3 point)
 		{
 			float length = Vector3.Distance(segmentStart, segmentEnd);
 			float distanceToStart = Vector3.Distance(point, segmentStart);

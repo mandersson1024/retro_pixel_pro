@@ -9,74 +9,26 @@ public class ColormapCalculatorProgressTest
 {
 
 	[Test]
-	public void TestColorsteps1()
+	public void TestIndexToColor2()
 	{
-		Vector3 rgb;
-
-		rgb = ColormapUtils.GetColorstepPosition(new Color32(0, 0, 0, 0), 1);
-		Assert.AreEqual(0.5f, rgb.x, Mathf.Epsilon);
-		Assert.AreEqual(0.5f, rgb.y, Mathf.Epsilon);
-		Assert.AreEqual(0.5f, rgb.z, Mathf.Epsilon);
-
-		rgb = ColormapUtils.GetColorstepPosition(new Color32(10, 10, 10, 0), 1);
-		Assert.AreEqual(0.5f, rgb.x, Mathf.Epsilon);
-		Assert.AreEqual(0.5f, rgb.y, Mathf.Epsilon);
-		Assert.AreEqual(0.5f, rgb.z, Mathf.Epsilon);
-
-		rgb = ColormapUtils.GetColorstepPosition(new Color32(245, 245, 245, 0), 1);
-		Assert.AreEqual(0.5f, rgb.x, Mathf.Epsilon);
-		Assert.AreEqual(0.5f, rgb.y, Mathf.Epsilon);
-		Assert.AreEqual(0.5f, rgb.z, Mathf.Epsilon);
-
-		rgb = ColormapUtils.GetColorstepPosition(new Color32(255, 255, 255, 0), 1);
-		Assert.AreEqual(0.5f, rgb.x, Mathf.Epsilon);
-		Assert.AreEqual(0.5f, rgb.y, Mathf.Epsilon);
-		Assert.AreEqual(0.5f, rgb.z, Mathf.Epsilon);
+		Assert.AreEqual(new Color32(0, 0, 0, 0), ColormapUtils.IndexToColor(2, 0));
+		Assert.AreEqual(new Color32(255, 0, 0, 0), ColormapUtils.IndexToColor(2, 1));
+		Assert.AreEqual(new Color32(0, 255, 0, 0), ColormapUtils.IndexToColor(2, 2));
+		Assert.AreEqual(new Color32(255, 255, 0, 0), ColormapUtils.IndexToColor(2, 3));
+		Assert.AreEqual(new Color32(0, 0, 255, 0), ColormapUtils.IndexToColor(2, 4));
+		Assert.AreEqual(new Color32(255, 0, 255, 0), ColormapUtils.IndexToColor(2, 5));
+		Assert.AreEqual(new Color32(0, 255, 255, 0), ColormapUtils.IndexToColor(2, 6));
+		Assert.AreEqual(new Color32(255, 255, 255, 0), ColormapUtils.IndexToColor(2, 7));
 	}
-
 
 	[Test]
-	public void TestColorsteps2()
+	public void TestIndexToColor4()
 	{
-		Vector3 rgb;
-
-		rgb = ColormapUtils.GetColorstepPosition(new Color32(0, 0, 0, 0), 2);
-		Assert.AreEqual(0.25f, rgb.x, Mathf.Epsilon);
-		Assert.AreEqual(0.25f, rgb.y, Mathf.Epsilon);
-		Assert.AreEqual(0.25f, rgb.z, Mathf.Epsilon);
-
-		rgb = ColormapUtils.GetColorstepPosition(new Color32(10, 10, 10, 0), 2);
-		Assert.AreEqual(0.25f, rgb.x, Mathf.Epsilon);
-		Assert.AreEqual(0.25f, rgb.y, Mathf.Epsilon);
-		Assert.AreEqual(0.25f, rgb.z, Mathf.Epsilon);
-
-		rgb = ColormapUtils.GetColorstepPosition(new Color32(245, 245, 245, 0), 2);
-		Assert.AreEqual(0.75f, rgb.x, Mathf.Epsilon);
-		Assert.AreEqual(0.75f, rgb.y, Mathf.Epsilon);
-		Assert.AreEqual(0.75f, rgb.z, Mathf.Epsilon);
-
-		rgb = ColormapUtils.GetColorstepPosition(new Color32(255, 255, 255, 0), 2);
-		Assert.AreEqual(0.75f, rgb.x, Mathf.Epsilon);
-		Assert.AreEqual(0.75f, rgb.y, Mathf.Epsilon);
-		Assert.AreEqual(0.75f, rgb.z, Mathf.Epsilon);
+		Assert.AreEqual(new Color32(0, 0, 0, 0), ColormapUtils.IndexToColor(4, 0));
+		Assert.AreEqual(new Color32(85, 0, 0, 0), ColormapUtils.IndexToColor(4, 1));
+		Assert.AreEqual(new Color32(170, 0, 0, 0), ColormapUtils.IndexToColor(4, 2));
+		Assert.AreEqual(new Color32(255, 0, 0, 0), ColormapUtils.IndexToColor(4, 3));
+		Assert.AreEqual(new Color32(255, 255, 255, 0), ColormapUtils.IndexToColor(4, 63));
 	}
-
-
-	[Test]
-	public void TestColorsteps256()
-	{
-		Vector3 rgb;
-
-		rgb = ColormapUtils.GetColorstepPosition(new Color32(0, 0, 0, 0), 256);
-		Assert.AreEqual(0.5f / 256f, rgb.x, Mathf.Epsilon);
-		Assert.AreEqual(0.5f / 256f, rgb.y, Mathf.Epsilon);
-		Assert.AreEqual(0.5f / 256f, rgb.z, Mathf.Epsilon);
-
-		rgb = ColormapUtils.GetColorstepPosition(new Color32(255, 255, 255, 0), 256);
-		Assert.AreEqual(1f - 0.5f / 256f, rgb.x, Mathf.Epsilon);
-		Assert.AreEqual(1f - 0.5f / 256f, rgb.y, Mathf.Epsilon);
-		Assert.AreEqual(1f - 0.5f / 256f, rgb.z, Mathf.Epsilon);
-	}
-
 
 }

@@ -9,7 +9,7 @@ namespace AlpacaSound.RetroPixelPro
 	{
 		public bool preview;
 
-		[Range(1, 256)]
+		[Range(2, 256)]
 		public int numberOfColors;
 
 		[HideInInspector]
@@ -55,7 +55,12 @@ namespace AlpacaSound.RetroPixelPro
 			{
 				if (i < colors.Count)
 				{
+					//Debug.Log("setting palette color " + i + " to: " + colors[i]);
+
 					palette[i] = colors[i];
+
+					Debug.Log("did set palette color " + i + " to: " + palette[i]);
+
 					usedColors[i] = true;
 				}
 			}

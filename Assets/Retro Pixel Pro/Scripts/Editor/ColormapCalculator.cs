@@ -39,7 +39,7 @@ namespace AlpacaSound.RetroPixelPro
 				if (usedColors[i])
 				{
 					Color32 paletteColor = palette[i];
-					paletteRGBCoordinates[i] = ColormapUtils.GetColorstepPosition(paletteColor, 256);
+					paletteRGBCoordinates[i] = ColormapUtils.ColorToVector(paletteColor);
 				}
 			}
 		}
@@ -75,7 +75,7 @@ namespace AlpacaSound.RetroPixelPro
 
 		byte GetClosestPaletteIndex()
 		{
-			Vector3 sourceRGB = calculatorProgress.GetRGBCoordinate();
+			Vector3 sourceRGB = ColormapUtils.ColorToVector(calculatorProgress.color);
 			float closestDistance = float.MaxValue;
 			int closestIndex = 0;
 
@@ -100,7 +100,7 @@ namespace AlpacaSound.RetroPixelPro
 
 		ColormapValue CalculateColormapValue()
 		{
-			Vector3 sourceRGB = calculatorProgress.GetRGBCoordinate();
+			Vector3 sourceRGB = ColormapUtils.ColorToVector(calculatorProgress.color);
 			byte mainPaletteIndex = GetClosestPaletteIndex();
 
 			if (palette[mainPaletteIndex].Equals(calculatorProgress.color))

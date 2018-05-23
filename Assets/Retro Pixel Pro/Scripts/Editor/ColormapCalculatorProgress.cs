@@ -14,8 +14,8 @@ namespace AlpacaSound.RetroPixelPro
 		public ColormapCalculatorProgress(int colorsteps)
 		{
 			this.colorsteps = colorsteps;
-			color = new Color32(0, 0, 0, 0);
 			progress = 0;
+			color = ColormapUtils.IndexToColor(colorsteps, 0);
 		}
 
 		public void NextPixel()
@@ -24,11 +24,6 @@ namespace AlpacaSound.RetroPixelPro
 			color = ColormapUtils.IndexToColor(colorsteps, progress);
 		}
 
-
-		public Vector3 GetRGBCoordinate()
-		{
-			return ColormapUtils.GetColorstepPosition(color, colorsteps);
-		}
 
 		public bool IsDone()
 		{

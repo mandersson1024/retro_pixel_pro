@@ -64,7 +64,8 @@ Shader "AlpacaSound/RetroPixelPro"
                 // colormap lookup
                 //
                 int colorsteps = _Colormap_TexelSize.z;
-                fixed4 colorInColormap = tex3D(_Colormap, inputColor.rgb * ((colorsteps - 1.0) / colorsteps));
+                //fixed4 colorInColormap = tex3D(_Colormap, inputColor.rgb * ((colorsteps - 1.0) / colorsteps));
+                fixed4 colorInColormap = tex3D(_Colormap, inputColor.rgb);
 
                 //
                 // dither
