@@ -6,7 +6,7 @@ using UnityEngine;
 namespace AlpacaSound.RetroPixelPro
 {
 
-	public class ColorBucket
+	public class MedianCutColorBucket
 	{
 		float redMin;
 		float redMax;
@@ -25,7 +25,7 @@ namespace AlpacaSound.RetroPixelPro
 		Color32[] colors;
 
 
-		public ColorBucket(Color32[] colors)
+		public MedianCutColorBucket(Color32[] colors)
 		{
 			this.colors = colors;
 			FindRanges();
@@ -94,7 +94,7 @@ namespace AlpacaSound.RetroPixelPro
 		}
 
 
-		public List<ColorBucket> MedianCut()
+		public List<MedianCutColorBucket> MedianCut()
 		{
 			int length = colors.Length / 2;
 
@@ -104,10 +104,10 @@ namespace AlpacaSound.RetroPixelPro
 			System.Array.Copy(colors, lowColors, length);
 			System.Array.Copy(colors, length, highColors, 0, length);
 
-			List<ColorBucket> result = new List<ColorBucket>
+			List<MedianCutColorBucket> result = new List<MedianCutColorBucket>
 			{
-				new ColorBucket(lowColors),
-				new ColorBucket(highColors)
+				new MedianCutColorBucket(lowColors),
+				new MedianCutColorBucket(highColors)
 			};
 
 			return result;

@@ -121,7 +121,8 @@ namespace AlpacaSound.RetroPixelPro
 				presetMenu.ShowAsContext();
 			}
 
-			DrawExtractPalette();
+			DrawExtractPaletteMedianCut();
+			DrawExtractPaletteKMeansClustering();
 
 			EditorGUILayout.Space();
 
@@ -133,9 +134,9 @@ namespace AlpacaSound.RetroPixelPro
 		}
 
 
-		void DrawExtractPalette()
+		void DrawExtractPaletteMedianCut()
 		{
-			if (GUILayout.Button("Extract Palette From Image", GUILayout.Width(200), GUILayout.Height(28)))
+			if (GUILayout.Button("Extract Palette From Image (MC)", GUILayout.Width(200), GUILayout.Height(28)))
 			{
 				if (paletteImagePath == null)
 				{
@@ -151,7 +152,33 @@ namespace AlpacaSound.RetroPixelPro
 				if (imagePath.Length > 0)
 				{
 					paletteImagePath = imagePath;
-					List<Color32> extractedPalette = MedianCut.PaletteExtractor.ExtractPalette(paletteImagePath, _target.numberOfColors);
+					List<Color32> extractedPalette = MedianCutPaletteExtractor.ExtractPalette(paletteImagePath, _target.numberOfColors);
+					_target.SetColors(extractedPalette);
+					dirty.forceDirty = true;
+				}
+			}
+		}
+
+
+		void DrawExtractPaletteKMeansClustering()
+		{
+			if (GUILayout.Button("Extract Palette From Image (KMC)", GUILayout.Width(200), GUILayout.Height(28)))
+			{
+				if (paletteImagePath == null)
+				{
+					paletteImagePath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
+				}
+
+				string imagePath = EditorUtility.OpenFilePanelWithFilters("Select Image File", paletteImagePath, new string[]
+					{
+						"JPG Image", "jpg",
+						"PNG Image", "png",
+					});
+
+				if (imagePath.Length > 0)
+				{
+					paletteImagePath = imagePath;
+					List<Color32> extractedPalette = KMeansPaletteExtractor.ExtractPalette(paletteImagePath, _target.numberOfColors);
 					_target.SetColors(extractedPalette);
 					dirty.forceDirty = true;
 				}

@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace AlpacaSound.RetroPixelPro.MedianCut
+namespace AlpacaSound.RetroPixelPro
 {
 
-	public class PaletteExtractor
+	public class MedianCutPaletteExtractor
 	{
-		public PaletteTree paletteTree;
+		public MedianCutPaletteTree paletteTree;
 
 
-		public PaletteExtractor(Texture2D texture)
+		public MedianCutPaletteExtractor(Texture2D texture)
 		{
-			ColorBucket bucket = new ColorBucket(texture.GetPixels32());
-			paletteTree = new PaletteTree(bucket, 0, 8);
+			MedianCutColorBucket bucket = new MedianCutColorBucket(texture.GetPixels32());
+			paletteTree = new MedianCutPaletteTree(bucket, 0, 8);
 		}
 
 
@@ -73,7 +73,7 @@ namespace AlpacaSound.RetroPixelPro.MedianCut
 			smalltex.ReadPixels(new Rect(0, 0, scaledWidth, scaledHeight), 0, 0);
 			RenderTexture.ReleaseTemporary(scaled);
 
-			PaletteExtractor extractor = new PaletteExtractor(smalltex);
+			MedianCutPaletteExtractor extractor = new MedianCutPaletteExtractor(smalltex);
 			List<Color32> extractedPalette = extractor.GetColors(numberOfColors);
 
 			return extractedPalette;
