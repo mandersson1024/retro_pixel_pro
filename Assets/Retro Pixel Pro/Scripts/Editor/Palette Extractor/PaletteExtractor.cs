@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace AlpacaSound.RetroPixelPro
+namespace AlpacaSound.RetroPixelPro.MedianCut
 {
 
 	public class PaletteExtractor
@@ -57,18 +57,20 @@ namespace AlpacaSound.RetroPixelPro
 			return colorIndex < (numColors - backupsNeeded);
 		}
 
+
 		public static List<Color32> ExtractPalette(string validImagePath, int numberOfColors)
 		{
 			byte[] fileData = System.IO.File.ReadAllBytes(validImagePath);
 			Texture2D tex = new Texture2D(2, 2);
 			tex.LoadImage(fileData);
 
-			int scaledSize = 128;
+			int scaledHeight = 128;
+			int scaledWidth = (128 * tex.width) / tex.height;
 
-			RenderTexture scaled = RenderTexture.GetTemporary(scaledSize, scaledSize);
+			RenderTexture scaled = RenderTexture.GetTemporary(scaledWidth, scaledHeight);
 			Graphics.Blit(tex, scaled);
-			Texture2D smalltex = new Texture2D(scaledSize, scaledSize);
-			smalltex.ReadPixels(new Rect(0, 0, scaledSize, scaledSize), 0, 0);
+			Texture2D smalltex = new Texture2D(scaledWidth, scaledHeight);
+			smalltex.ReadPixels(new Rect(0, 0, scaledWidth, scaledHeight), 0, 0);
 			RenderTexture.ReleaseTemporary(scaled);
 
 			PaletteExtractor extractor = new PaletteExtractor(smalltex);

@@ -151,7 +151,7 @@ namespace AlpacaSound.RetroPixelPro
 				if (imagePath.Length > 0)
 				{
 					paletteImagePath = imagePath;
-					List<Color32> extractedPalette = PaletteExtractor.ExtractPalette(paletteImagePath, _target.numberOfColors);
+					List<Color32> extractedPalette = MedianCut.PaletteExtractor.ExtractPalette(paletteImagePath, _target.numberOfColors);
 					_target.SetColors(extractedPalette);
 					dirty.forceDirty = true;
 				}
