@@ -219,10 +219,11 @@ namespace AlpacaSound.RetroPixelPro
 						{
 							Color oldColor = _target.palette[i + j];
 							Color newColor = EditorGUILayout.ColorField(GUIContent.none, color, false, false, false, GUILayout.Width(40), GUILayout.Height(25));
-							_target.palette[i + j] = newColor;
 
-							if (oldColor != newColor)
+							if (!dirty.forceDirty && oldColor != newColor)
 							{
+								Debug.Log("color " + (i + j) + " has changed");
+								_target.palette[i + j] = newColor;
 								dirty.forceDirty = true;
 							}
 						}

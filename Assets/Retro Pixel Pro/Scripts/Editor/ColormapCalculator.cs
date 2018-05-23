@@ -166,10 +166,12 @@ namespace AlpacaSound.RetroPixelPro
 				blend = Mathf.Clamp01(blend)
 			};
 
+			/*
 			if (calculatorProgress.color.r == calculatorProgress.color.g && calculatorProgress.color.b == calculatorProgress.color.g)
 			{
 				Debug.Log("color=" + calculatorProgress.color + ", index1=" + value.paletteIndex1 + ", index2=" + value.paletteIndex2 + ", blend=" + value.blend);
 			}
+			*/
 
 			return value;
 		}
