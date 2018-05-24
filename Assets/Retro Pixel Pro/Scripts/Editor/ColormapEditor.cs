@@ -136,7 +136,7 @@ namespace AlpacaSound.RetroPixelPro
 
 		void DrawExtractPaletteMedianCut()
 		{
-			if (GUILayout.Button("Extract Palette From Image (MC)", GUILayout.Width(200), GUILayout.Height(28)))
+			if (GUILayout.Button("Extract Palette From Image (Old)", GUILayout.Width(200), GUILayout.Height(28)))
 			{
 				if (paletteImagePath == null)
 				{
@@ -162,7 +162,7 @@ namespace AlpacaSound.RetroPixelPro
 
 		void DrawExtractPaletteKMeansClustering()
 		{
-			if (GUILayout.Button("Extract Palette From Image (KMC)", GUILayout.Width(200), GUILayout.Height(28)))
+			if (GUILayout.Button("Extract Palette From Image (New)", GUILayout.Width(200), GUILayout.Height(28)))
 			{
 				if (paletteImagePath == null)
 				{
@@ -178,7 +178,7 @@ namespace AlpacaSound.RetroPixelPro
 				if (imagePath.Length > 0)
 				{
 					paletteImagePath = imagePath;
-					List<Color32> extractedPalette = KMeansPaletteExtractor.ExtractPalette(paletteImagePath, _target.numberOfColors);
+					List<Color32> extractedPalette = MedianCut.PaletteExtractor.ExtractPalette(paletteImagePath, _target.numberOfColors);
 					_target.SetColors(extractedPalette);
 					dirty.forceDirty = true;
 				}
