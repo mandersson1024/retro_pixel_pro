@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace AlpacaSound.RetroPixelPro.MedianCut
+namespace AlpacaSound.RetroPixelPro
 {
 
 	public class PaletteExtractor

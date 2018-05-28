@@ -122,7 +122,6 @@ namespace AlpacaSound.RetroPixelPro
 			}
 
 			DrawExtractPaletteMedianCut();
-			DrawExtractPaletteKMeansClustering();
 
 			EditorGUILayout.Space();
 
@@ -136,7 +135,7 @@ namespace AlpacaSound.RetroPixelPro
 
 		void DrawExtractPaletteMedianCut()
 		{
-			if (GUILayout.Button("Extract Palette From Image (Old)", GUILayout.Width(200), GUILayout.Height(28)))
+			if (GUILayout.Button("Extract Palette From Image", GUILayout.Width(200), GUILayout.Height(28)))
 			{
 				if (paletteImagePath == null)
 				{
@@ -152,33 +151,7 @@ namespace AlpacaSound.RetroPixelPro
 				if (imagePath.Length > 0)
 				{
 					paletteImagePath = imagePath;
-					List<Color32> extractedPalette = MedianCutPaletteExtractor.ExtractPalette(paletteImagePath, _target.numberOfColors);
-					_target.SetColors(extractedPalette);
-					dirty.forceDirty = true;
-				}
-			}
-		}
-
-
-		void DrawExtractPaletteKMeansClustering()
-		{
-			if (GUILayout.Button("Extract Palette From Image (New)", GUILayout.Width(200), GUILayout.Height(28)))
-			{
-				if (paletteImagePath == null)
-				{
-					paletteImagePath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
-				}
-
-				string imagePath = EditorUtility.OpenFilePanelWithFilters("Select Image File", paletteImagePath, new string[]
-					{
-						"JPG Image", "jpg",
-						"PNG Image", "png",
-					});
-
-				if (imagePath.Length > 0)
-				{
-					paletteImagePath = imagePath;
-					List<Color32> extractedPalette = MedianCut.PaletteExtractor.ExtractPalette(paletteImagePath, _target.numberOfColors);
+					List<Color32> extractedPalette = PaletteExtractor.ExtractPalette(paletteImagePath, _target.numberOfColors);
 					_target.SetColors(extractedPalette);
 					dirty.forceDirty = true;
 				}
@@ -257,7 +230,8 @@ namespace AlpacaSound.RetroPixelPro
 						else
 						{
 							EditorGUI.BeginDisabledGroup(true);
-							EditorGUILayout.ColorField(GUIContent.none, DisabledColor(color), false, false, false, GUILayout.Width(40), GUILayout.Height(25));
+							//EditorGUILayout.ColorField(GUIContent.none, DisabledColor(color), false, false, false, GUILayout.Width(40), GUILayout.Height(25));
+							EditorGUILayout.ColorField(GUIContent.none, color, false, false, false, GUILayout.Width(40), GUILayout.Height(25));
 							EditorGUI.EndDisabledGroup();
 						}
 					}
@@ -275,10 +249,12 @@ namespace AlpacaSound.RetroPixelPro
 		}
 
 
+		/*
 		Color DisabledColor(Color color)
 		{
 			return Color.Lerp(Color.white, color, 0.5f);
 		}
+		*/
 
 
 		public void StartUpdatingColormap()

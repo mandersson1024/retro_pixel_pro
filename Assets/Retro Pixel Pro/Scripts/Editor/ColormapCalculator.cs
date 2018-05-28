@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEditor;
 
+using UnityEngine.Assertions;
 
 namespace AlpacaSound.RetroPixelPro
 {
@@ -159,11 +160,13 @@ namespace AlpacaSound.RetroPixelPro
 				blend = 0;
 			}
 
+			blend = Mathf.Clamp(blend, 0, 0.5f);
+
 			ColormapValue value = new ColormapValue
 			{
 				paletteIndex1 = mainPaletteIndex,
 				paletteIndex2 = closestIndex,
-				blend = Mathf.Clamp01(blend)
+				blend = blend,
 			};
 
 			/*

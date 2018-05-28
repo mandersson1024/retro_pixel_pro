@@ -70,19 +70,20 @@ Shader "AlpacaSound/RetroPixelPro"
                 //
                 // dither
                 //
-                fixed blueNoiseValue = tex2D(_BlueNoise, i.vertex.xy / _BlueNoise_TexelSize.z).r;
-                blueNoiseValue = saturate(blueNoiseValue);
+                fixed random = tex2D(_BlueNoise, i.vertex.xy / _BlueNoise_TexelSize.z).r;
+                random = saturate(random);
 
                 if (Luminance(colorInColormap.r) > Luminance(colorInColormap.g))
                 {
                     // fix luminance banding problem
-                    blueNoiseValue = 1 - blueNoiseValue;
+                    random = 1 - random;
                 }
 
                 fixed paletteIndex;
                 fixed blend = colorInColormap.b;
+                float threshold = saturate((1 / _Dither) * (blend - 0.5 + (_Dither / 2)));
 
-                if (blend * _Dither > blueNoiseValue)
+                if (random < threshold)
                 {
                     paletteIndex = colorInColormap.g;
                 }

@@ -6,84 +6,79 @@ using UnityEngine;
 namespace AlpacaSound.RetroPixelPro
 {
 
-	public class MedianCutColorBucket
+	public class ColorBucket
 	{
-		float redMin;
-		float redMax;
-		float redRange;
-
-		float greenMin;
-		float greenMax;
-		float greenRange;
-
-		float blueMin;
-		float blueMax;
-		float blueRange;
-
-		public Color averageColor;
+		float redVariance;
+		float greenVariance;
+		float blueVariance;
 
 		Color32[] colors;
 
+		public Color averageColor;
 
-		public MedianCutColorBucket(Color32[] colors)
+
+		public ColorBucket(Color32[] colors)
 		{
 			this.colors = colors;
-			FindRanges();
-			SortOnBiggestRange();
+			FindAverage();
+			FindVariances();
 		}
 
-
-		public void FindRanges()
+		void FindAverage()
 		{
 			float redSum = 0;
 			float greenSum = 0;
 			float blueSum = 0;
 
-
-			redMin = 1;
-			redMax = 0;
-
-			greenMin = 1;
-			greenMax = 0;
-
-			blueMin = 1;
-			blueMax = 0;
-
 			for (int i = 0; i < colors.Length; ++i)
 			{
 				Color c = colors[i];
-
-				redMin = Mathf.Min(redMin, c.r);
-				redMax = Mathf.Max(redMax, c.r);
-
-				greenMin = Mathf.Min(greenMin, c.g);
-				greenMax = Mathf.Max(greenMax, c.g);
-
-				blueMin = Mathf.Min(blueMin, c.b);
-				blueMax = Mathf.Max(blueMax, c.b);
 
 				redSum += c.r;
 				greenSum += c.g;
 				blueSum += c.b;
 			}
 
-			redRange = redMax - redMin;
-			greenRange = greenMax - greenMin;
-			blueRange = blueMax - blueMin;
-
 			averageColor.r = Mathf.Clamp01(redSum / colors.Length);
 			averageColor.g = Mathf.Clamp01(greenSum / colors.Length);
 			averageColor.b = Mathf.Clamp01(blueSum / colors.Length);
 		}
 
-
-		public void SortOnBiggestRange()
+		void FindVariances()
 		{
-			if (redRange > greenRange && redRange > blueRange)
+			float redDistance = 0;
+			float greenDistance = 0;
+			float blueDistance = 0;
+
+			for (int i = 0; i < colors.Length; ++i)
+			{
+				Color c = colors[i];
+
+				redDistance += Mathf.Pow(c.r - averageColor.r, 2);
+				greenDistance += Mathf.Pow(c.g - averageColor.g, 2);
+				blueDistance += Mathf.Pow(c.b - averageColor.b, 2);
+			}
+
+			redVariance = redDistance / colors.Length;
+			greenVariance = greenDistance / colors.Length;
+			blueVariance = blueDistance / colors.Length;
+		}
+
+		public float BiggestVariance
+		{
+			get
+			{
+				return Mathf.Max(redVariance, greenVariance, blueVariance);
+			}
+		}
+
+		public void SortOnBiggestVarience()
+		{
+			if (redVariance > greenVariance && redVariance > blueVariance)
 			{
 				System.Array.Sort(colors, new RedComparer());
 			}
-			else if (greenRange > blueRange)
+			else if (greenVariance > blueVariance)
 			{
 				System.Array.Sort(colors, new GreenComparer());
 			}
@@ -94,8 +89,10 @@ namespace AlpacaSound.RetroPixelPro
 		}
 
 
-		public List<MedianCutColorBucket> MedianCut()
+		public List<ColorBucket> MedianCut()
 		{
+			SortOnBiggestVarience();
+
 			int length = colors.Length / 2;
 
 			Color32[] lowColors = new Color32[length];
@@ -104,10 +101,10 @@ namespace AlpacaSound.RetroPixelPro
 			System.Array.Copy(colors, lowColors, length);
 			System.Array.Copy(colors, length, highColors, 0, length);
 
-			List<MedianCutColorBucket> result = new List<MedianCutColorBucket>
+			List<ColorBucket> result = new List<ColorBucket>
 			{
-				new MedianCutColorBucket(lowColors),
-				new MedianCutColorBucket(highColors)
+				new ColorBucket(lowColors),
+				new ColorBucket(highColors)
 			};
 
 			return result;
@@ -121,9 +118,9 @@ namespace AlpacaSound.RetroPixelPro
 			s += "[ColorBucket: ";
 			s += "size=" + colors.Length + ", ";
 			s += "average=" + averageColor + ", ";
-			s += "reds=[" + redMin + "," + redMax + "] ";
-			s += "greens=[" + greenMin + "," + greenMax + "] ";
-			s += "blues=[" + blueMin + "," + blueMax + "]";
+			s += "red variance=[" + redVariance + "] ";
+			s += "green variance=[" + greenVariance + "] ";
+			s += "blue variance=[" + blueVariance + "] ";
 
 			return s;
 		}
