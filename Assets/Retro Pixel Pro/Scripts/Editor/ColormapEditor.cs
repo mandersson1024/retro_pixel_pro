@@ -19,7 +19,7 @@ namespace AlpacaSound.RetroPixelPro
         string paletteImagePath;
         GenericMenu presetMenu;
 
-        float debugUpdateStartTime;
+        //float debugUpdateStartTime;
 
 
         const string MENU_ITEM_NAME = "Create New Colormap";
@@ -261,7 +261,7 @@ namespace AlpacaSound.RetroPixelPro
         {
             isUpdatingColormap = true;
             calculator = new ColormapCalculator(_target.preview, _target.palette, _target.usedColors, _target.numberOfColors, DoneUpdatingColormap);
-            debugUpdateStartTime = Time.time;
+            //debugUpdateStartTime = Time.time;
         }
 
 
