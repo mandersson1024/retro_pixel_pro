@@ -7,249 +7,249 @@ using System.IO;
 namespace AlpacaSound.RetroPixelPro
 {
 
-	[CustomEditor(typeof(Colormap))]
-	public class ColormapEditor : Editor
-	{
+    [CustomEditor(typeof(Colormap))]
+    public class ColormapEditor : Editor
+    {
 
-		Colormap _target;
-		ColormapCalculator calculator;
-		bool isUpdatingColormap;
-		ColormapDirtyCheck dirty;
-		bool autoApplyChanges;
-		string paletteImagePath;
-		GenericMenu presetMenu;
+        Colormap _target;
+        ColormapCalculator calculator;
+        bool isUpdatingColormap;
+        ColormapDirtyCheck dirty;
+        bool autoApplyChanges;
+        string paletteImagePath;
+        GenericMenu presetMenu;
 
-		float debugUpdateStartTime;
-
-
-		const string MENU_ITEM_NAME = "Create New Colormap";
-
-		[MenuItem("Retro Pixel Pro/" + MENU_ITEM_NAME)]
-		static void CreateNewColormap()
-		{
-			string path = EditorUtility.SaveFilePanel(MENU_ITEM_NAME, "Assets/", "New Colormap.asset", "asset");
-
-			if (string.IsNullOrEmpty(path))
-			{
-				return;
-			}
-
-			path = FileUtil.GetProjectRelativePath(path);
-
-			Colormap colormap = CreateInstance<Colormap>();
-
-			ColormapPreset preset = FileUtils.LoadColormapPreset("Classic6.asset");
-			//Debug.Log("preset: " + preset);
-			colormap.ApplyPreset(preset);
-
-			AssetDatabase.CreateAsset(colormap, path);
-			AssetDatabase.SaveAssets();
-		}
+        float debugUpdateStartTime;
 
 
-		void OnEnable()
-		{
-			_target = target as Colormap;
-			dirty = new ColormapDirtyCheck(_target);
-			autoApplyChanges = true;
+        const string MENU_ITEM_NAME = "Create New Colormap";
 
-			//usedColors = serializedObject.FindProperty("usedColors");
+        [MenuItem("Retro Pixel Pro/" + MENU_ITEM_NAME)]
+        static void CreateNewColormap()
+        {
+            string path = EditorUtility.SaveFilePanel(MENU_ITEM_NAME, "Assets/", "New Colormap.asset", "asset");
 
-			EditorApplication.update += OnEditorUpdate;
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
 
-			if (!_target.initialized)
-			{
-				Debug.Log("Initializing colormap '" + _target.name + "'");
+            path = FileUtil.GetProjectRelativePath(path);
 
-				_target.initialized = true;
-				StartUpdatingColormap();
-			}
+            Colormap colormap = CreateInstance<Colormap>();
 
-			presetMenu = new GenericMenu();
-			DirectoryInfo dirInfo = new DirectoryInfo(Application.dataPath + "/Retro Pixel Pro/Colormap Presets");
-			FileUtils.AddFilesInDirectory(dirInfo, presetMenu, "", PresetMenuCallback);
-		}
+            ColormapPreset preset = FileUtils.LoadColormapPreset("Classic6.asset");
+            //Debug.Log("preset: " + preset);
+            colormap.ApplyPreset(preset);
 
-
-		void PresetMenuCallback(object obj)
-		{
-			string presetName = obj as string;
-			ColormapPreset preset = FileUtils.LoadColormapPreset(presetName);
-			//Debug.Log("preset: " + preset);
-			_target.ApplyPreset(preset);
-			dirty.forceDirty = true;
-		}
+            AssetDatabase.CreateAsset(colormap, path);
+            AssetDatabase.SaveAssets();
+        }
 
 
-		void OnDisable()
-		{
-			EditorApplication.update -= OnEditorUpdate;
-		}
+        void OnEnable()
+        {
+            _target = target as Colormap;
+            dirty = new ColormapDirtyCheck(_target);
+            autoApplyChanges = true;
+
+            //usedColors = serializedObject.FindProperty("usedColors");
+
+            EditorApplication.update += OnEditorUpdate;
+
+            if (!_target.initialized)
+            {
+                Debug.Log("Initializing colormap '" + _target.name + "'");
+
+                _target.initialized = true;
+                StartUpdatingColormap();
+            }
+
+            presetMenu = new GenericMenu();
+            DirectoryInfo dirInfo = new DirectoryInfo(Application.dataPath + "/Retro Pixel Pro/Colormap Presets");
+            FileUtils.AddFilesInDirectory(dirInfo, presetMenu, "", PresetMenuCallback);
+        }
 
 
-		public override void OnInspectorGUI()
-		{
-			if (!isUpdatingColormap && autoApplyChanges && dirty.IsDirty())
-			{
-				StartUpdatingColormap();
-			}
-
-			serializedObject.Update();
-
-			EditorGUI.BeginDisabledGroup(Application.isPlaying);
-
-			EditorGUI.BeginDisabledGroup(isUpdatingColormap);
-
-			DrawDefaultInspector();
-
-			EditorGUI.EndDisabledGroup();
-
-			DrawStaticProperties();
-
-			EditorGUI.EndDisabledGroup();
-
-			serializedObject.ApplyModifiedProperties();
-		}
+        void PresetMenuCallback(object obj)
+        {
+            string presetName = obj as string;
+            ColormapPreset preset = FileUtils.LoadColormapPreset(presetName);
+            //Debug.Log("preset: " + preset);
+            _target.ApplyPreset(preset);
+            dirty.forceDirty = true;
+        }
 
 
-		void DrawStaticProperties()
-		{
-			EditorGUILayout.Space();
-
-			if (GUILayout.Button("Select Preset", GUILayout.Width(200), GUILayout.Height(28)))
-			{
-				presetMenu.ShowAsContext();
-			}
-
-			DrawExtractPaletteMedianCut();
-
-			EditorGUILayout.Space();
-
-			DrawApplyChanges();
-
-			EditorGUILayout.Space();
-
-			DrawColors();
-		}
+        void OnDisable()
+        {
+            EditorApplication.update -= OnEditorUpdate;
+        }
 
 
-		void DrawExtractPaletteMedianCut()
-		{
-			if (GUILayout.Button("Extract Palette From Image", GUILayout.Width(200), GUILayout.Height(28)))
-			{
-				if (paletteImagePath == null)
-				{
-					paletteImagePath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
-				}
+        public override void OnInspectorGUI()
+        {
+            if (!isUpdatingColormap && autoApplyChanges && dirty.IsDirty())
+            {
+                StartUpdatingColormap();
+            }
 
-				string imagePath = EditorUtility.OpenFilePanelWithFilters("Select Image File", paletteImagePath, new string[]
-					{
-						"JPG Image", "jpg",
-						"PNG Image", "png",
-					});
+            serializedObject.Update();
 
-				if (imagePath.Length > 0)
-				{
-					paletteImagePath = imagePath;
-					List<Color32> extractedPalette = PaletteExtractor.ExtractPalette(paletteImagePath, _target.numberOfColors);
-					_target.SetColors(extractedPalette);
-					dirty.forceDirty = true;
-				}
-			}
-		}
+            EditorGUI.BeginDisabledGroup(Application.isPlaying);
 
+            EditorGUI.BeginDisabledGroup(isUpdatingColormap);
 
-		void DrawApplyChanges()
-		{
-			autoApplyChanges = EditorGUILayout.ToggleLeft(" Apply Changes Automatically", autoApplyChanges);
+            DrawDefaultInspector();
 
-			EditorGUI.BeginDisabledGroup(!dirty.IsDirty() || autoApplyChanges);
-			if (!isUpdatingColormap)
-			{
-				if (GUILayout.Button("Apply Changes", GUILayout.Width(200), GUILayout.Height(28)))
-				{
-					StartUpdatingColormap();
-				}
-			}
-			EditorGUI.EndDisabledGroup();
+            EditorGUI.EndDisabledGroup();
 
-			if (isUpdatingColormap)
-			{
-				EditorGUILayout.BeginHorizontal();
+            DrawStaticProperties();
 
-				if (GUILayout.Button("Cancel", GUILayout.Width(130), GUILayout.Height(28)))
-				{
-					autoApplyChanges = false;
-					CancelColormapUpdate();
-				}
+            EditorGUI.EndDisabledGroup();
 
-				Rect progressRect = GUILayoutUtility.GetRect(0, 32, GUILayout.ExpandWidth(true));
-				EditorGUI.ProgressBar(progressRect, calculator.progress, "Updating Colormap");
-				EditorUtility.SetDirty(target);
-
-				EditorGUILayout.EndHorizontal();
-			}
-		}
+            serializedObject.ApplyModifiedProperties();
+        }
 
 
-		void DrawColors()
-		{
-			EditorGUILayout.Space();
+        void DrawStaticProperties()
+        {
+            EditorGUILayout.Space();
 
-			for (int i = 0; i < _target.numberOfColors; i += 4)
-			{
-				EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Select Preset", GUILayout.Width(200), GUILayout.Height(28)))
+            {
+                presetMenu.ShowAsContext();
+            }
 
-				for (int j = 0; j < 4; ++j)
-				{
-					if (i + j < _target.numberOfColors)
-					{
-						bool oldUsed = _target.usedColors[i + j];
-						bool newUsed = EditorGUILayout.Toggle(oldUsed, GUILayout.Width(15));
-						_target.usedColors[i + j] = newUsed;
+            DrawExtractPaletteMedianCut();
 
-						if (oldUsed != newUsed)
-						{
-							dirty.forceDirty = true;
-						}
+            EditorGUILayout.Space();
 
-						Color color = _target.palette[i + j];
+            DrawApplyChanges();
 
-						if (oldUsed)
-						{
-							Color oldColor = _target.palette[i + j];
-							Color newColor = EditorGUILayout.ColorField(GUIContent.none, color, false, false, false, GUILayout.Width(40), GUILayout.Height(25));
+            EditorGUILayout.Space();
 
-							if (!dirty.forceDirty && oldColor != newColor)
-							{
-								Debug.Log("color " + (i + j) + " has changed");
-								_target.palette[i + j] = newColor;
-								dirty.forceDirty = true;
-							}
-						}
-						else
-						{
-							EditorGUI.BeginDisabledGroup(true);
-							//EditorGUILayout.ColorField(GUIContent.none, DisabledColor(color), false, false, false, GUILayout.Width(40), GUILayout.Height(25));
-							EditorGUILayout.ColorField(GUIContent.none, color, false, false, false, GUILayout.Width(40), GUILayout.Height(25));
-							EditorGUI.EndDisabledGroup();
-						}
-					}
-					else
-					{
-						GUILayout.Space(67);
-					}
-
-					EditorGUILayout.Space();
-				}
-
-				EditorGUILayout.EndHorizontal();
-				EditorGUILayout.Space();
-			}
-		}
+            DrawColors();
+        }
 
 
-		/*
+        void DrawExtractPaletteMedianCut()
+        {
+            if (GUILayout.Button("Extract Palette From Image", GUILayout.Width(200), GUILayout.Height(28)))
+            {
+                if (paletteImagePath == null)
+                {
+                    paletteImagePath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
+                }
+
+                string imagePath = EditorUtility.OpenFilePanelWithFilters("Select Image File", paletteImagePath, new string[]
+                    {
+                        "JPG Image", "jpg",
+                        "PNG Image", "png",
+                    });
+
+                if (imagePath.Length > 0)
+                {
+                    paletteImagePath = imagePath;
+                    List<Color32> extractedPalette = PaletteExtractor.ExtractPalette(paletteImagePath, _target.numberOfColors);
+                    _target.SetColors(extractedPalette);
+                    dirty.forceDirty = true;
+                }
+            }
+        }
+
+
+        void DrawApplyChanges()
+        {
+            autoApplyChanges = EditorGUILayout.ToggleLeft(" Apply Changes Automatically", autoApplyChanges);
+
+            EditorGUI.BeginDisabledGroup(!dirty.IsDirty() || autoApplyChanges);
+            if (!isUpdatingColormap)
+            {
+                if (GUILayout.Button("Apply Changes", GUILayout.Width(200), GUILayout.Height(28)))
+                {
+                    StartUpdatingColormap();
+                }
+            }
+            EditorGUI.EndDisabledGroup();
+
+            if (isUpdatingColormap)
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                if (GUILayout.Button("Cancel", GUILayout.Width(130), GUILayout.Height(28)))
+                {
+                    autoApplyChanges = false;
+                    CancelColormapUpdate();
+                }
+
+                Rect progressRect = GUILayoutUtility.GetRect(0, 32, GUILayout.ExpandWidth(true));
+                EditorGUI.ProgressBar(progressRect, calculator.progress, "Updating Colormap");
+                EditorUtility.SetDirty(target);
+
+                EditorGUILayout.EndHorizontal();
+            }
+        }
+
+
+        void DrawColors()
+        {
+            EditorGUILayout.Space();
+
+            for (int i = 0; i < _target.numberOfColors; i += 4)
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                for (int j = 0; j < 4; ++j)
+                {
+                    if (i + j < _target.numberOfColors)
+                    {
+                        bool oldUsed = _target.usedColors[i + j];
+                        bool newUsed = EditorGUILayout.Toggle(oldUsed, GUILayout.Width(15));
+                        _target.usedColors[i + j] = newUsed;
+
+                        if (oldUsed != newUsed)
+                        {
+                            dirty.forceDirty = true;
+                        }
+
+                        Color color = _target.palette[i + j];
+
+                        if (oldUsed)
+                        {
+                            Color oldColor = _target.palette[i + j];
+                            Color newColor = EditorGUILayout.ColorField(GUIContent.none, color, false, false, false, GUILayout.Width(40), GUILayout.Height(25));
+
+                            if (!dirty.forceDirty && oldColor != newColor)
+                            {
+                                Debug.Log("color " + (i + j) + " has changed");
+                                _target.palette[i + j] = newColor;
+                                dirty.forceDirty = true;
+                            }
+                        }
+                        else
+                        {
+                            EditorGUI.BeginDisabledGroup(true);
+                            //EditorGUILayout.ColorField(GUIContent.none, DisabledColor(color), false, false, false, GUILayout.Width(40), GUILayout.Height(25));
+                            EditorGUILayout.ColorField(GUIContent.none, color, false, false, false, GUILayout.Width(40), GUILayout.Height(25));
+                            EditorGUI.EndDisabledGroup();
+                        }
+                    }
+                    else
+                    {
+                        GUILayout.Space(67);
+                    }
+
+                    EditorGUILayout.Space();
+                }
+
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.Space();
+            }
+        }
+
+
+        /*
 		Color DisabledColor(Color color)
 		{
 			return Color.Lerp(Color.white, color, 0.5f);
@@ -257,51 +257,51 @@ namespace AlpacaSound.RetroPixelPro
 		*/
 
 
-		public void StartUpdatingColormap()
-		{
-			isUpdatingColormap = true;
-			calculator = new ColormapCalculator(_target.preview, _target.palette, _target.usedColors, _target.numberOfColors, DoneUpdatingColormap);
-			debugUpdateStartTime = Time.time;
-		}
+        public void StartUpdatingColormap()
+        {
+            isUpdatingColormap = true;
+            calculator = new ColormapCalculator(_target.preview, _target.palette, _target.usedColors, _target.numberOfColors, DoneUpdatingColormap);
+            debugUpdateStartTime = Time.time;
+        }
 
 
-		public void CancelColormapUpdate()
-		{
-			isUpdatingColormap = false;
-		}
+        public void CancelColormapUpdate()
+        {
+            isUpdatingColormap = false;
+        }
 
-		void DoneUpdatingColormap()
-		{
-			Debug.Log("DoneUpdatingColormap, time: " + (Time.time - debugUpdateStartTime));
+        void DoneUpdatingColormap()
+        {
+            //Debug.Log("DoneUpdatingColormap, time: " + (Time.time - debugUpdateStartTime));
 
-			isUpdatingColormap = false;
-			_target.pixels = calculator.pixelBuffer;
-			//_target.ApplyToMaterial();
-			AssetDatabase.SaveAssets();
+            isUpdatingColormap = false;
+            _target.pixels = calculator.pixelBuffer;
+            //_target.ApplyToMaterial();
+            AssetDatabase.SaveAssets();
 
-			dirty.Reset();
-			_target.changedInternally = true;
-		}
-
-
-		public void OnEditorUpdate()
-		{
-			if (Application.isPlaying)
-			{
-				return;
-			}
-
-			if (isUpdatingColormap)
-			{
-				if (calculator != null)
-				{
-					calculator.CalculateChunk();
-				}
-			}
-		}
+            dirty.Reset();
+            _target.changedInternally = true;
+        }
 
 
-		/*
+        public void OnEditorUpdate()
+        {
+            if (Application.isPlaying)
+            {
+                return;
+            }
+
+            if (isUpdatingColormap)
+            {
+                if (calculator != null)
+                {
+                    calculator.CalculateChunk();
+                }
+            }
+        }
+
+
+        /*
 		void ColormapSynchronousUpdate()
 		{
 			while (isUpdatingColormap)
@@ -312,7 +312,7 @@ namespace AlpacaSound.RetroPixelPro
 		*/
 
 
-	}
+    }
 
 }
 
