@@ -222,7 +222,6 @@ namespace AlpacaSound.RetroPixelPro
 
                             if (!dirty.forceDirty && oldColor != newColor)
                             {
-                                Debug.Log("color " + (i + j) + " has changed");
                                 _target.palette[i + j] = newColor;
                                 dirty.forceDirty = true;
                             }

@@ -19,7 +19,7 @@ public class VideoSegment
 
 public class PromoVideo2018Summer : MonoBehaviour
 {
-    static int SEGMENT_COUNT = 20;
+    static int SEGMENT_COUNT = 19;
 
     List<VideoSegment> segments;
 
@@ -58,11 +58,11 @@ public class PromoVideo2018Summer : MonoBehaviour
     IEnumerator Play()
     {
         {
-            ShowSegment(5); // castle ad clouds
+            ShowSegment(0);
 
             float totalTime = 6;
-            float startScale = 1f;
-            float endScale = 2f;
+            //float startScale = 1f;
+            //float endScale = 2f;
 
             while (SegmentRunningTime < totalTime)
             {
@@ -131,13 +131,49 @@ public class PromoVideo2018Summer : MonoBehaviour
         Debug.Log("ShowSegment: " + i);
 
         spriteRenderer.sprite = segments[i].sprite;
-
         retroPixelPro.colormap = segments[i].colormap;
-        retroPixelPro.opacity = 1;
-        retroPixelPro.dither = 0;
-        retroPixelPro.resolution = new Vector2Int(1, 1);
 
+        retroPixelPro.pixelSize = 1;
+        retroPixelPro.dither = 0;
+        retroPixelPro.opacity = 0;
         Scale = 1;
+
+        switch (i)
+        {
+            case 0:
+                retroPixelPro.pixelSize = 4;
+                retroPixelPro.dither = 0.3f;
+                retroPixelPro.opacity = 0.38f;
+                break;
+
+            case 1:
+                retroPixelPro.pixelSize = 4;
+                retroPixelPro.dither = 0.285f;
+                retroPixelPro.opacity = 0.4f;
+                break;
+
+            case 3:
+                retroPixelPro.pixelSize = 3;
+                retroPixelPro.dither = 0.0f;
+                retroPixelPro.opacity = 1;
+                break;
+
+            case 4:
+                retroPixelPro.pixelSize = 4;
+                retroPixelPro.dither = 0.345f;
+                retroPixelPro.opacity = 0.55f;
+                break;
+
+            case 13:
+                retroPixelPro.pixelSize = 4;
+                retroPixelPro.dither = 0.29f;
+                retroPixelPro.opacity = 1;
+                break;
+
+            default:
+                break;
+
+        }
 
         segmentStartTime = Time.time;
     }
