@@ -19,7 +19,7 @@ public class VideoSegment
 
 public class PromoVideo2018Summer : MonoBehaviour
 {
-    static int SEGMENT_COUNT = 19;
+    static int SEGMENT_COUNT = 16;
 
     List<VideoSegment> segments;
 
@@ -149,7 +149,13 @@ public class PromoVideo2018Summer : MonoBehaviour
             case 1:
                 retroPixelPro.pixelSize = 4;
                 retroPixelPro.dither = 0.285f;
-                retroPixelPro.opacity = 0.4f;
+                retroPixelPro.opacity = 0.5f;
+                break;
+
+            case 2:
+                retroPixelPro.pixelSize = 5;
+                retroPixelPro.dither = 0.369f;
+                retroPixelPro.opacity = 0.771f;
                 break;
 
             case 3:
@@ -164,9 +170,75 @@ public class PromoVideo2018Summer : MonoBehaviour
                 retroPixelPro.opacity = 0.55f;
                 break;
 
+            case 5:
+                retroPixelPro.pixelSize = 5;
+                retroPixelPro.dither = 0.18f;
+                retroPixelPro.opacity = 1f;
+                break;
+
+            case 6:
+                retroPixelPro.pixelSize = 3;
+                retroPixelPro.dither = 0;
+                retroPixelPro.opacity = 1;
+                break;
+
+            case 7:
+                retroPixelPro.pixelSize = 4;
+                retroPixelPro.dither = 0;
+                retroPixelPro.opacity = 0.8f;
+                break;
+
+            case 8:
+                retroPixelPro.pixelSize = 6;
+                retroPixelPro.dither = 0;
+                retroPixelPro.opacity = 1f;
+                break;
+
+            case 9:
+                retroPixelPro.pixelSize = 4;
+                retroPixelPro.dither = 0;
+                retroPixelPro.opacity = 1f;
+                break;
+
+            case 10:
+                retroPixelPro.pixelSize = 4;
+                retroPixelPro.dither = 0.165f;
+                retroPixelPro.opacity = 1f;
+                break;
+
+            case 11:
+                retroPixelPro.pixelSize = 4;
+                retroPixelPro.dither = 0.118f;
+                retroPixelPro.opacity = 1f;
+                break;
+
+            case 12:
+                retroPixelPro.pixelSize = 4;
+                retroPixelPro.dither = 0;
+                retroPixelPro.opacity = 1f;
+                break;
+
             case 13:
                 retroPixelPro.pixelSize = 4;
                 retroPixelPro.dither = 0.29f;
+                retroPixelPro.opacity = 1;
+                break;
+
+            case 14:
+                retroPixelPro.pixelSize = 1;
+                retroPixelPro.dither = 0;
+                retroPixelPro.opacity = 1;
+                break;
+
+            case 15:
+                retroPixelPro.pixelSize = 1;
+                retroPixelPro.dither = 0;
+                retroPixelPro.opacity = 1;
+                break;
+
+            case 16:
+                retroPixelPro.pixelSize = 3;
+                retroPixelPro.dither = 0.842f;
                 retroPixelPro.opacity = 1;
                 break;
 
