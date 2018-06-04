@@ -121,6 +121,11 @@ namespace AlpacaSound.RetroPixelPro
                 presetMenu.ShowAsContext();
             }
 
+            if (GUILayout.Button("Save As Preset", GUILayout.Width(200), GUILayout.Height(28)))
+            {
+                SaveAsPreset();
+            }
+
             DrawExtractPaletteMedianCut();
 
             EditorGUILayout.Space();
@@ -130,6 +135,44 @@ namespace AlpacaSound.RetroPixelPro
             EditorGUILayout.Space();
 
             DrawColors();
+        }
+
+
+        void SaveAsPreset()
+        {
+            string folderPath = Application.dataPath + "/Retro Pixel Pro/Colormap Presets/Custom";
+            string path = EditorUtility.SaveFilePanel("Save Colormap Preset", folderPath, "New Colormap Preset", "asset");
+
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+
+            int numUsedColor = 0;
+            for (int i = 0; i < _target.usedColors.Length; ++i)
+            {
+                if (_target.usedColors[i])
+                {
+                    ++numUsedColor;
+                }
+            }
+
+            ColormapPreset preset = CreateInstance<ColormapPreset>();
+            preset.SetNumColors(numUsedColor);
+
+
+            int j = 0;
+            for (int i = 0; i < _target.numberOfColors; ++i)
+            {
+                if (_target.usedColors[i])
+                {
+                    preset.palette[j] = _target.palette[i];
+                    ++j;
+                }
+            }
+
+            AssetDatabase.CreateAsset(preset, path);
+            AssetDatabase.SaveAssets();
         }
 
 
