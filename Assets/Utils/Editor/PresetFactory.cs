@@ -13,7 +13,8 @@ namespace AlpacaSound.RetroPixelPro
         static void GenerateAllPresets()
         {
             //Directory.Delete(FileUtils.PRESETS_DIRECTORY_PATH, true);
-            //Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH);
+            //Directory.CreateDirectory()FileUtils.PRESETS_DIRECTORY_PATH + "Gradients/");
+            //Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH + "Classics/");
 
             GenerateFixedPresets();
             GenerateGradientPresets();
@@ -36,11 +37,13 @@ namespace AlpacaSound.RetroPixelPro
 
         static void RecreateDirectories()
         {
-            Directory.Delete(FileUtils.PRESETS_DIRECTORY_PATH, true);
-            Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH);
-            //Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH + "Classic Computers");
-            //Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH + "Monochrome");
-            //Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH + "Gradients");
+            Directory.Delete(FileUtils.PRESETS_DIRECTORY_PATH + "Classics", true);
+            Directory.Delete(FileUtils.PRESETS_DIRECTORY_PATH + "Gradients", true);
+            Directory.Delete(FileUtils.PRESETS_DIRECTORY_PATH + "Custom", true);
+
+            Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH + "Classics");
+            Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH + "Gradients");
+            Directory.CreateDirectory(FileUtils.PRESETS_DIRECTORY_PATH + "Custom");
         }
 
 
@@ -49,7 +52,7 @@ namespace AlpacaSound.RetroPixelPro
             ColormapPreset preset = CreateInstance<ColormapPreset>();
             preset.palette = PalettePresets.GetPresetPalette(presetName);
 
-            string path = FileUtils.PRESETS_DIRECTORY_PATH;
+            string path = FileUtils.PRESETS_DIRECTORY_PATH + "Classics/";
 
             path += presetName + ".asset";
             AssetDatabase.CreateAsset(preset, path);
@@ -60,7 +63,7 @@ namespace AlpacaSound.RetroPixelPro
         //[MenuItem("Retro Pixel Pro Utils/Generate Gradient Presets")]
         static void GenerateGradientPresets()
         {
-            foreach (int numColors in new int[] { 3, 5, 7, 15, 31, 63 })
+            foreach (int numColors in new int[] { 5, 16, 64 })
             {
                 GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0x888888), Hex(0xffffff), "Gray", numColors);
                 GenerateGradientPreset(ColorModel.RGB, Hex(0x000000), Hex(0xff0000), Hex(0xffffff), "Red", numColors);
@@ -169,8 +172,8 @@ namespace AlpacaSound.RetroPixelPro
 
             //name = ((numColors == 15) ? "4Bit" : "8Bit") + " " + name;
 
-            name = "[" + (numColors < 10 ? "0" : "") + numColors + " colors] " + name;
-            string path = FileUtils.PRESETS_DIRECTORY_PATH + name + ".asset";
+            name = name + " " + numColors;
+            string path = FileUtils.PRESETS_DIRECTORY_PATH + "Gradients/" + name + ".asset";
 
             AssetDatabase.CreateAsset(preset, path);
 

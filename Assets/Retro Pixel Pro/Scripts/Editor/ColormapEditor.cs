@@ -27,19 +27,15 @@ namespace AlpacaSound.RetroPixelPro
         [MenuItem("Retro Pixel Pro/" + MENU_ITEM_NAME)]
         static void CreateNewColormap()
         {
-            string path = EditorUtility.SaveFilePanel(MENU_ITEM_NAME, "Assets/", "New Colormap.asset", "asset");
+            string path = EditorUtility.SaveFilePanelInProject(MENU_ITEM_NAME, "New Colormap", "asset", MENU_ITEM_NAME);
 
             if (string.IsNullOrEmpty(path))
             {
                 return;
             }
 
-            path = FileUtil.GetProjectRelativePath(path);
-
             Colormap colormap = CreateInstance<Colormap>();
-
-            ColormapPreset preset = FileUtils.LoadColormapPreset("Classic6.asset");
-            //Debug.Log("preset: " + preset);
+            ColormapPreset preset = FileUtils.LoadColormapPreset("Classics/Classic6.asset");
             colormap.ApplyPreset(preset);
 
             AssetDatabase.CreateAsset(colormap, path);
