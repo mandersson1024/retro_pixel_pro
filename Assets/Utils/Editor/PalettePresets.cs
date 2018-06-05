@@ -23,6 +23,25 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
+        static public string GetPresetNameString(PresetName preset)
+        {
+            switch (preset)
+            {
+                case PresetName.Classic1: return "_Amstrad()";
+                case PresetName.Classic2: return "_AppleII()";
+                case PresetName.Classic3: return "Breadbox 1982";
+                case PresetName.Classic4: return "Breadbox 1980";
+                case PresetName.Classic5: return "_ZXSpectrum()";
+                case PresetName.Classic6: return "_CGA()";
+                case PresetName.MonochromeGreen: return "Monochrome Green";
+                case PresetName.MonochromeBrown: return "Monochrome Brown";
+                case PresetName.MonochromeBlue: return "Monochrome Blue";
+                case PresetName.MonochromeBlackWhite: return "Monochrome Black White";
+                default: return null;
+            }
+        }
+
+
         static public Color32[] GetPresetPalette(PresetName presetName)
         {
             switch (presetName)
@@ -107,8 +126,8 @@ namespace AlpacaSound.RetroPixelPro
         }
 
 
-        static Color32[] _ZXSpectrum ()
-		{
+        static Color32[] _ZXSpectrum()
+        {
             return new Color32[]
             {
                 rgb(0,0,0),
@@ -127,11 +146,11 @@ namespace AlpacaSound.RetroPixelPro
                 rgb(255,255,9),
                 rgb(255,255,255),
             };
-		}
+        }
 
 
-        static Color32[] _Amstrad ()
-		{
+        static Color32[] _Amstrad()
+        {
             return new Color32[]
             {
                 rgb(0,0,0),
@@ -164,11 +183,11 @@ namespace AlpacaSound.RetroPixelPro
                 rgb(255,255,120),
                 rgb(255,255,255),
             };
-		}
+        }
 
 
-        static Color32[] _CGA ()
-		{
+        static Color32[] _CGA()
+        {
             return new Color32[]
             {
                 rgb(0,0,0),
@@ -188,7 +207,7 @@ namespace AlpacaSound.RetroPixelPro
                 rgb(255,255,73),
                 rgb(255,255,255),
             };
-		}
+        }
 
 
         static Color32[] _C64()
@@ -198,31 +217,31 @@ namespace AlpacaSound.RetroPixelPro
                 Color.black,
                 Color.white,
                 rgb(136, 0, 0),
-			    rgb(170, 255, 238),
-			    rgb(204, 68, 204),
-			    rgb(0, 204, 85),
-			    rgb(0, 0, 170),
-			    rgb(238, 238, 119),
-			    rgb(221, 136, 85),
-			    rgb(102, 68, 0),
-			    rgb(255, 119, 119),
-			    rgb(51, 51, 51),
-			    rgb(119, 119, 119),
-			    rgb(170, 255, 102),
-			    rgb(0, 136, 255),
-			    rgb(187, 187, 187),
+                rgb(170, 255, 238),
+                rgb(204, 68, 204),
+                rgb(0, 204, 85),
+                rgb(0, 0, 170),
+                rgb(238, 238, 119),
+                rgb(221, 136, 85),
+                rgb(102, 68, 0),
+                rgb(255, 119, 119),
+                rgb(51, 51, 51),
+                rgb(119, 119, 119),
+                rgb(170, 255, 102),
+                rgb(0, 136, 255),
+                rgb(187, 187, 187),
             };
-		}
+        }
 
 
-        static Color32[] _MonochromeGreen ()
-		{
+        static Color32[] _MonochromeGreen()
+        {
             return new Color32[]
             {
                 rgb(16,36,13),
                 rgb(66,216,41),
             };
-		}
+        }
 
 
         static Color32[] _MonochromeBrown()
@@ -246,14 +265,14 @@ namespace AlpacaSound.RetroPixelPro
 
 
         static Color32[] _BlackAndWhite()
-		{
+        {
             return new Color32[]
             {
                 rgb(33,33,33),
                 rgb(242,242,242),
             };
-		}		
+        }
 
-	}
+    }
 
 }

@@ -54,7 +54,8 @@ namespace AlpacaSound.RetroPixelPro
 
             string path = FileUtils.PRESETS_DIRECTORY_PATH + "Classics/";
 
-            path += presetName + ".asset";
+            string name = PalettePresets.GetPresetNameString(presetName);
+            path += name + ".asset";
             AssetDatabase.CreateAsset(preset, path);
 
             Debug.Log("Created preset: " + presetName);
