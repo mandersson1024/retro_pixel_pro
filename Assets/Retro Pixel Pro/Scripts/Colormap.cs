@@ -33,7 +33,7 @@ namespace AlpacaSound.RetroPixelPro
             palette = new Color32[64];
             numberOfColors = 16;
             usedColors = new bool[64];
-            preview = false;
+            preview = true;
             initialized = false;
         }
 

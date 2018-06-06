@@ -35,7 +35,7 @@ namespace AlpacaSound.RetroPixelPro
             }
 
             Colormap colormap = CreateInstance<Colormap>();
-            ColormapPreset preset = FileUtils.LoadColormapPreset("Classics/Classic6.asset");
+            ColormapPreset preset = FileUtils.LoadColormapPreset("Classics/Breadbox 1982.asset");
             colormap.ApplyPreset(preset);
 
             AssetDatabase.CreateAsset(colormap, path);
