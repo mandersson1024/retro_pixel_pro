@@ -10,12 +10,12 @@ namespace AlpacaSound.RetroPixelPro
 
         public enum PresetName
         {
-            Classic1,
-            Classic2,
-            Classic3,
-            Classic4,
-            Classic5,
-            Classic6,
+            Amstrad,
+            AppleII,
+            VIC20,
+            C64,
+            ZXSpectrum,
+            CGA,
             MonochromeGreen,
             MonochromeBrown,
             MonochromeBlue,
@@ -27,12 +27,12 @@ namespace AlpacaSound.RetroPixelPro
         {
             switch (preset)
             {
-                case PresetName.Classic1: return "_Amstrad()";
-                case PresetName.Classic2: return "_AppleII()";
-                case PresetName.Classic3: return "Breadbox 1982";
-                case PresetName.Classic4: return "Breadbox 1980";
-                case PresetName.Classic5: return "_ZXSpectrum()";
-                case PresetName.Classic6: return "_CGA()";
+                case PresetName.Amstrad: return "Colour Computer 1984";
+                case PresetName.AppleII: return "The Big 1977";
+                case PresetName.VIC20: return "Breadbox 1982";
+                case PresetName.C64: return "Breadbox 1980";
+                case PresetName.ZXSpectrum: return "Sir Clive";
+                case PresetName.CGA: return "Adapter 1981";
                 case PresetName.MonochromeGreen: return "Monochrome Green";
                 case PresetName.MonochromeBrown: return "Monochrome Brown";
                 case PresetName.MonochromeBlue: return "Monochrome Blue";
@@ -46,12 +46,12 @@ namespace AlpacaSound.RetroPixelPro
         {
             switch (presetName)
             {
-                case PresetName.Classic1: return _Amstrad();
-                case PresetName.Classic2: return _AppleII();
-                case PresetName.Classic3: return _C64();
-                case PresetName.Classic4: return _VIC20();
-                case PresetName.Classic5: return _ZXSpectrum();
-                case PresetName.Classic6: return _CGA();
+                case PresetName.Amstrad: return _Amstrad();
+                case PresetName.AppleII: return _AppleII();
+                case PresetName.VIC20: return _C64();
+                case PresetName.C64: return _VIC20();
+                case PresetName.ZXSpectrum: return _ZXSpectrum();
+                case PresetName.CGA: return _CGA();
                 case PresetName.MonochromeGreen: return _MonochromeGreen();
                 case PresetName.MonochromeBrown: return _MonochromeBrown();
                 case PresetName.MonochromeBlue: return _MonochromeBlue();
