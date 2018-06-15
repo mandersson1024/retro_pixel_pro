@@ -58,8 +58,11 @@ public class PromoVideo2018Summer : MonoBehaviour
     IEnumerator Play()
     {
         {
-            ShowSegment(0);
+            ShowSegment(4);
+            StartCoroutine(FadeOpacity(0, 1, 5));
 
+
+            /*
             float totalTime = 6;
             //float startScale = 1f;
             //float endScale = 2f;
@@ -69,13 +72,29 @@ public class PromoVideo2018Summer : MonoBehaviour
                 //Scale = Mathf.Lerp(startScale, endScale, SegmentRunningTime / totalTime);
                 yield return null;
             }
+            */
         }
 
         yield return null;
     }
 
+    IEnumerator FadeOpacity(float startValue, float endValue, float duration)
+    {
+        float startTime = Time.time;
 
-    void Update()
+        while (Time.time <= startTime + duration)
+        {
+            float elapsed = Time.time - startTime;
+            retroPixelPro.opacity = Mathf.Lerp(startValue, endValue, elapsed / duration);
+            yield return null;
+        }
+
+        retroPixelPro.opacity = Mathf.Lerp(startValue, endValue, 1);
+
+        yield return null;
+    }
+
+    void CheckDebugInput()
     {
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -100,6 +119,12 @@ public class PromoVideo2018Summer : MonoBehaviour
         {
             ShowSegment(currentlyShowingIndex);
         }
+    }
+
+
+    void Update()
+    {
+        CheckDebugInput();
     }
 
 
