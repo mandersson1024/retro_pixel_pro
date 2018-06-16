@@ -51,7 +51,7 @@
              fixed4 otherCol = tex2D(_OtherTex, i.uv);
              fixed gradientValue = tex2D(_GradientTex, i.uv).r;
 
-             if (gradientValue > lerp(-0.01, 1.01, _Amount))
+             if (gradientValue < lerp(-0.01, 1.01, _Amount))
              {
                 return col;
              }

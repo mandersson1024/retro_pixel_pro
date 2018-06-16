@@ -26,6 +26,7 @@ public class PromoVideo2018Summer : MonoBehaviour
     SpriteRenderer spriteRenderer;
     Sprite sprite;
     RetroPixelPro retroPixelPro;
+    FunkyTransitions funkyTransitions;
 
     int currentlyShowingIndex = 0;
     float segmentStartTime;
@@ -49,6 +50,7 @@ public class PromoVideo2018Summer : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         retroPixelPro = Camera.main.GetComponent<RetroPixelPro>();
+        funkyTransitions = Camera.main.GetComponent<FunkyTransitions>();
 
         LoadAllSegments();
         StartCoroutine(Play());
@@ -59,7 +61,8 @@ public class PromoVideo2018Summer : MonoBehaviour
     {
         {
             ShowSegment(4);
-            StartCoroutine(FadeOpacity(0, 1, 5));
+            yield return new WaitForSeconds(2);
+            StartCoroutine(DoTransition(0.5f));
 
 
             /*
@@ -74,6 +77,22 @@ public class PromoVideo2018Summer : MonoBehaviour
             }
             */
         }
+
+        yield return null;
+    }
+
+    IEnumerator DoTransition(float duration)
+    {
+        float startTime = Time.time;
+
+        while (Time.time <= startTime + duration)
+        {
+            float elapsed = Time.time - startTime;
+            funkyTransitions.amount = Mathf.Lerp(0, 1, elapsed / duration);
+            yield return null;
+        }
+
+        funkyTransitions.amount = 1;
 
         yield return null;
     }
