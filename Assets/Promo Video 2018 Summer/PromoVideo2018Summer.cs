@@ -60,8 +60,8 @@ public class PromoVideo2018Summer : MonoBehaviour
     IEnumerator Play()
     {
         {
-            ShowSegment(4);
-            yield return new WaitForSeconds(2);
+            ShowSegment(0);
+            yield return new WaitForSeconds(1);
             StartCoroutine(DoTransition(0.5f));
 
 
@@ -176,6 +176,7 @@ public class PromoVideo2018Summer : MonoBehaviour
 
         spriteRenderer.sprite = segments[i].sprite;
         retroPixelPro.colormap = segments[i].colormap;
+        funkyTransitions.amount = 0;
 
         retroPixelPro.pixelSize = 1;
         retroPixelPro.dither = 0;

@@ -13,10 +13,15 @@ public class FunkyTransitions : MonoBehaviour
     [Range(0, 1)]
     public float amount;
 
-    public void Start()
+    public void Awake()
     {
-        mat.SetTexture("_OtherTexture", otherTexture);
-        mat.SetTexture("_GradientTexture", gradientTexture);
+        mat.SetFloat("_Amount", 0);
+    }
+
+    public void OnValidate()
+    {
+        mat.SetTexture("_OtherTex", otherTexture);
+        mat.SetTexture("_GradientTex", gradientTexture);
     }
 
     public void OnRenderImage(RenderTexture source, RenderTexture destination)
