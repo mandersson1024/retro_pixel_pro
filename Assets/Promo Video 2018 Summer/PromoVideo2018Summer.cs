@@ -64,8 +64,11 @@ public class PromoVideo2018Summer : MonoBehaviour
         for (int i = 0; i < 10; ++i)
         {
             ShowSegment(i);
+
+            StartCoroutine(Zoom(1, 1.3f, 8));
+            StartCoroutine(Translate(0, 5f, 8));
             yield return new WaitForSeconds(2);
-            StartCoroutine(DoTransition(0.8f));
+            StartCoroutine(DoTransition(0.4f));
             yield return new WaitForSeconds(6);
         }
 
@@ -113,6 +116,40 @@ public class PromoVideo2018Summer : MonoBehaviour
         }
 
         retroPixelPro.opacity = Mathf.Lerp(startValue, endValue, 1);
+
+        yield return null;
+    }
+
+    IEnumerator Zoom(float startScale, float endScale, float duration)
+    {
+        float startTime = Time.time;
+
+        while (Time.time <= startTime + duration)
+        {
+            float elapsed = Time.time - startTime;
+            float value = Mathf.Lerp(startScale, endScale, elapsed / duration);
+            transform.localScale = new Vector3(value, value, 1);
+            yield return null;
+        }
+
+        transform.localScale = new Vector3(endScale, endScale, 1);
+
+        yield return null;
+    }
+
+    IEnumerator Translate(float startPos, float endPos, float duration)
+    {
+        float startTime = Time.time;
+
+        while (Time.time <= startTime + duration)
+        {
+            float elapsed = Time.time - startTime;
+            float value = Mathf.Lerp(startPos, endPos, elapsed / duration);
+            transform.position = new Vector3(value, 0, 0);
+            yield return null;
+        }
+
+        transform.localScale = new Vector3(endPos, endPos, 1);
 
         yield return null;
     }
@@ -190,7 +227,7 @@ public class PromoVideo2018Summer : MonoBehaviour
         switch (i)
         {
             case 0:
-                retroPixelPro.pixelSize = 4;
+                retroPixelPro.pixelSize = 1;
                 retroPixelPro.dither = 0.3f;
                 retroPixelPro.opacity = 0.38f;
                 break;
