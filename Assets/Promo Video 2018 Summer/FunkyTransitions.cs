@@ -11,11 +11,10 @@ public class FunkyTransitions : MonoBehaviour
     public Material mat;
 
     [Range(0, 1)]
-    public float amount;
+    public float offset;
 
     public void Awake()
     {
-        mat.SetFloat("_Amount", 0);
     }
 
     public void OnValidate()
@@ -26,7 +25,7 @@ public class FunkyTransitions : MonoBehaviour
 
     public void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        mat.SetFloat("_Amount", amount);
+        mat.SetTextureOffset("_GradientTex", new Vector2(Mathf.Lerp(0.7f, -0.7f, offset), 0));
         Graphics.Blit(source, destination, mat);
     }
 }

@@ -5,7 +5,6 @@
      _MainTex ("Texture", 2D) = "white" {}
      _OtherTex ("Other Texture", 2D) = "white" {}
      _GradientTex ("Gradient Texture", 2D) = "white" {}
-     _Amount ("Amount", Range(0.0, 1.0)) = 0.0
  }
  SubShader
  {
@@ -43,22 +42,16 @@
          sampler2D _MainTex;
          sampler2D _OtherTex;
          sampler2D _GradientTex;
-         float _Amount;
+         float4 _GradientTex_ST;
 
-         fixed4 frag (v2f i) : SV_Target
+
+         float4 frag (v2f i) : SV_Target
          {
-             fixed4 col = tex2D(_MainTex, i.uv);
-             fixed4 otherCol = tex2D(_OtherTex, i.uv);
-             fixed gradientValue = tex2D(_GradientTex, i.uv).r;
+             float4 col = tex2D(_MainTex, i.uv);
+             float4 otherCol = tex2D(_OtherTex, i.uv);
+             float value = tex2D(_GradientTex, i.uv + _GradientTex_ST.zw).r;
 
-             if (gradientValue < _Amount)
-             {
-                return col;
-             }
-             else
-             {
-                return otherCol;
-             }
+            return lerp(col, otherCol, value);
          }
 
           ENDCG

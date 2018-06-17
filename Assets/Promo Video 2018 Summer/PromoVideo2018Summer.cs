@@ -59,24 +59,28 @@ public class PromoVideo2018Summer : MonoBehaviour
 
     IEnumerator Play()
     {
+        yield return new WaitForSeconds(1);
+
+        for (int i = 0; i < 10; ++i)
         {
-            ShowSegment(0);
-            yield return new WaitForSeconds(1);
-            StartCoroutine(DoTransition(0.5f));
-
-
-            /*
-            float totalTime = 6;
-            //float startScale = 1f;
-            //float endScale = 2f;
-
-            while (SegmentRunningTime < totalTime)
-            {
-                //Scale = Mathf.Lerp(startScale, endScale, SegmentRunningTime / totalTime);
-                yield return null;
-            }
-            */
+            ShowSegment(i);
+            yield return new WaitForSeconds(2);
+            StartCoroutine(DoTransition(0.8f));
+            yield return new WaitForSeconds(6);
         }
+
+
+        /*
+        float totalTime = 6;
+        //float startScale = 1f;
+        //float endScale = 2f;
+
+        while (SegmentRunningTime < totalTime)
+        {
+            //Scale = Mathf.Lerp(startScale, endScale, SegmentRunningTime / totalTime);
+            yield return null;
+        }
+        */
 
         yield return null;
     }
@@ -88,11 +92,11 @@ public class PromoVideo2018Summer : MonoBehaviour
         while (Time.time <= startTime + duration)
         {
             float elapsed = Time.time - startTime;
-            funkyTransitions.amount = Mathf.Lerp(0, 1, elapsed / duration);
+            funkyTransitions.offset = Mathf.Lerp(0, 1, elapsed / duration);
             yield return null;
         }
 
-        funkyTransitions.amount = 1;
+        funkyTransitions.offset = 1;
 
         yield return null;
     }
@@ -176,7 +180,7 @@ public class PromoVideo2018Summer : MonoBehaviour
 
         spriteRenderer.sprite = segments[i].sprite;
         retroPixelPro.colormap = segments[i].colormap;
-        funkyTransitions.amount = 0;
+        funkyTransitions.offset = 0;
 
         retroPixelPro.pixelSize = 1;
         retroPixelPro.dither = 0;
