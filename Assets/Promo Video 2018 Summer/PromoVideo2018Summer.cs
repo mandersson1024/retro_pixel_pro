@@ -19,7 +19,7 @@ public class VideoSegment
 
 public class PromoVideo2018Summer : MonoBehaviour
 {
-    static int SEGMENT_COUNT = 16;
+    static int SEGMENT_COUNT = 17;
 
     List<VideoSegment> segments;
 
@@ -61,12 +61,12 @@ public class PromoVideo2018Summer : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
 
-        for (int i = 0; i < 10; ++i)
+        for (int i = 0; i < 17; ++i)
         {
             ShowSegment(i);
 
             StartCoroutine(Zoom(1, 1.3f, 8));
-            StartCoroutine(Translate(0, 5f, 8));
+            //StartCoroutine(Translate(0, 5f, 8));
             yield return new WaitForSeconds(2);
             StartCoroutine(DoTransition(0.4f));
             yield return new WaitForSeconds(6);
@@ -227,7 +227,7 @@ public class PromoVideo2018Summer : MonoBehaviour
         switch (i)
         {
             case 0:
-                retroPixelPro.pixelSize = 1;
+                retroPixelPro.pixelSize = 4;
                 retroPixelPro.dither = 0.3f;
                 retroPixelPro.opacity = 0.38f;
                 break;
