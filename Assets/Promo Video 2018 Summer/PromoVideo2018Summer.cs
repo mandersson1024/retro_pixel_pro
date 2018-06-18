@@ -27,6 +27,7 @@ public class PromoVideo2018Summer : MonoBehaviour
     Sprite sprite;
     RetroPixelPro retroPixelPro;
     FunkyTransitions funkyTransitions;
+    GameObject logo;
 
     int currentlyShowingIndex = 0;
     float segmentStartTime;
@@ -51,6 +52,7 @@ public class PromoVideo2018Summer : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         retroPixelPro = Camera.main.GetComponent<RetroPixelPro>();
         funkyTransitions = Camera.main.GetComponent<FunkyTransitions>();
+        logo = GameObject.Find("Logo");
 
         LoadAllSegments();
         StartCoroutine(Play());
@@ -59,29 +61,32 @@ public class PromoVideo2018Summer : MonoBehaviour
 
     IEnumerator Play()
     {
+        logo.SetActive(false);
+
         yield return new WaitForSeconds(1);
 
+        ShowSegment(5);
+        //StartCoroutine(Zoom(1, 1.3f, 8));
+        //StartCoroutine(Translate(0, 5f, 8));
+        yield return new WaitForSeconds(1);
+        StartCoroutine(DoTransition(1f));
+        yield return new WaitForSeconds(2);
+        logo.SetActive(true);
+        yield return new WaitForSeconds(4);
+        StartCoroutine(FadeAlpha(1, 0, 10));
+        yield return new WaitForSeconds(4);
+        StartCoroutine(Zoom(logo.transform, 0.5f, 1, 2f));
+        StartCoroutine(Translate(logo.transform, new Vector3(3.15f, 3.3f, 1), new Vector3(0, 0.8f, 1), 2f));
+
+        /*
         for (int i = 0; i < 17; ++i)
         {
             ShowSegment(i);
-
             StartCoroutine(Zoom(1, 1.3f, 8));
             //StartCoroutine(Translate(0, 5f, 8));
             yield return new WaitForSeconds(2);
             StartCoroutine(DoTransition(0.4f));
             yield return new WaitForSeconds(6);
-        }
-
-
-        /*
-        float totalTime = 6;
-        //float startScale = 1f;
-        //float endScale = 2f;
-
-        while (SegmentRunningTime < totalTime)
-        {
-            //Scale = Mathf.Lerp(startScale, endScale, SegmentRunningTime / totalTime);
-            yield return null;
         }
         */
 
@@ -95,7 +100,7 @@ public class PromoVideo2018Summer : MonoBehaviour
         while (Time.time <= startTime + duration)
         {
             float elapsed = Time.time - startTime;
-            funkyTransitions.offset = Mathf.Lerp(0, 1, elapsed / duration);
+            funkyTransitions.offset = Sinerp(0, 1, elapsed / duration);
             yield return null;
         }
 
@@ -104,7 +109,7 @@ public class PromoVideo2018Summer : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator FadeOpacity(float startValue, float endValue, float duration)
+    IEnumerator Fade(float startValue, float endValue, float duration)
     {
         float startTime = Time.time;
 
@@ -120,7 +125,23 @@ public class PromoVideo2018Summer : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator Zoom(float startScale, float endScale, float duration)
+    IEnumerator FadeAlpha(float startValue, float endValue, float duration)
+    {
+        float startTime = Time.time;
+
+        while (Time.time <= startTime + duration)
+        {
+            float elapsed = Time.time - startTime;
+            spriteRenderer.color = new Color(1, 1, 1, Mathf.Lerp(startValue, endValue, elapsed / duration));
+            yield return null;
+        }
+
+        retroPixelPro.opacity = Mathf.Lerp(startValue, endValue, 1);
+
+        yield return null;
+    }
+
+    IEnumerator Zoom(Transform trans, float startScale, float endScale, float duration)
     {
         float startTime = Time.time;
 
@@ -128,7 +149,7 @@ public class PromoVideo2018Summer : MonoBehaviour
         {
             float elapsed = Time.time - startTime;
             float value = Mathf.Lerp(startScale, endScale, elapsed / duration);
-            transform.localScale = new Vector3(value, value, 1);
+            trans.localScale = new Vector3(value, value, 1);
             yield return null;
         }
 
@@ -137,19 +158,18 @@ public class PromoVideo2018Summer : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator Translate(float startPos, float endPos, float duration)
+    IEnumerator Translate(Transform trans, Vector3 startPos, Vector3 endPos, float duration)
     {
         float startTime = Time.time;
 
         while (Time.time <= startTime + duration)
         {
             float elapsed = Time.time - startTime;
-            float value = Mathf.Lerp(startPos, endPos, elapsed / duration);
-            transform.position = new Vector3(value, 0, 0);
+            trans.position = Sinerp(startPos, endPos, elapsed / duration);
             yield return null;
         }
 
-        transform.localScale = new Vector3(endPos, endPos, 1);
+        trans.position = endPos;
 
         yield return null;
     }
@@ -336,4 +356,19 @@ public class PromoVideo2018Summer : MonoBehaviour
         segmentStartTime = Time.time;
     }
 
+    //Ease out
+    public static float Sinerp(float start, float end, float value)
+    {
+        return Mathf.Lerp(start, end, Mathf.Sin(value * Mathf.PI * 0.5f));
+    }
+
+    public static Vector2 Sinerp(Vector2 start, Vector2 end, float value)
+    {
+        return new Vector2(Mathf.Lerp(start.x, end.x, Mathf.Sin(value * Mathf.PI * 0.5f)), Mathf.Lerp(start.y, end.y, Mathf.Sin(value * Mathf.PI * 0.5f)));
+    }
+
+    public static Vector3 Sinerp(Vector3 start, Vector3 end, float value)
+    {
+        return new Vector3(Mathf.Lerp(start.x, end.x, Mathf.Sin(value * Mathf.PI * 0.5f)), Mathf.Lerp(start.y, end.y, Mathf.Sin(value * Mathf.PI * 0.5f)), Mathf.Lerp(start.z, end.z, Mathf.Sin(value * Mathf.PI * 0.5f)));
+    }
 }
