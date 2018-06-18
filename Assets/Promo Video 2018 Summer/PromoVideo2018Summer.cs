@@ -64,31 +64,32 @@ public class PromoVideo2018Summer : MonoBehaviour
         logo.SetActive(false);
 
         yield return new WaitForSeconds(1);
-
-        ShowSegment(5);
         //StartCoroutine(Zoom(1, 1.3f, 8));
         //StartCoroutine(Translate(0, 5f, 8));
-        yield return new WaitForSeconds(1);
+
+        ///
+        /// CLOUDS
+        ///
+        ShowSegment(6);
+        StartCoroutine(Zoom(spriteRenderer.transform, 1, 1.15f, 9f));
+        yield return new WaitForSeconds(3);
         StartCoroutine(DoTransition(1f));
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(6);
+
+        ///
+        /// FOREST LAMP
+        ///
+        ShowSegment(5);
+        StartCoroutine(Zoom(spriteRenderer.transform, 1, 1.1f, 15f));
+        yield return new WaitForSeconds(3);
+        StartCoroutine(DoTransition(1f));
+        yield return new WaitForSeconds(0.5f);
         logo.SetActive(true);
         yield return new WaitForSeconds(4);
         StartCoroutine(FadeAlpha(1, 0, 10));
         yield return new WaitForSeconds(4);
         StartCoroutine(Zoom(logo.transform, 0.5f, 1, 2f));
         StartCoroutine(Translate(logo.transform, new Vector3(3.15f, 3.3f, 1), new Vector3(0, 0.8f, 1), 2f));
-
-        /*
-        for (int i = 0; i < 17; ++i)
-        {
-            ShowSegment(i);
-            StartCoroutine(Zoom(1, 1.3f, 8));
-            //StartCoroutine(Translate(0, 5f, 8));
-            yield return new WaitForSeconds(2);
-            StartCoroutine(DoTransition(0.4f));
-            yield return new WaitForSeconds(6);
-        }
-        */
 
         yield return null;
     }
@@ -283,7 +284,7 @@ public class PromoVideo2018Summer : MonoBehaviour
                 break;
 
             case 6:
-                retroPixelPro.pixelSize = 3;
+                retroPixelPro.pixelSize = 4;
                 retroPixelPro.dither = 0;
                 retroPixelPro.opacity = 1;
                 break;
