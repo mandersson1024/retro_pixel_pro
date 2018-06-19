@@ -58,38 +58,71 @@ public class PromoVideo2018Summer : MonoBehaviour
         StartCoroutine(Play());
     }
 
+    float FADE_IN_TIME = 1f;
+    float TRANSITION_TIME = 1f;
+    float PAUSE_TIME = 3f;
+    float FADE_OUT_TIME = 3f;
 
     IEnumerator Play()
     {
         logo.SetActive(false);
+        retroPixelPro.opacity = 0;
 
-        yield return new WaitForSeconds(1);
-        //StartCoroutine(Zoom(1, 1.3f, 8));
-        //StartCoroutine(Translate(0, 5f, 8));
+        ///
+        /// CITY
+        ///
+        ShowSegment(11);
+        StartCoroutine(Zoom(spriteRenderer.transform, 1, 1.15f, FADE_IN_TIME + TRANSITION_TIME + PAUSE_TIME + FADE_OUT_TIME));
+        StartCoroutine(FadeAlpha(0, 1, FADE_IN_TIME));
+        yield return new WaitForSeconds(FADE_IN_TIME);
+        StartCoroutine(DoTransition(TRANSITION_TIME));
+        yield return new WaitForSeconds(TRANSITION_TIME);
+        yield return new WaitForSeconds(PAUSE_TIME);
+        StartCoroutine(FadeAlpha(1, 0.1f, FADE_OUT_TIME));
+        yield return new WaitForSeconds(FADE_OUT_TIME);
+
+        ///
+        /// BRIDGE
+        ///
+        ShowSegment(10);
+        StartCoroutine(Zoom(spriteRenderer.transform, 1, 1.15f, FADE_IN_TIME + TRANSITION_TIME + PAUSE_TIME + FADE_OUT_TIME));
+        StartCoroutine(FadeAlpha(0, 1, FADE_IN_TIME));
+        yield return new WaitForSeconds(FADE_IN_TIME);
+        StartCoroutine(DoTransition(TRANSITION_TIME));
+        yield return new WaitForSeconds(TRANSITION_TIME);
+        yield return new WaitForSeconds(PAUSE_TIME);
+        StartCoroutine(FadeAlpha(1, 0, FADE_OUT_TIME));
+        yield return new WaitForSeconds(FADE_OUT_TIME);
 
         ///
         /// CLOUDS
         ///
         ShowSegment(6);
-        StartCoroutine(Zoom(spriteRenderer.transform, 1, 1.15f, 9f));
-        yield return new WaitForSeconds(3);
-        StartCoroutine(DoTransition(1f));
-        yield return new WaitForSeconds(6);
+        StartCoroutine(Zoom(spriteRenderer.transform, 1, 1.15f, FADE_IN_TIME + TRANSITION_TIME + PAUSE_TIME + FADE_OUT_TIME));
+        StartCoroutine(FadeAlpha(0, 1, FADE_IN_TIME));
+        yield return new WaitForSeconds(FADE_IN_TIME);
+        StartCoroutine(DoTransition(TRANSITION_TIME));
+        yield return new WaitForSeconds(TRANSITION_TIME);
+        yield return new WaitForSeconds(PAUSE_TIME);
+        StartCoroutine(FadeAlpha(1, 0.4f, FADE_OUT_TIME));
+        yield return new WaitForSeconds(FADE_OUT_TIME);
 
         ///
         /// FOREST LAMP
         ///
         ShowSegment(5);
-        StartCoroutine(Zoom(spriteRenderer.transform, 1, 1.1f, 15f));
-        yield return new WaitForSeconds(3);
-        StartCoroutine(DoTransition(1f));
-        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(Zoom(spriteRenderer.transform, 1, 1.1f, FADE_IN_TIME + TRANSITION_TIME + PAUSE_TIME + FADE_OUT_TIME));
+        StartCoroutine(FadeAlpha(0, 1, FADE_IN_TIME));
+        yield return new WaitForSeconds(FADE_IN_TIME);
+        StartCoroutine(DoTransition(TRANSITION_TIME));
+        yield return new WaitForSeconds(TRANSITION_TIME / 2);
         logo.SetActive(true);
-        yield return new WaitForSeconds(4);
-        StartCoroutine(FadeAlpha(1, 0, 10));
-        yield return new WaitForSeconds(4);
-        StartCoroutine(Zoom(logo.transform, 0.5f, 1, 2f));
-        StartCoroutine(Translate(logo.transform, new Vector3(3.15f, 3.3f, 1), new Vector3(0, 0.8f, 1), 2f));
+        yield return new WaitForSeconds(TRANSITION_TIME / 2);
+        yield return new WaitForSeconds(PAUSE_TIME);
+        StartCoroutine(FadeAlpha(1, 0, FADE_OUT_TIME));
+        yield return new WaitForSeconds(FADE_OUT_TIME / 2);
+        StartCoroutine(Zoom(logo.transform, 0.5f, 1, 0.8f));
+        StartCoroutine(Translate(logo.transform, new Vector3(3.15f, 3.3f, 1), new Vector3(0, 0.8f, 1), 0.8f));
 
         yield return null;
     }
@@ -154,7 +187,7 @@ public class PromoVideo2018Summer : MonoBehaviour
             yield return null;
         }
 
-        transform.localScale = new Vector3(endScale, endScale, 1);
+        trans.localScale = new Vector3(endScale, endScale, 1);
 
         yield return null;
     }
