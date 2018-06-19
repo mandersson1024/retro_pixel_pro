@@ -116,7 +116,7 @@ public class PromoVideo2018Summer : MonoBehaviour
         yield return new WaitForSeconds(FADE_IN_TIME);
         StartCoroutine(DoTransition(TRANSITION_TIME));
         yield return new WaitForSeconds(TRANSITION_TIME / 2);
-        logo.SetActive(true);
+        //logo.SetActive(true);
         yield return new WaitForSeconds(TRANSITION_TIME / 2);
         yield return new WaitForSeconds(PAUSE_TIME);
         StartCoroutine(FadeAlpha(1, 0, FADE_OUT_TIME));
