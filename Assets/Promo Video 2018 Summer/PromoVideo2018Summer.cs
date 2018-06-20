@@ -58,15 +58,95 @@ public class PromoVideo2018Summer : MonoBehaviour
         StartCoroutine(Play());
     }
 
-    float FADE_IN_TIME = 1f;
+    float FADE_IN_TIME = 0.2f;
     float TRANSITION_TIME = 1f;
     float PAUSE_TIME = 3f;
     float FADE_OUT_TIME = 3f;
 
     IEnumerator Play()
     {
-        logo.SetActive(false);
+        yield return new WaitForSeconds(1f);
+
+        //logo.SetActive(false);
         retroPixelPro.opacity = 0;
+
+        ///
+        /// DUNGEON
+        ///
+        ShowSegment(3);
+        StartCoroutine(Zoom(spriteRenderer.transform, 1, 1.15f, FADE_IN_TIME + TRANSITION_TIME + PAUSE_TIME + FADE_OUT_TIME));
+        StartCoroutine(FadeAlpha(0, 1, FADE_IN_TIME));
+        yield return new WaitForSeconds(FADE_IN_TIME);
+        StartCoroutine(DoTransition(TRANSITION_TIME));
+        yield return new WaitForSeconds(TRANSITION_TIME);
+        yield return new WaitForSeconds(PAUSE_TIME);
+        StartCoroutine(FadeAlpha(1, 0.1f, FADE_OUT_TIME));
+        yield return new WaitForSeconds(FADE_OUT_TIME);
+
+        ///
+        /// OLD MAN
+        ///
+        ShowSegment(4);
+        StartCoroutine(Zoom(spriteRenderer.transform, 1, 1.15f, FADE_IN_TIME + TRANSITION_TIME + PAUSE_TIME + FADE_OUT_TIME));
+        StartCoroutine(FadeAlpha(0, 1, FADE_IN_TIME));
+        yield return new WaitForSeconds(FADE_IN_TIME);
+        StartCoroutine(DoTransition(TRANSITION_TIME));
+        yield return new WaitForSeconds(TRANSITION_TIME);
+        yield return new WaitForSeconds(PAUSE_TIME);
+        StartCoroutine(FadeAlpha(1, 0f, FADE_OUT_TIME));
+        yield return new WaitForSeconds(FADE_OUT_TIME);
+
+        ///
+        /// BUBBLE GIRL
+        ///
+        ShowSegment(13);
+        StartCoroutine(Zoom(spriteRenderer.transform, 1, 1.15f, FADE_IN_TIME + TRANSITION_TIME + PAUSE_TIME + FADE_OUT_TIME));
+        StartCoroutine(FadeAlpha(0, 1, FADE_IN_TIME));
+        yield return new WaitForSeconds(FADE_IN_TIME);
+        StartCoroutine(DoTransition(TRANSITION_TIME));
+        yield return new WaitForSeconds(TRANSITION_TIME);
+        yield return new WaitForSeconds(PAUSE_TIME);
+        StartCoroutine(FadeAlpha(1, 0.1f, FADE_OUT_TIME));
+        yield return new WaitForSeconds(FADE_OUT_TIME);
+
+        ///
+        /// FLOWER
+        ///
+        ShowSegment(15);
+        StartCoroutine(Zoom(spriteRenderer.transform, 1, 1.15f, FADE_IN_TIME + TRANSITION_TIME + PAUSE_TIME + FADE_OUT_TIME));
+        StartCoroutine(FadeAlpha(0, 1, FADE_IN_TIME));
+        yield return new WaitForSeconds(FADE_IN_TIME);
+        StartCoroutine(DoTransition(TRANSITION_TIME));
+        yield return new WaitForSeconds(TRANSITION_TIME);
+        yield return new WaitForSeconds(PAUSE_TIME);
+        StartCoroutine(FadeAlpha(1, 0.1f, FADE_OUT_TIME));
+        yield return new WaitForSeconds(FADE_OUT_TIME);
+
+        ///
+        /// FIRE
+        ///
+        ShowSegment(14);
+        StartCoroutine(Zoom(spriteRenderer.transform, 1, 1.15f, FADE_IN_TIME + TRANSITION_TIME + PAUSE_TIME + FADE_OUT_TIME));
+        StartCoroutine(FadeAlpha(0, 1, FADE_IN_TIME));
+        yield return new WaitForSeconds(FADE_IN_TIME);
+        StartCoroutine(DoTransition(TRANSITION_TIME));
+        yield return new WaitForSeconds(TRANSITION_TIME);
+        yield return new WaitForSeconds(PAUSE_TIME);
+        StartCoroutine(FadeAlpha(1, 0.1f, FADE_OUT_TIME));
+        yield return new WaitForSeconds(FADE_OUT_TIME);
+
+        ///
+        /// HALL
+        ///
+        ShowSegment(9);
+        StartCoroutine(Zoom(spriteRenderer.transform, 1, 1.15f, FADE_IN_TIME + TRANSITION_TIME + PAUSE_TIME + FADE_OUT_TIME));
+        StartCoroutine(FadeAlpha(0, 1, FADE_IN_TIME));
+        yield return new WaitForSeconds(FADE_IN_TIME);
+        StartCoroutine(DoTransition(TRANSITION_TIME));
+        yield return new WaitForSeconds(TRANSITION_TIME);
+        yield return new WaitForSeconds(PAUSE_TIME);
+        StartCoroutine(FadeAlpha(1, 0.1f, FADE_OUT_TIME));
+        yield return new WaitForSeconds(FADE_OUT_TIME);
 
         ///
         /// CITY
@@ -121,8 +201,8 @@ public class PromoVideo2018Summer : MonoBehaviour
         yield return new WaitForSeconds(PAUSE_TIME);
         StartCoroutine(FadeAlpha(1, 0, FADE_OUT_TIME));
         yield return new WaitForSeconds(FADE_OUT_TIME / 2);
-        StartCoroutine(Zoom(logo.transform, 0.5f, 1, 0.8f));
-        StartCoroutine(Translate(logo.transform, new Vector3(3.15f, 3.3f, 1), new Vector3(0, 0.8f, 1), 0.8f));
+        StartCoroutine(Zoom(logo.transform, logo.transform.localScale.x, 1, 0.8f));
+        StartCoroutine(Translate(logo.transform, logo.transform.localPosition, new Vector3(0, 0.8f, 1), 0.8f));
 
         yield return null;
     }
@@ -154,7 +234,7 @@ public class PromoVideo2018Summer : MonoBehaviour
             yield return null;
         }
 
-        retroPixelPro.opacity = Mathf.Lerp(startValue, endValue, 1);
+        retroPixelPro.opacity = endValue;
 
         yield return null;
     }
@@ -170,7 +250,7 @@ public class PromoVideo2018Summer : MonoBehaviour
             yield return null;
         }
 
-        retroPixelPro.opacity = Mathf.Lerp(startValue, endValue, 1);
+        spriteRenderer.color = new Color(1, 1, 1, endValue);
 
         yield return null;
     }
@@ -305,9 +385,9 @@ public class PromoVideo2018Summer : MonoBehaviour
                 break;
 
             case 4:
-                retroPixelPro.pixelSize = 4;
-                retroPixelPro.dither = 0.345f;
-                retroPixelPro.opacity = 0.55f;
+                retroPixelPro.pixelSize = 2;
+                retroPixelPro.dither = 0;
+                retroPixelPro.opacity = 1;
                 break;
 
             case 5:
@@ -359,14 +439,14 @@ public class PromoVideo2018Summer : MonoBehaviour
                 break;
 
             case 13:
-                retroPixelPro.pixelSize = 4;
-                retroPixelPro.dither = 0.29f;
-                retroPixelPro.opacity = 1;
+                retroPixelPro.pixelSize = 1;
+                retroPixelPro.dither = 0.35f;
+                retroPixelPro.opacity = 1f;
                 break;
 
             case 14:
-                retroPixelPro.pixelSize = 1;
-                retroPixelPro.dither = 0;
+                retroPixelPro.pixelSize = 2;
+                retroPixelPro.dither = 1;
                 retroPixelPro.opacity = 1;
                 break;
 
