@@ -26,8 +26,10 @@ public class PromoVideo2018Summer : MonoBehaviour
     SpriteRenderer spriteRenderer;
     Sprite sprite;
     RetroPixelPro retroPixelPro;
+    RetroPixelPro retroPixelProAlt;
     FunkyTransitions funkyTransitions;
     GameObject logo;
+    List<Colormap> commonColormaps;
 
     int currentlyShowingIndex = 0;
     float segmentStartTime;
@@ -49,13 +51,30 @@ public class PromoVideo2018Summer : MonoBehaviour
 
     void Start()
     {
+        GameObject altCamera = GameObject.Find("Alt Camera");
+
         spriteRenderer = GetComponent<SpriteRenderer>();
         retroPixelPro = Camera.main.GetComponent<RetroPixelPro>();
+        retroPixelProAlt = altCamera.GetComponent<RetroPixelPro>();
         funkyTransitions = Camera.main.GetComponent<FunkyTransitions>();
         logo = GameObject.Find("Logo");
 
+        commonColormaps = new List<Colormap>
+        {
+            Resources.Load<Colormap>("Common Colormaps/Common Colormap 1")
+        };
+
         LoadAllSegments();
         StartCoroutine(Play());
+    }
+
+    void SetRPP(RetroPixelPro rpp, Colormap colormap, int pixelSize, float dither, float opacity)
+    {
+        rpp.colormap = colormap;
+        rpp.pixelSize = pixelSize;
+        rpp.dither = dither;
+        rpp.opacity = opacity;
+        rpp.ApplyMaterialVariables();
     }
 
     float FADE_IN_TIME = 0.2f;
@@ -73,10 +92,19 @@ public class PromoVideo2018Summer : MonoBehaviour
         ///
         /// DUNGEON
         ///
+        SetRPP(retroPixelProAlt, null, 1, 0, 1);
         ShowSegment(3);
-        StartCoroutine(Zoom(spriteRenderer.transform, 1, 1.15f, FADE_IN_TIME + TRANSITION_TIME + PAUSE_TIME + FADE_OUT_TIME));
+        StartCoroutine(Zoom(spriteRenderer.transform, 1, 1.15f, FADE_IN_TIME + TRANSITION_TIME * 2 + PAUSE_TIME + FADE_OUT_TIME));
         StartCoroutine(FadeAlpha(0, 1, FADE_IN_TIME));
         yield return new WaitForSeconds(FADE_IN_TIME);
+        Coroutine coroutine = StartCoroutine(DoTransition(TRANSITION_TIME));
+        yield return new WaitForSeconds(TRANSITION_TIME);
+        StopCoroutine(coroutine);
+
+        SetRPP(retroPixelProAlt, retroPixelPro.colormap, retroPixelPro.pixelSize, retroPixelPro.dither, retroPixelPro.opacity);
+        SetRPP(retroPixelPro, commonColormaps[0], 1, 0, 1);
+        funkyTransitions.offset = 0;
+
         StartCoroutine(DoTransition(TRANSITION_TIME));
         yield return new WaitForSeconds(TRANSITION_TIME);
         yield return new WaitForSeconds(PAUSE_TIME);

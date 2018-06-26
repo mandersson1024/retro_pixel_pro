@@ -13,8 +13,9 @@ public class FunkyTransitions : MonoBehaviour
     [Range(0, 1)]
     public float offset;
 
-    public void Awake()
+    private void ApplyOffset()
     {
+        mat.SetTextureOffset("_GradientTex", new Vector2(Mathf.Lerp(0.66f, -0.66f, offset), 0));
     }
 
     public void OnValidate()
@@ -25,7 +26,7 @@ public class FunkyTransitions : MonoBehaviour
 
     public void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        mat.SetTextureOffset("_GradientTex", new Vector2(Mathf.Lerp(0.7f, -0.7f, offset), 0));
+        ApplyOffset();
         Graphics.Blit(source, destination, mat);
     }
 }

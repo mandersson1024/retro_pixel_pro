@@ -119,18 +119,6 @@ namespace AlpacaSound.RetroPixelPro
 
         Colormap oldColormap = null;
 
-        void Update()
-        {
-            if (colormap != null && (colormap.changedInternally || oldColormap != colormap))
-            {
-                colormap.changedInternally = false;
-                ApplyToMaterial();
-            }
-
-            oldColormap = colormap;
-        }
-
-
         void Reset()
         {
             resolutionMode = ResolutionMode.ConstantPixelSize;
@@ -145,7 +133,7 @@ namespace AlpacaSound.RetroPixelPro
 
         void OnEnable()
         {
-            ApplyToMaterial();
+            ApplyColormapToMaterial();
         }
 
 
@@ -161,6 +149,35 @@ namespace AlpacaSound.RetroPixelPro
 
         public void OnRenderImage(RenderTexture src, RenderTexture dest)
         {
+            if (colormap != null && (colormap.changedInternally || oldColormap != colormap))
+            {
+                colormap.changedInternally = false;
+                ApplyColormapToMaterial();
+            }
+
+            oldColormap = colormap;
+
+            ApplyMaterialVariables();
+
+            RenderTexture scaled = RenderTexture.GetTemporary(resolution.x, resolution.y);
+            scaled.filterMode = FilterMode.Point;
+
+            if (colormap == null)
+            {
+                Graphics.Blit(src, scaled);
+            }
+            else
+            {
+                Graphics.Blit(src, scaled, material);
+            }
+
+            Graphics.Blit(scaled, dest);
+            RenderTexture.ReleaseTemporary(scaled);
+        }
+
+
+        public void ApplyMaterialVariables()
+        {
             pixelSize = (int)Mathf.Clamp(pixelSize, 1, float.MaxValue);
 
             if (resolutionMode == ResolutionMode.ConstantPixelSize)
@@ -175,26 +192,11 @@ namespace AlpacaSound.RetroPixelPro
             opacity = Mathf.Clamp01(opacity);
             dither = Mathf.Clamp01(dither);
 
-            RenderTexture scaled = RenderTexture.GetTemporary(resolution.x, resolution.y);
-            scaled.filterMode = FilterMode.Point;
-
-            if (colormap == null)
-            {
-                Graphics.Blit(src, scaled);
-            }
-            else
-            {
-                material.SetFloat("_Opacity", opacity);
-                material.SetFloat("_Dither", dither);
-                Graphics.Blit(src, scaled, material);
-            }
-
-            Graphics.Blit(scaled, dest);
-            RenderTexture.ReleaseTemporary(scaled);
+            material.SetFloat("_Opacity", opacity);
+            material.SetFloat("_Dither", dither);
         }
 
-
-        public void ApplyToMaterial()
+        public void ApplyColormapToMaterial()
         {
             if (colormap != null)
             {
