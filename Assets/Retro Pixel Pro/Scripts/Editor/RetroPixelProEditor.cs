@@ -37,7 +37,7 @@ namespace AlpacaSound.RetroPixelPro
 
             if (resolutionMode.enumValueIndex == (int)ResolutionMode.ConstantResolution)
             {
-                resolution.vector2Value = EditorGUILayout.Vector2Field("Resolution", resolution.vector2Value);
+                resolution.vector2IntValue = EditorGUILayout.Vector2IntField("Resolution", resolution.vector2IntValue);
             }
 
             if (resolutionMode.enumValueIndex == (int)ResolutionMode.ConstantPixelSize)

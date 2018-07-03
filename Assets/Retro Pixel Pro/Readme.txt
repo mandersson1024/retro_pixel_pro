@@ -2,7 +2,7 @@
 README - RETRO PIXEL PRO
 ------------------------
 
-For detailed documentation, please visit: http://www.alpacasound.se/retro-pixel-pro-v3-0
+For detailed documentation, please visit: http://www.alpacasound.se/retro-pixel-pro-v3-2
 
 Contact and support: info@alpacasound.se
  
