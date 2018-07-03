@@ -32,12 +32,16 @@ namespace AlpacaSound.RetroPixelPro
         public int pixelSize = 1;
 
         /// <summary>
+        /// Coloring dither amount.
+        /// Clamped in the range [0, 1]
+        /// </summary>
+        public float dither = 1;
+
+        /// <summary>
         /// Alpha of the colorization.
         /// Clamped in the range [0, 1]
         /// </summary>
         public float opacity = 1;
-
-        public float dither = 1;
 
         /// <summary>
         /// Contains palette and pre-computed color data.

@@ -1,7 +1,7 @@
-{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf200
 {\fonttbl\f0\fnil\fcharset0 HelveticaNeue;\f1\fmodern\fcharset0 Courier;}
-{\colortbl;\red255\green255\blue255;\red52\green52\blue52;\red52\green52\blue52;}
-{\*\expandedcolortbl;;\csgenericrgb\c20392\c20392\c20392;\csgenericrgb\c20392\c20392\c20392;}
+{\colortbl;\red255\green255\blue255;\red52\green52\blue52;}
+{\*\expandedcolortbl;;\csgenericrgb\c20392\c20392\c20392;}
 \paperw11900\paperh16840\margl1440\margr1440\vieww18560\viewh24400\viewkind0
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
 
@@ -14,7 +14,7 @@
 
 \i\fs24 For more details, please visit
 \i0 \
-{\field{\*\fldinst{HYPERLINK "http://www.alpacasound.se/retro-pixel-pro-v3-0"}}{\fldrslt http://www.alpacasound.se/retro-pixel-pro-v3-0}}\
+{\field{\*\fldinst{HYPERLINK "http://www.alpacasound.se/retro-pixel-pro-v3-2"}}{\fldrslt http://www.alpacasound.se/retro-pixel-pro-v3-2}}\
 
 \fs32 \
 \
@@ -30,23 +30,20 @@ Add the Retro Pixel Pro component to a Camera. Assign a colormap asset to the Co
 
 \b RetroPixelPro component properties
 \b0 \
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-\cf3 	\'95	Resolution Mode \'96 The way to sel the resolution, either by defining the size of the pixels or by setting an absolute resolution.\
+	\'95	Resolution Mode \'96 The way to sel the resolution, either by defining the size of the pixels or by setting an absolute resolution.\
 	\'95	Resolution \'96 The absolute resolution (only used if the resolution mode is ConstantResolution)\
 	\'95	Pixel Size \'96 The size of the pixels (only used if the resolution mode is ConstantPixelSize)\
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-\cf2 	\'95	Opacity \'96 The alpha of the colorization effect.\
+	\'95	Dither \'96 Color dithering amount.\
+	\'95	Opacity \'96 The alpha of the colorization effect.\
 	\'95	Colormap \'96 The colormap, defining the palette and contains pre-computed coloring data.\
 \
 
 \b Colormap asset properties
 \b0 \
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-\cf3 	\'95	Colormap Precision \'96 Mathematical precision of the colorization. The higher settings will use much more GPU memory than the lower ones. (See below.)\
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
-\cf2 	\'95	Number Of Colors \'96 The number of colors, between 1 and 256.\
-	\'95	Auto Update Colormap \'96 Updates the colormap on the fly when changes are made. You may not want this for some colormap precision settings.\
-	\'95	Update Colormap / Cancel \'96 Triggers a manual update of the colormap. Only available if Auto Update Colormap is unchecked.\
+	\'95	Preview \'96 If checked, the coloring will be a bit rougher, but the time to compute the colormap will be much shorter.\
+	\'95	Number Of Colors \'96 The number of colors, between 1 and 64.\
+	\'95	Select Preset \'96 Select among the predefined palettes.	\'95	Save As Preset \'96 Save the current palette as a preset.	\'95	Extract Palette From Image \'96 Use a jpg or png image as a source to extract the colors from.	\'95	Apply Changes Automatically \'96 Updates the colormap on the fly when changes are made. You may not want this for some colormap precision settings.\
+	\'95	Apply Changes / Cancel \'96 Triggers a manual update of the colormap. Only available if Auto Update Colormap is unchecked.\
 	\'95	Colors and Checkboxes \'96 Every individual color can be changed and the checkboxes next to them specifies if they are included in the colormap.\
 \
 Colormap palettes can be set by selecting a preset or extracting a palette from an image.\
@@ -62,7 +59,7 @@ Colormap palettes can be set by selecting a preset or extracting a palette from 
 \uc0\u8232 
 \f1\fs20 \
 \pard\pardeftab720\partightenfactor0
-\cf2 using AlpacaSound.RetroPixelPro\uc0\u8232 
+\cf2 using AlpacaSound.RetroPixelPro;\uc0\u8232 
 \f0\fs24 \
 \pard\pardeftab720\partightenfactor0
 
@@ -81,11 +78,13 @@ public ResolutionMode resolutionMode;\
 /// Only used if resolution mode is ResolutionMode.ConstantResolution.\
 public Vector2 resolution;\
 \
-/// <summary>\
 /// Size of the pixels in the pixelated image.\
 /// Only used if resolution mode is ResolutionMode.ConstantPixelSize.\
-/// </summary>\
 public int pixelSize;\
+\
+/// Coloring dither amount.\
+/// Clamped in the range [0, 1]\
+public float dither = 1;\
 \
 /// Alpha of the colorization.\
 /// Clamped in the range [0, 1]\
@@ -93,4 +92,6 @@ public float opacity;\
 \
 /// The colormap.\
 /// Contains palette and pre-computed color data.\
-public Colormap colormap;}
+public Colormap colormap;\
+\
+}
