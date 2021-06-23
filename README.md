@@ -1,10 +1,10 @@
-# Retro Pixel Pro
+# In memory of Retro Pixel Pro
 
 ![Retro Pixel Pro](https://github.com/mandersson1024/retro_pixel_pro/blob/master/staff_pick_201607.jpg)
 
 The asset was sold in ??? copies and brought in $??? over ??? years
 
-??? people wrote a review of which ??? was 5-star.
+The average review score was 4.9 stars out of 5.
 
 Here are the [reviews](reviews.md).
 
