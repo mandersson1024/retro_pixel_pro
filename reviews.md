@@ -1,13 +1,13 @@
 ### Retro Pixel Pro reviews
 
 
-★★★★★ すばらしい！
+#### ★★★★★ すばらしい！
 <br>
 すばらしい！
 <br>
 *2019-04-04*
 
-★★★★★ **Excellent customer service**
+#### ★★★★★ Excellent customer service
 <br>
 The plugin is great and very useful. The developer helped me modify it too to fit my purposes. Excellent and quick replies from the Author.
 <br>
