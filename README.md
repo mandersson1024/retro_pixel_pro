@@ -1,6 +1,6 @@
 # In memory of Retro Pixel Pro
 
-![Retro Pixel Pro](https://github.com/mandersson1024/retro_pixel_pro/blob/master/retro_pixel_pro.jpg)
+![Retro Pixel Pro](https://github.com/mandersson1024/retro_pixel_pro/blob/master/retro_pixel_pro.png)
 
 Existed on the Asset Store between November 2015 and May 2019.
 
