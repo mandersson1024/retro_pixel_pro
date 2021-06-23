@@ -8,4 +8,4 @@ Here are the [reviews](readme.md).
 
 It was selected Staff Pick by the Unity Asset Store in July of 2016.
 
-![staff_pick_201607.jpg]
+![https://github.com/mandersson1024/retro_pixel_pro/blob/master/staff_pick_201607.jpg]
