@@ -4,6 +4,8 @@
 /[Oo]bj/
 /[Bb]uild/
 /[Bb]uilds/
+/Packages
+/ProjectSettings
 /Assets/AssetStoreTools*
 
 # Visual Studio 2015 cache directory
@@ -36,4 +38,3 @@ sysinfo.txt
 
 # Mac
 .DS_Store
-UnityAssetStore_RetroPixelPro.sln
