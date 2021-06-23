@@ -1,4 +1,4 @@
-# In memory of Retro Pixel Pro
+# Retro Pixel Pro
 
 
 ![Retro Pixel Pro](https://github.com/mandersson1024/retro_pixel_pro/blob/master/retro_pixel_pro.png)
